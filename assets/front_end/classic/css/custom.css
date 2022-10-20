@@ -1,0 +1,7 @@
+#modal-custom .iziModal-content section#register_div button, #modal-custom .iziModal-content section#register_div input:not([type=checkbox]) { margin-bottom: 0; padding: 15px!important; }
+#modal-custom .iziModal-content section#register_as_seller_div button, #modal-custom .iziModal-content section#register_as_seller_div input:not([type=checkbox]) { margin-bottom: 0; padding: 15px!important; }
+#modal-custom .iziModal-content section#register_div input#phone-number { padding-left: 90px!important; }
+#modal-custom .iziModal-content section#register_div .intl-tel-input.allow-dropdown .selected-flag { width:78px; }
+#modal-custom .iziModal-content header a { width: 25%; }
+
+#store-details .row, #bank-details .row, #other-details .row { background-color: #FFFFFF; }
