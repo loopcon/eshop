@@ -61,6 +61,8 @@ class My_account extends CI_Controller
             $this->data['title'] = 'Orders | ' . $this->data['web_settings']['site_title'];
             $this->data['keywords'] = 'Orders, ' . $this->data['web_settings']['meta_keywords'];
             $this->data['description'] = 'Orders | ' . $this->data['web_settings']['meta_description'];
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $total = fetch_orders(false, $this->data['user']->id, false, false, 1, NULL, NULL, NULL, NULL);
             $limit = 10;
             $config['base_url'] = base_url('my-account/orders');
@@ -274,6 +276,8 @@ class My_account extends CI_Controller
             $this->data['description'] = 'Address | ' . $this->data['web_settings']['meta_description'];
             $this->data['cities'] = get_cities();
             $this->data['areas'] = fetch_details('areas', NULL);
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
             redirect(base_url(), 'refresh');
@@ -320,9 +324,9 @@ class My_account extends CI_Controller
             $this->form_validation->set_rules('alternate_mobile', 'Alternative Mobile', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('address', 'Address', 'trim|xss_clean|required');
             $this->form_validation->set_rules('landmark', 'Landmark', 'trim|xss_clean');
-            $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
             $this->form_validation->set_rules('state', 'State', 'trim|xss_clean|required');
             $this->form_validation->set_rules('country', 'Country', 'trim|xss_clean|required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');
@@ -587,6 +591,8 @@ class My_account extends CI_Controller
             $this->data['description'] = 'Dashboard | ' . $this->data['web_settings']['meta_description'];
             $this->data['products'] = get_favorites($this->data['user']->id);
             $this->data['settings'] = get_settings('system_settings', true);
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
             redirect(base_url(), 'refresh');
@@ -805,5 +811,17 @@ class My_account extends CI_Controller
             echo json_encode($this->response);
             return false;
         }
+    }
+    
+    public function my_products()
+    {
+        $this->data['main_page'] = 'my-products';
+        $this->data['title'] = 'Store details | ' . $this->data['web_settings']['site_title'];
+        $this->data['keywords'] = 'Store details, ' . $this->data['web_settings']['meta_keywords'];
+        $this->data['description'] = 'Store details | ' . $this->data['web_settings']['meta_description'];
+        $this->data['login_type'] = $this->session->userdata('login_type');
+        $this->data['status'] = $this->session->userdata('status');
+        $this->data['products'] = fetch_details("products", "category_id='".$this->session->userdata('user_id')."'");
+        $this->load->view('front-end/' . THEME . '/template', $this->data);
     }
 }

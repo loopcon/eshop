@@ -251,8 +251,10 @@ $web_settings = get_settings('web_settings', true);
                     <?php } else { ?>
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="login"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li>/
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a></li>
-                        <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="login-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li> /
+                        <li class="nav-item active"><a href="<?= base_url('seller/login') ?>" class="m-2" data-value="login-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li> /
+                        <?php /* <li class="nav-item active"><a href="<?= base_url('seller/auth/sign_up') ?>" class="m-2" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li> */ ?>
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li>
+
                     <?php } ?>
                     <li class="nav-item active">
                         <a href="<?= base_url('my-account/favorites') ?>" class="p-2 header-icon">

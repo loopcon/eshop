@@ -170,7 +170,7 @@
     <header>
         <a href="" id="login"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a>
         <a href="" id="register" class="active"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a>
-        <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a>
+        <?php /* <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a> */ ?>
         <a href="" id="register-as-seller"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a>
     </header>
     <section class="hide" id="login_div">
