@@ -5,9 +5,9 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item my-auto">
+        <?php /* <li class="nav-item my-auto">
             <span class="badge badge-success">v <?= (isset($current_version) && !empty($current_version)) ? $current_version : '1.0' ?></span>
-        </li>
+        </li> */ ?>
         <?php
         if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {
         ?>
@@ -27,7 +27,7 @@
             </li>
         <?php } ?>
         <!-- google translate  -->
-        <div id="google_translate_element"></div>
+        <?php /* <div id="google_translate_element"></div> */ ?>
 
         <?php if (ALLOW_MODIFICATION == 0) { ?>
             <li class="nav-item">

@@ -96,10 +96,10 @@
                 </div>
             </form>
             <div class="mb-3">
-                <a href="#" class="text text-secondary font-weight-bold mb-3" id="has_account" data-target="#has_account_model" data-toggle="modal">Already have user account with <span class="text text-primary"><?= $app_name ?>?</span></a>
+                <a href="<?= base_url('seller/auth/forgot_password') ?>" class="text text-primary font-weight-bold mb-3">Forgot Password ?</a>
             </div>
             <div>
-                <a href="<?= base_url('seller/auth/sign_up') ?>" class="text text-danger font-weight-bold">Don't have any account?</a>
+                <a href="<?= base_url('seller/auth/sign_up') ?>" class="text text-primary font-weight-bold">Register as a new vendor</a>
             </div>
         </div>
         <!-- /.login-card-body -->

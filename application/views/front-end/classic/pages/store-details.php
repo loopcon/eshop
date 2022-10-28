@@ -151,7 +151,6 @@
                                 <div id="save-store-detail-result"></div>
                             </div>
                         </section>
-                        </div>
                     </form>
                 </div>
             </div>
