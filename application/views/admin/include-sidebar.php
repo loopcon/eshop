@@ -12,14 +12,39 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-flat" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-
-
+                with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
                     <a href="<?= base_url('/admin/home') ?>" class="nav-link">
                         <i class="nav-icon  fas fa-th-large text-primary"></i>
                         <p>
                             Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon  fas fa-flag text-primary"></i>
+                        <p>
+                            Banner
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <?php if (has_permissions('read', 'banners')) { ?>
+                            <li class="nav-item">
+                                <a href="<?= base_url('/admin/banner') ?>" class="nav-link">
+                                    <i class="fas fa-flag nav-icon"></i>
+                                    <p>Banner</p>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('admin/deals') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-handshake text-primary"></i>
+                        <p>
+                            Deals
                         </p>
                     </a>
                 </li>

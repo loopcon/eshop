@@ -13,7 +13,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="text-muted text-bold-500">Orders</h5>
-                                        <h3 class="text-bold-600"><?= $order_counter ?></h3>
+                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/orders/') ?>"><?= $order_counter ?></a></h3>
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +30,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="text-muted text-bold-500">New Signups</h5>
-                                        <h3 class="text-bold-600"><?= $user_counter ?></h3>
+                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/customer/') ?>"><?= $user_counter ?></a></h3>
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="text-muted text-bold-500">Delivery Boys</h5>
-                                        <h3 class="text-bold-600"><?= $delivery_boy_counter ?></h3>
+                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/delivery-boys/manage-delivery-boy') ?>"><?= $delivery_boy_counter ?></a></h3>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="text-muted text-bold-500">Products</h5>
-                                        <h3 class="text-bold-600"><?= $product_counter ?></h3>
+                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/product/') ?>"><?= $product_counter ?></a></h3>
                                     </div>
                                 </div>
                             </div>

@@ -25,6 +25,8 @@ Common-Functions or events
  20.Client Api Key Module  
  21.System Users
  22.custom-notification-Module
+ 23.Banner-Module
+ 24.Deals-Module
 --------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
@@ -6123,3 +6125,91 @@ $(document).on('click', '.remove_attribute_section', function () {
 //     theme: 'bootstrap4',
 //     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
 // });
+
+//23.Banner-Module
+$(document).on('click', '.delete-banner', function () {
+    var ban_id = $(this).data('id');
+    Swal.fire({
+        title: 'Are You Sure!',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'GET',
+                    url: base_url + 'admin/banner/delete_banner',
+                    data: {
+                        id: ban_id
+                    },
+                    dataType: 'json'
+                }).done(function (response, textStatus) {
+                    if (response.error == false) {
+                        Swal.fire('Deleted!', response.message, 'success');
+                        $('table').bootstrapTable('refresh');
+                        csrfName = response['csrfName'];
+                        csrfHash = response['csrfHash'];
+                    } else {
+                        Swal.fire('Oops...', response.message, 'warning');
+                        $('table').bootstrapTable('refresh');
+                        csrfName = response['csrfName'];
+                        csrfHash = response['csrfHash'];
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
+                    csrfName = response['csrfName'];
+                    csrfHash = response['csrfHash'];
+                });
+            });
+        },
+        allowOutsideClick: false
+    });
+});
+
+//24.Deals-Module
+$(document).on('click', '.delete-deal', function () {
+    var ban_id = $(this).data('id');
+    Swal.fire({
+        title: 'Are You Sure!',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'GET',
+                    url: base_url + 'admin/deals/delete_deal',
+                    data: {
+                        id: ban_id
+                    },
+                    dataType: 'json'
+                }).done(function (response, textStatus) {
+                    if (response.error == false) {
+                        Swal.fire('Deleted!', response.message, 'success');
+                        $('table').bootstrapTable('refresh');
+                        csrfName = response['csrfName'];
+                        csrfHash = response['csrfHash'];
+                    } else {
+                        Swal.fire('Oops...', response.message, 'warning');
+                        $('table').bootstrapTable('refresh');
+                        csrfName = response['csrfName'];
+                        csrfHash = response['csrfHash'];
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    Swal.fire('Oops...', 'Something went wrong with ajax !', 'error');
+                    csrfName = response['csrfName'];
+                    csrfHash = response['csrfHash'];
+                });
+            });
+        },
+        allowOutsideClick: false
+    });
+});

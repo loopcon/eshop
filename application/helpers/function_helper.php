@@ -4258,6 +4258,17 @@ function update_balance($amount, $delivery_boy_id, $action)
     return $t->db->where('id', $delivery_boy_id)->update('users');
 }
 
+function get_products_option_html($products, $selected_vals = null)
+{
+    $html = "";
+    for ($i = 0; $i < count($products); $i++) {
+        $pre_selected = (!empty($selected_vals) && in_array($products[$i]->id, $selected_vals)) ? "selected" : "";
+        $html .= '<option value="' . $products[$i]->id . '" class="" ' . $pre_selected . '  >' . output_escaping($products[$i]->name) . '</option>';
+    }
+
+    return $html;
+}
+
 function update_cash_received($amount, $delivery_boy_id, $action)
 {
     $t = &get_instance();
