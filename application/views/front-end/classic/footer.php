@@ -170,7 +170,7 @@
     <header>
         <a href="" id="login"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a>
         <a href="" id="register" class="active"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a>
-        <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a>
+        <?php /* <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a> */ ?>
         <a href="" id="register-as-seller"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a>
     </header>
     <section class="hide" id="login_div">
@@ -329,7 +329,7 @@
                     <input type="password" class='form-input' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
                 </div>
                 <div class="col-12 d-flex justify-content-center pb-4">
-                    <input type="checkbox" class="form-input" id="agree_terms"><span> I agree to the terms</span>
+                    <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms"><span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>
                 </div>
                 <div class="col-12 d-flex justify-content-center pb-4">
                     <div id='seller-registration-error' class='text-center p-3 text-danger'></div>

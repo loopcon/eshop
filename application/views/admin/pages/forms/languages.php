@@ -1048,6 +1048,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label for="category_list" class="control-checkbox">Category List</label>
+                                            <input type="text" name="category_list" class="form-control" value="<?= (isset($lang_labels['category_list']) && !empty($lang_labels['category_list'])) ? $lang_labels['category_list'] : 'Bank Details'; ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label for="bank_details" class="control-checkbox">Bank Details</label>
                                             <input type="text" name="bank_details" class="form-control" value="<?= (isset($lang_labels['bank_details']) && !empty($lang_labels['bank_details'])) ? $lang_labels['bank_details'] : 'Bank Details'; ?>" />
                                         </div>

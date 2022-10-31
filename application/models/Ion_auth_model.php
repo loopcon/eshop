@@ -966,7 +966,7 @@ class Ion_auth_model extends CI_Model
 
 			if ($this->verify_password($password, $user->password, $identity)) {
 				$seller_data = fetch_details('seller_data', ['user_id' => $user->id]);
-				if ($user->active == 0 && $seller_data[0]['status']==0) {
+				if ($user->active == 0 && ($seller_data[0]['status']==0 || $seller_data[0]['status']==1)) {
 
 				} elseif ($user->active == 0) {
 					$this->trigger_events('post_login_unsuccessful');

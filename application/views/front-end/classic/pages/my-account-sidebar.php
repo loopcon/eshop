@@ -19,6 +19,15 @@
                 </div>
             </a>
         </li>
+        <li class="nav-item mt-2">
+            <a class="nav-link rounded <?= ($current_url == base_url('my-account/my-products')) ? 'active' : '' ?>" id="my-products" href="<?=base_url('my-account/my-products') ?>">
+                <div class="text-left py-1 px-3 sidebar-text">
+                    <h6 class="mb-0">
+                        <i class="fas fa-cubes fa-lg left-aside"></i> <?= !empty($this->lang->line('products')) ? $this->lang->line('products') : 'Products' ?>
+                    </h6>
+                </div>
+            </a>
+        </li>
     <?php } ?>
     <?php if($login_type=='customer' || ($login_type=='vendor' && $status==1)) { ?>
         <li class="nav-item mt-2">

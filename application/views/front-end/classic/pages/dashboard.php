@@ -48,6 +48,16 @@
                             </div>
                         </a>
                     </div>
+                    <div class='col-md-3 card text-center border-0 mr-3 mb-3'>
+                        <a href='<?=base_url('my-account/my-products') ?>' class="link-color">
+                            <div class='card-header bg-transparent'>
+                                <?= !empty($this->lang->line('products')) ? $this->lang->line('products') : 'Products' ?>
+                            </div>
+                            <div class='card-body'>
+                                <i class="fa fa-cubes dashboard-icon link-color fa-lg"></i>
+                            </div>
+                        </a>
+                    </div>
                 <?php } ?>
                 <?php if($login_type=='customer' || ($login_type=='vendor' && $status==1)) { ?>
                     <div class='col-md-3 card text-center border-0 mr-3 mb-3'>

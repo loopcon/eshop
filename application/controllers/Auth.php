@@ -13,7 +13,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(['ion_auth', 'form_validation']);
+        $this->load->library(['ion_auth', 'form_validation', 'email']);
         $this->load->helper(['url', 'language']);
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -988,6 +988,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('country', 'Country', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         $this->form_validation->set_rules('confirm_password', 'Retype password', 'trim|required|xss_clean|matches[password]');
+        $this->form_validation->set_rules('agree_terms', 'Agree Terms', 'trim|required|xss_clean');
 
         $this->response['csrfName'] = $this->security->get_csrf_token_name();
         $this->response['csrfHash'] = $this->security->get_csrf_hash();

@@ -61,6 +61,8 @@ class My_account extends CI_Controller
             $this->data['title'] = 'Orders | ' . $this->data['web_settings']['site_title'];
             $this->data['keywords'] = 'Orders, ' . $this->data['web_settings']['meta_keywords'];
             $this->data['description'] = 'Orders | ' . $this->data['web_settings']['meta_description'];
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $total = fetch_orders(false, $this->data['user']->id, false, false, 1, NULL, NULL, NULL, NULL);
             $limit = 10;
             $config['base_url'] = base_url('my-account/orders');
@@ -274,6 +276,8 @@ class My_account extends CI_Controller
             $this->data['description'] = 'Address | ' . $this->data['web_settings']['meta_description'];
             $this->data['cities'] = get_cities();
             $this->data['areas'] = fetch_details('areas', NULL);
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
             redirect(base_url(), 'refresh');
@@ -320,9 +324,9 @@ class My_account extends CI_Controller
             $this->form_validation->set_rules('alternate_mobile', 'Alternative Mobile', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('address', 'Address', 'trim|xss_clean|required');
             $this->form_validation->set_rules('landmark', 'Landmark', 'trim|xss_clean');
-            $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
             $this->form_validation->set_rules('state', 'State', 'trim|xss_clean|required');
             $this->form_validation->set_rules('country', 'Country', 'trim|xss_clean|required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');
@@ -587,6 +591,8 @@ class My_account extends CI_Controller
             $this->data['description'] = 'Dashboard | ' . $this->data['web_settings']['meta_description'];
             $this->data['products'] = get_favorites($this->data['user']->id);
             $this->data['settings'] = get_settings('system_settings', true);
+            $this->data['login_type'] = $this->session->userdata('login_type');
+            $this->data['status'] = $this->session->userdata('status');
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
             redirect(base_url(), 'refresh');
@@ -658,6 +664,7 @@ class My_account extends CI_Controller
             $this->data['status'] = $this->session->userdata('status');
             $this->data['user_data'] = fetch_details("users", "id='".$this->session->userdata('user_id')."'");
             $this->data['store_details'] = fetch_details("seller_data", "user_id='".$this->session->userdata('user_id')."'");
+            $this->data['category_list'] = fetch_details("categories", "status='1'");
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
             redirect(base_url(), 'refresh');
@@ -773,7 +780,7 @@ class My_account extends CI_Controller
                 }
             }
             $sellerDetails = [
-                'category_ids' => '',
+                'category_ids' => (!empty($this->input->post('category'))) ? implode(",", $this->input->post('category')) : "",
                 'store_name' => $this->input->post('store_name'),
                 'store_description' => $this->input->post('store_description'),
                 'logo' => (!empty($store_logo_doc)) ? $store_logo_doc : $this->input->post('old_store_logo', true),
@@ -788,6 +795,15 @@ class My_account extends CI_Controller
                 'tax_number' => $this->input->post('tax_number'),
             ];
             update_details($sellerDetails, array('user_id'=>$this->session->userdata('user_id')), 'seller_data');
+            delete_details(['seller_id' => $this->session->userdata('user_id')], 'seller_commission');
+            foreach($this->input->post('category') as $cat) {
+                $commission_data[] = array(
+                    "seller_id" => $this->session->userdata('user_id'),
+                    "category_id" => $cat,
+                    "commission" => 0,
+                );
+            }
+            $this->db->insert_batch('seller_commission', $commission_data);
             $this->response['error'] = false;
             $this->response['message'] = 'Seller details Update Succesfully';
             $this->response['store_logo'] = (!empty($store_logo_doc)) ? $store_logo_doc : $this->input->post('old_store_logo', true);
@@ -795,5 +811,17 @@ class My_account extends CI_Controller
             echo json_encode($this->response);
             return false;
         }
+    }
+    
+    public function my_products()
+    {
+        $this->data['main_page'] = 'my-products';
+        $this->data['title'] = 'Store details | ' . $this->data['web_settings']['site_title'];
+        $this->data['keywords'] = 'Store details, ' . $this->data['web_settings']['meta_keywords'];
+        $this->data['description'] = 'Store details | ' . $this->data['web_settings']['meta_description'];
+        $this->data['login_type'] = $this->session->userdata('login_type');
+        $this->data['status'] = $this->session->userdata('status');
+        $this->data['products'] = fetch_details("products", "category_id='".$this->session->userdata('user_id')."'");
+        $this->load->view('front-end/' . THEME . '/template', $this->data);
     }
 }

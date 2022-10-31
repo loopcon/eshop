@@ -68,6 +68,20 @@
                                 </div>
                             </div>
                         </section>
+                        <section id="category-list" class="mb-4">
+                            <div class="row card-header bg-white">
+                                <h1 class="h4"><?= !empty($this->lang->line('category_list')) ? $this->lang->line('category_list') : 'Category List' ?></h1>
+                            </div>
+                            <div class="row mt-3 py-3">
+                                <?php $category_ids = explode(",", $store_details[0]['category_ids']);?>
+                                <?php foreach($category_list as $category) { ?>
+                                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                                        <input type="checkbox" name="category[]" value="<?=$category['id']?>" <?php if(in_array($category['id'], $category_ids)) { ?>checked="checked"<?php } ?>/>
+                                        <label class="control-label d-inline"><?=$category['name']?></label>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </section>
                         <section id="bank-details" class="mb-4">
                             <div class="row card-header bg-white">
                                 <h1 class="h4"><?= !empty($this->lang->line('bank_details')) ? $this->lang->line('bank_details') : 'Bank Details' ?></h1>
@@ -137,7 +151,6 @@
                                 <div id="save-store-detail-result"></div>
                             </div>
                         </section>
-                        </div>
                     </form>
                 </div>
             </div>
