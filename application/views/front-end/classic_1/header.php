@@ -9,111 +9,90 @@ if (!empty($cookie_lang)) {
 }
 $web_settings = get_settings('web_settings', true);
 ?>
-<div>
-    <div class="navbg">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg ">
-                <div class="container-fluid">
-                    <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
-                    <a class="navbar-brand " href="<?= base_url() ?>"> Vendurs </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Shop the marketplace <i class="fa-solid fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="login" href="javascript:void(0);"> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?> <img src="<?= THEME_ASSETS_URL. 'img/login.png' ?>"> </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register" href="javascript:void(0);"> <?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>" class="m-2 "> </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="<?= base_url('compare') ?>" onclick=display_compare() data-product-id="<?= (isset($row['id']) && $row['id']) != 0 ? $row['id'] : '' ?>"> <img src="<?= THEME_ASSETS_URL. 'img/ri_exchange-fill.png' ?>" class="m-2"> </a>
-                            </li>
-                            <?php $page = $this->uri->segment(2) == 'checkout' ? 'checkout' : '' ?>
-                            <?php if ($page == 'checkout') { ?>
-                                <li class="nav-item active">
-                                    <a href="<?= base_url('cart') ?>" class="p-2 header-icon">
-                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
-                                        <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
-                                    </a>
-                                </li>
-
-                            <?php } else { ?>
-                                <li class="nav-item active">
-                                    <a href="javascript:void(0);" class="p-2 header-icon" onclick=openCartSidebar()>
-                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
-                                        <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-            <div class="d-flex justify-content-center align-item-center  align-items-center">
-                <form class="search">
-                    <div>
-                        <input class="form-field search_product" type="email" placeholder="Search for product">
-                        <!--<select class='form-field search_product' name="search"></select>-->
-                        <i class="fa-solid fa-magnifying-glass  searchbox "></i>
-                    </div>
-                </form>
+<!-- header starts -->
+<div id="mySidenav" class="sidenav is-closed-left">
+    <div class="container">
+        <div class="row my-2 pr-2 text-uppercase d-flex align-items-center">
+            <div class="col-12 text-right close-sidenav"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : 'Close' ?> <i class="fa fa-times"></i></a></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <select class='search_product' name="search"></select>
             </div>
         </div>
-        <div></div>
     </div>
-
-</div>
-<!-- Categories start  -->
-
-<div class="container">
-    <section class="common">
-        <div class="catbg">
-            <h2 class="mhead"> Categories </h2>
+    <hr>
+    <!-- Nav Mobile tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active show" data-toggle="tab" href="#Menu"><?= !empty($this->lang->line('menu')) ? $this->lang->line('menu') : 'Menu' ?></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Categories"><?= !empty($this->lang->line('category')) ? $this->lang->line('category') : 'Category ' ?></a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content p-0 mt-1">
+        <div id="Menu" class="tab-pane active show">
+            <aside class="sidebar">
+                <div id="leftside-navigation" class="nano">
+                    <ul class="nano-content">
+                        <li><a href="<?= base_url('products') ?>"><i class="fas fa-box-open fa-lg"></i> <span><?= !empty($this->lang->line('products')) ? $this->lang->line('products') : 'Products' ?></span></a></li>
+                        <?php if ($this->ion_auth->logged_in()) { ?>
+                            <li><a href="<?= base_url('my-account/wallet') ?>"><i class="fa fa-wallet fa-lg"></i> <?= !empty($this->lang->line('balance')) ? $this->lang->line('balance') : 'Balance' ?> <?= ' : ' . $settings['currency'] . ' ' . $user->balance ?></a></li>
+                            <li><a href="<?= base_url('my-account') ?>"><i class="far fa-user-circle fa-lg"></i> <?= !empty($this->lang->line('my_account')) ? $this->lang->line('my_account') : 'My Account' ?></a></li>
+                            <li><a href="<?= base_url('my-account/orders') ?>"><i class="fa fa-history fa-lg"></i> <?= !empty($this->lang->line('my_orders')) ? $this->lang->line('my_orders') : 'My Orders' ?></a></li>
+                            <li><a href="<?= base_url('my-account/favorites') ?>"><i class="far fa-heart fa-lg"></i> <?= !empty($this->lang->line('favorite')) ? $this->lang->line('favorite') : 'Favorite' ?></a></li>
+                        <?php } else { ?>
+                            <li><a href="" class="auth_model" data-izimodal-open=".auth-modal" data-value="login"><i class="far fa-user-circle fa-lg"></i> <?= !empty($this->lang->line('my_account')) ? $this->lang->line('my_account') : 'My Account' ?></a></li>
+                            <li><a href="" class="auth_model" data-izimodal-open=".auth-modal" data-value="login"><i class="fa fa-history fa-lg"></i> <?= !empty($this->lang->line('my_orders')) ? $this->lang->line('my_orders') : 'My Orders' ?></a></li>
+                            <li><a href="" class="auth_model" data-izimodal-open=".auth-modal" data-value="login"><i class="far fa-heart fa-lg"></i> <?= !empty($this->lang->line('favorite')) ? $this->lang->line('favorite') : 'Favorite' ?></a></li>
+                            <li><a href="" class="auth_model" data-izimodal-open=".auth-modal" data-value="login"><i class="fa fa-sign-in-alt fa-lg"></i> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li>
+                            <li><a href="" class="auth_model" data-izimodal-open=".auth-modal" data-value="register"><i class="fa fa-user-check fa-lg"></i> <?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a></li>
+                        <?php } ?>
+                        <li><a href="<?= base_url('home/about-us') ?>"><i class="fa fa-info fa-lg"></i> <span><?= !empty($this->lang->line('about_us')) ? $this->lang->line('about_us') : 'About Us' ?></span></a></li>
+                        <li><a href="<?= base_url('home/contact-us') ?>"><i class="fa fa-envelope fa-lg"></i> <span><?= !empty($this->lang->line('contact_us')) ? $this->lang->line('contact_us') : 'Contact Us' ?></span></a></li>
+                        <?php if ($this->ion_auth->logged_in()) { ?>
+                            <li><a href="<?= base_url('login/logout') ?>"><i class="fa fa-sign-out-alt fa-lg"></i> <?= !empty($this->lang->line('logout')) ? $this->lang->line('logout') : 'Logout' ?></a></li>
+                        <?php } ?>
+                        <li class="sub-menu">
+                            <a href="javascript:void(0);"><i class="fa fa-language fa-lg"></i> <span><?= !empty($this->lang->line('language')) ? $this->lang->line('language') : 'Language' ?></span><i class="arrow fa fa-angle-left float-right"></i></a>
+                            <ul>
+                                <?php foreach ($language as $row) { ?>
+                                    <li><a href="<?= base_url('home/lang/' . strtolower($row['language'])) ?>"><?= strtoupper($row['code']) . ' - ' . ucfirst($row['language']) ?></a></li>
+                                <?php } ?>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
         </div>
-    </section>
-    <section class="common">
-        <div class="row">
-            <?php
-                foreach ($categories as $row) { ?>
-                    
-                        <div class="col-2">
-                            <a href="<?= base_url('products/category/' . $row['slug']) ?>">
-                                <img class="img-fluid  cimg" src="<?= $row['image'] ?>" alt="">
-                                <p class="cname"> <?= $row['name'] ?></p>
-                            </a>
-                        </div>
-            <?php } ?>
+        <div id="Categories" class="tab-pane fade">
+            <aside class="sidebar">
+                <div id="leftside-navigation" class="nano mobile-categories">
+                    <ul class="nano-content">
+                        <?php
+                        foreach ($categories as $row) { ?>
+                            <li class="sub-menu">
+                                <a href="<?= base_url('products/category/' . $row['slug']) ?>">
+                                    <span class="category-span">
+                                        <img class="svg-icon-image lazy" data-src="<?= $row['image'] ?>" />
+                                        <span class="category-line-height"><?= $row['name'] ?></span>
+                                    </span>
+                                </a>
+                            </li>
+                        <?php } ?>
+                        <li class="see-all-category">
+                            <a href="<?= base_url('home/categories') ?>"><?= !empty($this->lang->line('see_all')) ? $this->lang->line('see_all') : 'See All' ?></a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
         </div>
-    </section>
+    </div>
 </div>
-<!-- Categories end  -->
 <div class="shopping-cart-sidebar is-closed-right bg-white">
     <input type="hidden" name="is_loggedin" id="is_loggedin" value="<?= (isset($user->id)) ? 1 : 0 ?>">
     <div class="container header ">
@@ -272,10 +251,8 @@ $web_settings = get_settings('web_settings', true);
                     <?php } else { ?>
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="login"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li>/
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a></li>
-                        <li class="nav-item active"><a href="<?= base_url('seller/login') ?>" class="m-2" data-value="login-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li> /
-                        <?php /* <li class="nav-item active"><a href="<?= base_url('seller/auth/sign_up') ?>" class="m-2" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li> */ ?>
+                        <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="login-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li> /
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li>
-
                     <?php } ?>
                     <li class="nav-item active">
                         <a href="<?= base_url('my-account/favorites') ?>" class="p-2 header-icon">
