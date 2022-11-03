@@ -132,4 +132,19 @@ class Brand_model extends CI_Model
         $bulkData['rows'] = $rows;
         print_r(json_encode($bulkData));
     }
+
+    public function get_brands()
+    {
+        $offset = 0;
+        $limit = 10;
+        $sort = 'id';
+        $order = 'ASC';
+        $where = ['status =' => 1];
+
+        $search_res = $this->db->select(' * ');
+        $search_res->where($where);
+
+        $brand_search_res = $search_res->order_by($sort, "asc")->limit($limit, $offset)->get('brands')->result_array();
+        return $brand_search_res;
+    }
 }

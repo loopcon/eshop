@@ -152,6 +152,26 @@ class Setting_model extends CI_Model
             $this->db->set('value', $system_data)->where('variable', 'web_settings')->update('settings');
         }
     }
+
+    public function update_homepage_setting($post)
+    {
+        $post = escape_array($post);
+        $post['app_name'] = $post['app_name'];
+        $system_data = json_encode($post);
+        $query = $this->db->get_where('settings', array(
+            'variable' => 'homepage_settings'
+        ));
+        $count = $query->num_rows();
+        if ($count === 0) {
+            $data = array(
+                'variable' => 'homepage_settings',
+                'value' => $system_data
+            );
+            $this->db->insert('settings', $data);
+        } else {
+            $this->db->set('value', $system_data)->where('variable', 'homepage_settings')->update('settings');
+        }
+    }
     public function update_payment_method($post)
     {
 

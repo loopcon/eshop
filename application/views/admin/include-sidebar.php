@@ -594,6 +594,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="<?= base_url('admin/homepage-setting') ?>" class="nav-link">
+                                    <i class="fa fa-toolbox nav-icon "></i>
+                                    <p>Home page Settings</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="<?= base_url('admin/themes') ?>" class="nav-link">
                                     <i class="fa fa-palette nav-icon "></i>
                                     <p>Themes</p>

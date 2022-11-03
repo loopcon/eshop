@@ -24,12 +24,15 @@
                         <form class="form-horizontal form-submit-event" action="<?= base_url('admin/offer/add_offer'); ?>" method="POST" id="payment_setting_form" enctype="multipart/form-data">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <?php if (isset($fetched_data[0]['id'])) {
-                                    ?>
+                                    <label for="offer_text" class="col-form-label">Offer Text<span class='text-danger text-sm'>*</span></label>
+                                    <input type="text" class="form-control" id="offer_text" placeholder="Offer Text" name="offer_text" value="<?= isset($fetched_data[0]['text'])?output_escaping($fetched_data[0]['text']):"" ?>" required="">
+                                </div>
+                                <div class="form-group">
+                                    <?php if (isset($fetched_data[0]['id'])) { ?>
                                         <input type="hidden" name="edit_offer" value="<?= $fetched_data[0]['id'] ?>">
                                     <?php } ?>
-                                    <label for="offer_type">Type <span class='text-danger text-sm'>*</span> </label>
-                                    <select name="offer_type" id="offer_type" class="form-control type_event_trigger" required="">
+                                    <label for="type">Type <span class='text-danger text-sm'>*</span> </label>
+                                    <select name="type" id="type" class="form-control type_event_trigger" required="">
                                         <option value="">Select Type</option>
                                         <option value="default" <?= (@$fetched_data[0]['type'] == "default") ? 'selected' : ' ' ?>>Default</option>
                                         <option value="categories" <?= (@$fetched_data[0]['type'] == "categories") ? 'selected' : ' ' ?>>Category</option>
@@ -39,19 +42,18 @@
                                 <div id="type_add_html">
                                     <?php $hiddenStatus = (isset($fetched_data[0]['id']) && $fetched_data[0]['type']  == 'categories') ? '' : 'd-none' ?>
                                     <div class="form-group slider-categories <?= $hiddenStatus ?> ">
-
                                         <label for="category_id"> Categories <span class='text-danger text-sm'>*</span></label>
                                         <select name="category_id" class="form-control">
                                             <option value="">Select category </option>
                                             <?php
-                                            if (!empty($categories)) {
-                                                foreach ($categories as $row) {
-                                                    $selected = ($row['id'] == $fetched_data[0]['type_id'] && strtolower($fetched_data[0]['type']) == 'categories') ? 'selected' : '';
+                                                if (!empty($categories)) {
+                                                    foreach ($categories as $row) {
+                                                        $selected = ($row['id'] == $fetched_data[0]['type_id'] && strtolower($fetched_data[0]['type']) == 'categories') ? 'selected' : '';
                                             ?>
                                                     <option value="<?= $row['id'] ?>" <?= $selected ?>> <?= $row['name'] ?></option>
                                             <?php
+                                                    }
                                                 }
-                                            }
                                             ?>
                                         </select>
                                     </div>
@@ -61,38 +63,33 @@
                                         <div class="col-md-12">
                                             <select name="product_id" class="search_admin_product w-100" data-placeholder=" Type to search and select products" onload="multiselect()">
                                                 <?php
-                                                if (isset($fetched_data[0]['id']) && $fetched_data[0]['type']  == 'products') {
-                                                    $product_details = fetch_details('products', ['id' => $fetched_data[0]['type_id']], 'id,name');
-                                                    if (!empty($product_details)) {
+                                                    if (isset($fetched_data[0]['id']) && $fetched_data[0]['type']  == 'products') {
+                                                        $product_details = fetch_details('products', ['id' => $fetched_data[0]['type_id']], 'id,name');
+                                                        if (!empty($product_details)) {
                                                 ?>
                                                         <option value="<?= $product_details[0]['id'] ?>" selected> <?= $product_details[0]['name'] ?></option>
                                                 <?php
+                                                        }
                                                     }
-                                                }
                                                 ?>
                                             </select>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="form-group">
                                     <div><label for="image">Offer Image <span class='text-danger text-sm'>*</span></label></div>
                                     <div class="col-sm-10">
                                         <div class='col-md-3'><a class="uploadFile img btn btn-primary text-white btn-sm" data-input='image' data-isremovable='0' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a></div>
-                                        <?php
-                                        if (file_exists(FCPATH  . @$fetched_data[0]['image']) && !empty(@$fetched_data[0]['image'])) { ?>
+                                        <?php if (file_exists(FCPATH  . @$fetched_data[0]['image']) && !empty(@$fetched_data[0]['image'])) { ?>
                                             <input type="hidden" name="image" value='<?= $fetched_data[0]['image'] ?>'>
-
-                                            <?php $fetched_data[0]['image'] = get_image_url($fetched_data[0]['image'], 'thumb', 'sm');
-                                            ?>
+                                            <?php $fetched_data[0]['image'] = get_image_url($fetched_data[0]['image'], 'thumb', 'sm'); ?>
                                             <label class="text-danger mt-3">*Only Choose When Update is necessary</label>
                                             <div class="container-fluid row image-upload-section">
                                                 <div class="col-md-3 col-sm-12 shadow p-3 mb-5 bg-white rounded m-4 text-center grow image">
                                                     <div class='image-upload-div'><img class="img-fluid mb-2" src="<?= $fetched_data[0]['image'] ?>" alt="Image Not Found"></div>
                                                 </div>
                                             </div>
-                                        <?php
-                                        } else { ?>
+                                        <?php } else { ?>
                                             <div class="container-fluid row image-upload-section">
                                                 <div class="col-md-3 col-sm-12 shadow p-3 mb-5 bg-white rounded m-4 text-center grow image d-none">
                                                 </div>
@@ -100,7 +97,18 @@
                                         <?php } ?>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <label for="offer_type" class="col-form-label">Offer Type<span class='text-danger text-sm'>*</span></label>
+                                    <select id="offer_type" name="offer_type" class="form-control" required="">
+                                        <option value="" <?= (@$fetched_data[0]['offer_type'] == "") ? 'selected' : ' ' ?>>Select offer type</option>
+                                        <option value="Percentage" <?= (@$fetched_data[0]['offer_type'] == "Percentage") ? 'selected' : ' ' ?>>Percentage</option>
+                                        <option value="Amount" <?= (@$fetched_data[0]['offer_type'] == "Amount") ? 'selected' : ' ' ?>>Amount</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="offer_amount" class="col-form-label">Offer Amount<span class='text-danger text-sm'>*</span></label>
+                                    <input type="number" min="0" max="100" class="form-control" id="offer_amount" placeholder="Offer Text" name="offer_amount" value="<?= isset($fetched_data[0]['offer_amount']) ? output_escaping($fetched_data[0]['offer_amount']):"" ?>" required="">
+                                </div>
                                 <div class="form-group">
                                     <button type="reset" class="btn btn-warning">Reset</button>
                                     <button type="submit" class="btn btn-success" id="submit_btn"><?= (isset($fetched_data[0]['id'])) ? 'Update Offer' : 'Add Offer' ?></button>

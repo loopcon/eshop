@@ -18,12 +18,15 @@ class Offer_model extends CI_Model
         $offer_data = [
             'type' => $image_name['offer_type'],
             'image' => $image_name['image'],
+            'text' => $image_name['offer_text'],
+            'offer_type' => $image_name['offer_type'],
+            'offer_amount' => $image_name['offer_amount'],
         ];
-        if (isset($image_name['offer_type']) && $image_name['offer_type'] == 'categories' && isset($image_name['category_id']) && !empty($image_name['category_id'])) {
+        if (isset($image_name['type']) && $image_name['type'] == 'categories' && isset($image_name['category_id']) && !empty($image_name['category_id'])) {
             $offer_data['type_id'] = $image_name['category_id'];
         }
 
-        if (isset($image_name['offer_type']) && $image_name['offer_type'] == 'products' && isset($image_name['product_id']) && !empty($image_name['product_id'])) {
+        if (isset($image_name['type']) && $image_name['type'] == 'products' && isset($image_name['product_id']) && !empty($image_name['product_id'])) {
             $offer_data['type_id'] = $image_name['product_id'];
         }
         if (isset($image_name['edit_offer'])) {
@@ -118,5 +121,18 @@ class Offer_model extends CI_Model
         }
         $bulkData['rows'] = $rows;
         print_r(json_encode($bulkData));
+    }
+
+    function get_offers()
+    {
+        $offset = 0;
+        $limit = 6;
+        $sort = 'id';
+        $order = 'ASC';
+
+        $search_res = $this->db->select(' * ');
+
+        $offer_search_res = $search_res->order_by($sort, "asc")->limit($limit, $offset)->get('offers')->result_array();
+        return $offer_search_res;
     }
 }

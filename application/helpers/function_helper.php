@@ -73,6 +73,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
    72. get_price($type = "max")
    73. check_for_parent_id($category_id)
    74. update_balance($amount, $delivery_boy_id, $action)
+   75. get_products_option_html($products, $selected_vals = null)
+   76. get_main_categories()
 */
 
 function create_unique_slug($string, $table, $field = 'slug', $key = NULL, $value = NULL)
@@ -4266,6 +4268,21 @@ function get_products_option_html($products, $selected_vals = null)
         $html .= '<option value="' . $products[$i]->id . '" class="" ' . $pre_selected . '  >' . output_escaping($products[$i]->name) . '</option>';
     }
 
+    return $html;
+}
+
+function get_main_categories($selected_val)
+{
+    $t = &get_instance();
+    $t->db->select('id, name');
+    $t->db->where('parent_id', 0);
+    $categories = $t->db->from("categories")->get()->result_array();
+    $html = "";
+    echo $selected_val;
+    for ($i = 0; $i < count($categories); $i++) {
+        $pre_selected = (!empty($selected_val) && $categories[$i]['id']==$selected_val) ? "selected" : "";
+        $html .= '<option value="' . $categories[$i]['id'] . '" class="" ' . $pre_selected . '  >' . output_escaping($categories[$i]['name']) . '</option>';
+    }
     return $html;
 }
 

@@ -9,13 +9,14 @@ if (!empty($cookie_lang)) {
 }
 $web_settings = get_settings('web_settings', true);
 ?>
+<!-- navbar start  -->
 <div>
     <div class="navbg">
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
                     <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
-                    <a class="navbar-brand " href="<?= base_url() ?>"> Vendurs </a>
+                    <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -56,16 +57,15 @@ $web_settings = get_settings('web_settings', true);
                             </li>
                             <?php $page = $this->uri->segment(2) == 'checkout' ? 'checkout' : '' ?>
                             <?php if ($page == 'checkout') { ?>
-                                <li class="nav-item active">
-                                    <a href="<?= base_url('cart') ?>" class="p-2 header-icon">
+                                <li class="nav-item">
+                                    <a href="<?= base_url('cart') ?>" class="">
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
                                         <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
                                     </a>
                                 </li>
-
                             <?php } else { ?>
-                                <li class="nav-item active">
-                                    <a href="javascript:void(0);" class="p-2 header-icon" onclick=openCartSidebar()>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" class="" onclick=openCartSidebar()>
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
                                         <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
                                     </a>
@@ -76,44 +76,19 @@ $web_settings = get_settings('web_settings', true);
                 </div>
             </nav>
 
-            <div class="d-flex justify-content-center align-item-center  align-items-center">
+            <div class="searchmain">
                 <form class="search">
                     <div>
-                        <input class="form-field search_product" type="email" placeholder="Search for product">
+                        <input class="form-field search_product1" type="email" placeholder="Search for product">
                         <!--<select class='form-field search_product' name="search"></select>-->
                         <i class="fa-solid fa-magnifying-glass  searchbox "></i>
                     </div>
                 </form>
             </div>
         </div>
-        <div></div>
     </div>
-
 </div>
-<!-- Categories start  -->
-
-<div class="container">
-    <section class="common">
-        <div class="catbg">
-            <h2 class="mhead"> Categories </h2>
-        </div>
-    </section>
-    <section class="common">
-        <div class="row">
-            <?php
-                foreach ($categories as $row) { ?>
-                    
-                        <div class="col-2">
-                            <a href="<?= base_url('products/category/' . $row['slug']) ?>">
-                                <img class="img-fluid  cimg" src="<?= $row['image'] ?>" alt="">
-                                <p class="cname"> <?= $row['name'] ?></p>
-                            </a>
-                        </div>
-            <?php } ?>
-        </div>
-    </section>
-</div>
-<!-- Categories end  -->
+<?php /*
 <div class="shopping-cart-sidebar is-closed-right bg-white">
     <input type="hidden" name="is_loggedin" id="is_loggedin" value="<?= (isset($user->id)) ? 1 : 0 ?>">
     <div class="container header ">
@@ -273,9 +248,8 @@ $web_settings = get_settings('web_settings', true);
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="login"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li>/
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a></li>
                         <li class="nav-item active"><a href="<?= base_url('seller/login') ?>" class="m-2" data-value="login-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a></li> /
-                        <?php /* <li class="nav-item active"><a href="<?= base_url('seller/auth/sign_up') ?>" class="m-2" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li> */ ?>
+                        <?php /* <li class="nav-item active"><a href="<?= base_url('seller/auth/sign_up') ?>" class="m-2" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li> * / ?>
                         <li class="nav-item active"><a href="" class="m-2 auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller"><span class="text-dark font-weight-bold"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a></li>
-
                     <?php } ?>
                     <li class="nav-item active">
                         <a href="<?= base_url('my-account/favorites') ?>" class="p-2 header-icon">
@@ -376,5 +350,5 @@ $web_settings = get_settings('web_settings', true);
             </div>
         </div>
     </div>
-</header>
+</header> */ ?>
 <!-- header ends -->

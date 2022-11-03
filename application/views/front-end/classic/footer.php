@@ -1,131 +1,99 @@
 <?php $web_settings = get_settings('web_settings', true); ?>
-<!-- footer starts -->
-<div class="footer-section-footer" id="dark-footer">
-    <div class="main-content footer-con">
-        <div class="footer-cta pt-5 pb-5">
-            <div class="row">
-                <?php if (isset($web_settings['address']) && !empty($web_settings['address'])) { ?>
-                    <div class="col-xl-4 col-md-4 mb-30">
-                        <div class="single-cta">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div class="cta-text">
-                                <h3><?= !empty($this->lang->line('find_us')) ? $this->lang->line('find_us') : 'Find us' ?></h3>
-                                <p><?= output_escaping(str_replace('\r\n', '</br>', $web_settings['address'])) ?></p>
-                            </div>
+<!-- footer start -->
+<section class="common ">
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex justify-content-center ">
+                    <?php $logo = get_settings('web_logo'); ?>
+                    <img src="<?= base_url($logo) ?>" class="img-fluid footerlogo">
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row footermain">
+                    <div class="col-3">
+                        <h5>GET TO KNOW US</h5>
+                        <li><a href="<?= base_url('home/contact-us') ?>"><?= !empty($this->lang->line('contact_us')) ? $this->lang->line('contact_us') : 'Contact Us' ?></a></li>
+                        <li><a href="<?= base_url('home/about-us') ?>"><?= !empty($this->lang->line('about_us')) ? $this->lang->line('about_us') : 'About Us' ?></a></li>
+                    </div>
+                    <div class="col-3">
+                        <h5>POLICY</h5>
+                        <li><a href="<?= base_url('home/return-policy') ?>"><?= !empty($this->lang->line('return_policy')) ? $this->lang->line('return_policy') : 'Return Policy' ?></a></li>
+                        <li><a href="<?= base_url('home/terms-and-conditions') ?>"><?= !empty($this->lang->line('terms_and_condition')) ? $this->lang->line('terms_and_condition') : 'Terms of Use' ?></a></li>
+                        <li><a href="<?= base_url('home/privacy-policy') ?>"><?= !empty($this->lang->line('privacy_policy')) ? $this->lang->line('privacy_policy') : 'Privacy Policy' ?></a></li>
+                        <li><a href="">Sitemap</a></li>
+                    </div>
+                    <div class="col-2">
+                        <h5>HELP</h5>
+                        <li><a href="<?= base_url('home/shipping-policy') ?>"><?= !empty($this->lang->line('shipping_policy')) ? $this->lang->line('shipping_policy') : 'Shipping' ?></a></li>
+                        <li><a href=""><?= !empty($this->lang->line('faq')) ? $this->lang->line('faq') : 'FAQ' ?></a></li>
+                    </div>
+                    <div class="col-4">
+                        <li><img src="<?= THEME_ASSETS_URL.'images/fastdelivery.png';?>"> <a>Fast Delivery & Shipping</a></li>
+                        <li><img src="<?= THEME_ASSETS_URL.'images/topoffer.png';?>"> <a>Top Offers</a></li>
+                        <li><img src="<?= THEME_ASSETS_URL.'images/moneycash.png';?>"> <a>Money Cashback</a></li>
+                        <li><img src="<?= THEME_ASSETS_URL.'images/friendly.png';?>"> <a>Friendly Support 24/7</a></li>
+                    </div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-2">
+                            <img class="img-fluid " src="<?= THEME_ASSETS_URL.'images/paypal.png';?>">
+                        </div>
+                        <div class="col-2">
+                            <img class="img-fluid " src="<?= THEME_ASSETS_URL.'images/mastercard.png';?>">
+                        </div>
+                        <div class="col-2">
+                            <img class="img-fluid paymenticon" src="<?= THEME_ASSETS_URL.'images/visa.png';?>">
+                        </div>
+                        <div class="col-2">
+                            <img class="img-fluid paymenticon" src="<?= THEME_ASSETS_URL.'images/skrill.png';?>">
                         </div>
                     </div>
-                <?php } ?>
-                <?php if (isset($web_settings['support_number']) && !empty($web_settings['support_number'])) { ?>
-                    <div class="col-xl-4 col-md-4 mb-30">
-                        <a href="tel:<?= $web_settings['support_number'] ?>">
-                            <div class="single-cta">
-                                <i class="fas fa-phone"></i>
-                                <div class="cta-text">
-                                    <h3><?= !empty($this->lang->line('call_us')) ? $this->lang->line('call_us') : 'Call us' ?></h3>
-                                    <p><?= $web_settings['support_number'] ?></p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <?php if (isset($web_settings['support_email']) && !empty($web_settings['support_email'])) { ?>
-                    <div class="col-xl-4 col-md-4 mb-30">
-                        <a href="mailto:<?= $web_settings['support_email'] ?>">
-                            <div class="single-cta">
-                                <i class="far fa-envelope-open"></i>
-                                <div class="cta-text">
-                                    <h3><?= !empty($this->lang->line('mail_us')) ? $this->lang->line('mail_us') : 'Mail us' ?></h3>
-                                    <p><?= $web_settings['support_email'] ?></p>
-                                </div>
-                            </div>
-                        </a>
+<!-- detail start  -->
+<section>
+    <div class="bgmain p-4">
+        <div class="container">
+            <?php foreach($categories as $category_level_1) { ?>
+                <div class="row">
+                    <div class="col-2">
+                        <p><b><?=$category_level_1['name']?> :-</b></p>
                     </div>
-                <?php } ?>
-            </div>
-        </div>
-        <div class="footer-content-footer pt-5 pb-5">
-            <div class="row">
-                <div class="col-lg-3 mb-50">
-                    <div class="footer-widget">
-                        <div class="footer-logo-footer">
-                            <?php $logo = get_settings('web_logo'); ?>
-                            <a href="<?= base_url() ?>"><img src="<?= base_url($logo) ?>" alt="logo"></a>
-                        </div>
-                        <div class="footer-social-icon">
-                            <h4><?= !empty($this->lang->line('follow_us')) ? $this->lang->line('follow_us') : 'Follow us' ?></h4>
-                            <?php if (isset($web_settings['facebook_link']) &&  !empty($web_settings['facebook_link'])) { ?>
-                                <a href="<?= $web_settings['facebook_link'] ?>" target="_blank"><i class="fab fa-facebook-f rounded-icon clr-facebbok"></i></a>
-                            <?php } ?>
-                            <?php if (isset($web_settings['twitter_link']) && !empty($web_settings['twitter_link'])) { ?>
-                                <a href="<?= $web_settings['twitter_link'] ?>" target="_blank"><i class="fab fa-twitter rounded-icon clr-twitter"></i></a>
-                            <?php } ?>
-                            <?php if (isset($web_settings['instagram_link']) &&  !empty($web_settings['instagram_link'])) { ?>
-                                <a href="<?= $web_settings['instagram_link'] ?>" target="_blank"><i class="fab fa-instagram rounded-icon clr-insta"></i></a>
-                            <?php } ?>
-                            <?php if (isset($web_settings['youtube_link']) &&  !empty($web_settings['youtube_link'])) { ?>
-                                <a href="<?= $web_settings['youtube_link'] ?>" target="_blank"><i class="fab fa-youtube rounded-icon clr-youtube"></i></a>
-                            <?php } ?>
-                        </div>
+                    <div class="col-10">
+                        <p>
+                            <?php
+                                $level_2 = [];
+                                $count_level_2 = 0;
+                                foreach($category_level_1['children'] as $category_level_2) {
+                                    echo stripslashes($category_level_2['name']);
+                                    $count_level_2++;
+                                    if($count_level_2 < count($category_level_1['children'])) {
+                                        echo ", ";
+                                    }
+                                    $count_level_3 = 0;
+                                    foreach($category_level_2['children'] as $category_level_3) {
+                                        echo stripslashes($category_level_3['name']);
+                                        $count_level_3++;
+                                        if($count_level_3 < count($category_level_2['children'])) {
+                                            echo ", ";
+                                        }
+                                    }
+                                }
+                            ?>
+                        </p>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-6 mb-50">
-                    <div class="footer-widget">
-                        <div class="footer-widget-heading">
-                            <h4><?= !empty($this->lang->line('about_us')) ? $this->lang->line('about_us') : 'About Us' ?></h4>
-                        </div>
-                        <div class="footer-text">
-                            <?php if (isset($web_settings['app_short_description'])) { ?>
-                                <p><?= $web_settings['app_short_description'] ?></p>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-30">
-                    <div class="footer-widget">
-                        <div class="footer-widget-heading">
-                            <h4><?= !empty($this->lang->line('useful_links')) ? $this->lang->line('useful_links') : 'Useful Links' ?></h4>
-                        </div>
-                        <ul>
-                            <li><a href="<?= base_url('products') ?>"><?= !empty($this->lang->line('products')) ? $this->lang->line('products') : 'Products' ?></a></li>
-                            <li><a href="<?= base_url('home/categories') ?>"><?= !empty($this->lang->line('category')) ? $this->lang->line('category') : 'Shop by Categories' ?></a></li>
-                            <?php if ($this->ion_auth->logged_in()) { ?>
-                                <li><a href="<?= base_url('my-account') ?>"><?= !empty($this->lang->line('my_account')) ? $this->lang->line('my_account') : 'My Account' ?></a></li>
-                                <li><a href="<?= base_url('my-account/orders') ?>"><?= !empty($this->lang->line('my_orders')) ? $this->lang->line('my_orders') : 'My Orders' ?></a></li>
-                                <li><a href="<?= base_url('my-account/favorites') ?>"><?= !empty($this->lang->line('favorite')) ? $this->lang->line('favorite') : 'Favorite' ?></a></li>
-                            <?php } else { ?>
-                                <li><a href="<?= base_url('home/terms-and-conditions') ?>"><?= !empty($this->lang->line('terms_and_condition')) ? $this->lang->line('terms_and_condition') : 'Terms & Conditions' ?></a></li>
-                                <li><a href="<?= base_url('home/privacy-policy') ?>"><?= !empty($this->lang->line('privacy_policy')) ? $this->lang->line('privacy_policy') : 'Privacy Policy' ?></a></li>
-                                <li><a href="<?= base_url('home/shipping-policy') ?>"><?= !empty($this->lang->line('shipping_policy')) ? $this->lang->line('shipping_policy') : 'Shipping Policy' ?></a></li>
-                                <li><a href="<?= base_url('home/return-policy') ?>"><?= !empty($this->lang->line('return_policy')) ? $this->lang->line('return_policy') : 'Return Policy' ?></a></li>
-                            <?php } ?>
-                            <li><a href="<?= base_url('home/about-us') ?>"><?= !empty($this->lang->line('about_us')) ? $this->lang->line('about_us') : 'About Us' ?></a></li>
-                            <li><a href="<?= base_url('home/contact-us') ?>"><?= !empty($this->lang->line('contact_us')) ? $this->lang->line('contact_us') : 'Contact Us' ?></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
-    <div class="copyright-area">
-        <div class="main-content footer-con">
-            <div class="row">
-                <div class="col-xl-6 col-lg-6 text-center text-lg-left">
-                    <div class="copyright-text">
-                        <?php $company_name = get_settings('web_settings', true);
-                        if (isset($company_name['copyright_details']) && !empty($company_name['copyright_details'])) {
-                        ?>
-                            <p> <?= (isset($company_name['copyright_details']) && !empty($company_name['copyright_details'])) ? output_escaping(str_replace('\r\n', '&#13;&#10;', $company_name['copyright_details'])) : " " ?> </p>
-                        <?php } else { ?>
-                            <p>Copyright &copy; <?= date('Y') ?>, All Right Reserved <a target="_blank" href="https://www.wrteam.in/">WRTeam</a></p>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- footer ends -->
+</section>
+<!-- detail end  -->
 <?php if (ALLOW_MODIFICATION == 0) { ?>
     <!-- color switcher -->
     <div id="colors-switcher">
@@ -440,5 +408,5 @@
     </div>
 <?php } ?>
 
-<!-- end -->
+<!-- footer end  -->
 <!-- main content ends -->

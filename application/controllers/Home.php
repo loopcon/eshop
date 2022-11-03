@@ -9,7 +9,7 @@ class Home extends CI_Controller
         parent::__construct();
         $this->load->database();
         $this->load->helper(['url', 'language', 'timezone_helper']);
-        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model']);
+        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model', 'offer_model', 'banner_model', 'brand_model']);
         $this->data['is_logged_in'] = ($this->ion_auth->logged_in()) ? 1 : 0;
         $this->data['user'] = ($this->ion_auth->logged_in()) ? $this->ion_auth->user()->row() : array();
         $this->data['settings'] = get_settings('system_settings', true);
@@ -24,6 +24,58 @@ class Home extends CI_Controller
         $this->data['title'] = 'Home | ' . $this->data['web_settings']['site_title'];
         $this->data['keywords'] = 'Home, ' . $this->data['web_settings']['meta_keywords'];
         $this->data['description'] = 'Home | ' . $this->data['web_settings']['meta_description'];
+        $this->data['homepage_settings'] = get_settings('homepage_settings', true);
+        if(!empty($this->data['homepage_settings'])) {
+            if(!empty($this->data['homepage_settings']['categories'])) {
+                foreach($this->data['homepage_settings']['categories'] as $hs_key=>$hs_cat) {
+                    $cat_detail = fetch_details("categories", "id='".$hs_cat."'", "id, name, slug, image");
+                    $this->data['homepage_settings']['categories'][$hs_key] = $cat_detail[0];
+                }
+            } else {
+                $this->data['homepage_settings']['categories'] = array();
+            }
+            if(!empty($this->data['homepage_settings']['main_category_1'])) {
+                $main_category_1 = $this->data['homepage_settings']['main_category_1'];
+                $cat_detail = fetch_details("categories", "id='".$main_category_1."'", "id, name, slug, image");
+                $this->data['homepage_settings']['main_category_1'] = array();
+                $this->data['homepage_settings']['main_category_1'] = $cat_detail[0];
+            } else {
+                $this->data['homepage_settings']['main_category_1'] = array();
+            }
+            if(!empty($this->data['homepage_settings']['sub_categories_1'])) {
+                $sub_categories_1 = implode(",", $this->data['homepage_settings']['sub_categories_1']);
+                $subcat_detail = fetch_details("categories", "id IN (".$sub_categories_1.")", "id, name, slug, image");
+                $this->data['homepage_settings']['sub_categories_1'] = $subcat_detail;
+            } else {
+                $this->data['homepage_settings']['sub_categories_1'] = array();
+            }
+            
+            if(!empty($this->data['homepage_settings']['main_category_2'])) {
+                $main_category_2 = $this->data['homepage_settings']['main_category_2'];
+                $cat_detail = fetch_details("categories", "id='".$main_category_2."'", "id, name, slug, image");
+                $this->data['homepage_settings']['main_category_2'] = array();
+                $this->data['homepage_settings']['main_category_2'] = $cat_detail[0];
+            } else {
+                $this->data['homepage_settings']['main_category_2'] = array();
+            }
+            if(!empty($this->data['homepage_settings']['sub_categories_2'])) {
+                $sub_categories_2 = implode(",", $this->data['homepage_settings']['sub_categories_2']);
+                $subcat_detail = fetch_details("categories", "id IN (".$sub_categories_2.")", "id, name, slug, image");
+                $this->data['homepage_settings']['sub_categories_2'] = $subcat_detail;
+            } else {
+                $this->data['homepage_settings']['sub_categories_2'] = array();
+            }
+        } else {
+            $this->data['homepage_settings']['categories'] = array();
+            $this->data['homepage_settings']['main_category_1'] = array();
+            $this->data['homepage_settings']['sub_categories_1'] = array();
+            $this->data['homepage_settings']['main_category_2'] = array();
+            $this->data['homepage_settings']['sub_categories_2'] = array();
+        }
+
+        $this->data['offers'] = $this->offer_model->get_offers();
+        $this->data['banners'] = $this->banner_model->get_banners(NULL, 2);
+        $this->data['brands'] = $this->brand_model->get_brands();
 
         $limit =  12;
         $offset =  0;
@@ -35,7 +87,7 @@ class Home extends CI_Controller
         $categories = $this->category_model->get_categories('', $limit, $offset, $sort, $order, 'false');
         /* Fetching Featured Sections */
 
-        $sections = $this->db->limit($limit, $offset)->order_by('row_order')->get('sections')->result_array();
+        /* $sections = $this->db->limit($limit, $offset)->order_by('row_order')->get('sections')->result_array();
         $user_id = NULL;
         if ($this->data['is_logged_in']) {
             $user_id = $this->data['user']->id;
@@ -72,7 +124,7 @@ class Home extends CI_Controller
             }
         }
        
-        $this->data['sections'] = $sections;
+        $this->data['sections'] = $sections; */
         $this->data['categories'] = $categories;
         $this->data['username'] = $this->session->userdata('username');
         $this->data['sliders'] = get_sliders();
