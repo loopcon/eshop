@@ -1,7 +1,7 @@
 <!-- breadcrumb -->
-<section class="breadcrumb-title-bar colored-breadcrumb">
-    <div class="main-content responsive-breadcrumb">
-        <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
+<section class="container breadcrumb-title-bar colored-breadcrumb">
+    <div class="main-content responsive-breadcrumb px-3">
+        <?php /* <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2> */ ?>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= !empty($this->lang->line('home')) ? $this->lang->line('home') : 'Home' ?></a></li>
@@ -15,12 +15,11 @@
             </ol>
         </nav>
     </div>
-
 </section>
 <!-- end breadcrumb -->
 <input type="hidden" id="product-filters" value='<?= (!empty($filters)) ? escape_array($filters) : ""  ?>' data-key="<?= $filters_key ?>" />
-<section class="listing-page content main-content">
-    <div class="product-listing card-solid py-4">
+<section class="container listing-page content main-content">
+    <div class="product-listing card-solid pb-4">
         <div class="row mx-0">
             <!-- Dektop Sidebar -->
             <?php if (isset($products['filters']) && !empty($products['filters'])) { ?>
@@ -72,7 +71,7 @@
                 </div>
             <?php } ?>
             <div class="col-md-12 order-md-2 <?= (isset($products['filters']) && !empty($products['filters'])) ? "col-lg-9" : "col-lg-12" ?>">
-                <div class="container-fluid filter-section pt-3 pb-3 ">
+                <div class="container-fluid filter-section "> <?php //  pt-3 pb-3 ?>
                     <div class="col-12 pl-0">
                         <div class="dropdown">
                             <div class="filter-bars">
@@ -123,13 +122,13 @@
                         <div class="category-section container-fluid text-center">
                             <div class="row">
                                 <?php foreach ($sub_categories as $key => $row) { ?>
-                                    <div class="col-md-2 col-sm-6">
-                                        <div class="category-image w-75">
+                                    <div class="col-md-2 col-sm-6 cat-img-box">
+                                        <div class="category-image"><?php //  w-75 ?>
                                             <a href="<?= base_url('products/category/' . html_escape($row->slug)) ?>">
                                                 <img class="pic-1 lazy" data-src="<?= $row->image ?>">
                                             </a>
                                             <div class="social">
-                                                <span><?= html_escape($row->name) ?></span>
+                                                <span><?= html_escape(stripslashes($row->name)) ?></span>
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +137,6 @@
                         </div>
                     <?php } ?>
                     <?php if (isset($products) && !empty($products['product'])) { ?>
-
                         <?php if (isset($_GET['type']) && $_GET['type'] == "list") { ?>
                             <div class="col-md-12 ">
                                 <div class="row mt-4">

@@ -16,7 +16,7 @@ class Offer_model extends CI_Model
     {
         $image_name = escape_array($image_name);
         $offer_data = [
-            'type' => $image_name['offer_type'],
+            'type' => $image_name['type'],
             'image' => $image_name['image'],
             'text' => $image_name['offer_text'],
             'offer_type' => $image_name['offer_type'],

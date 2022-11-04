@@ -11,35 +11,43 @@ $web_settings = get_settings('web_settings', true);
 ?>
 <!-- navbar start  -->
 <div>
-    <div class="navbg">
+    <div class="<?=($this->router->fetch_class()=="home" ? "navbg" : ""); ?>">
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
                     <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
                     <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Shop the marketplace <i class="fa-solid fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <?php if($this->router->fetch_class()!="home") { ?>
+                        <div class="search-box-header">
+                            <form class="search">
+                                <div>
+                                    <input class="form-field search_product1" type="email" placeholder="Search for product">
+                                    <!--<select class='form-field search_product' name="search"></select>-->
+                                    <i class="fa-solid fa-magnifying-glass  searchbox "></i>
+                                </div>
+                            </form>
+                        </div>
+                    <?php } ?>
+                    <?php if($this->router->fetch_class()=="home") { ?>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav <?=($this->router->fetch_class()=="home" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php } ?>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -76,15 +84,17 @@ $web_settings = get_settings('web_settings', true);
                 </div>
             </nav>
 
-            <div class="searchmain">
-                <form class="search">
-                    <div>
-                        <input class="form-field search_product1" type="email" placeholder="Search for product">
-                        <!--<select class='form-field search_product' name="search"></select>-->
-                        <i class="fa-solid fa-magnifying-glass  searchbox "></i>
-                    </div>
-                </form>
-            </div>
+            <?php if($this->router->fetch_class()=="home") { ?>
+                <div class="searchmain">
+                    <form class="search">
+                        <div>
+                            <input class="form-field search_product1" type="email" placeholder="Search for product">
+                            <!--<select class='form-field search_product' name="search"></select>-->
+                            <i class="fa-solid fa-magnifying-glass  searchbox "></i>
+                        </div>
+                    </form>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </div>

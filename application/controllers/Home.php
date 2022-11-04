@@ -9,7 +9,7 @@ class Home extends CI_Controller
         parent::__construct();
         $this->load->database();
         $this->load->helper(['url', 'language', 'timezone_helper']);
-        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model', 'offer_model', 'banner_model', 'brand_model']);
+        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model', 'offer_model', 'banner_model', 'brand_model', 'home_model']);
         $this->data['is_logged_in'] = ($this->ion_auth->logged_in()) ? 1 : 0;
         $this->data['user'] = ($this->ion_auth->logged_in()) ? $this->ion_auth->user()->row() : array();
         $this->data['settings'] = get_settings('system_settings', true);
@@ -84,7 +84,7 @@ class Home extends CI_Controller
         $has_child_or_item = 'false';
         $filters = [];
         /* Fetching Categories Sections */
-        $categories = $this->category_model->get_categories('', $limit, $offset, $sort, $order, 'false');
+        // $categories = $this->category_model->get_categories('', $limit, $offset, $sort, $order, 'false');
         /* Fetching Featured Sections */
 
         /* $sections = $this->db->limit($limit, $offset)->order_by('row_order')->get('sections')->result_array();
@@ -125,7 +125,7 @@ class Home extends CI_Controller
         }
        
         $this->data['sections'] = $sections; */
-        $this->data['categories'] = $categories;
+        // $this->data['categories'] = $categories;
         $this->data['username'] = $this->session->userdata('username');
         $this->data['sliders'] = get_sliders();
         $this->load->view('front-end/' . THEME . '/template', $this->data);
@@ -591,6 +591,25 @@ class Home extends CI_Controller
             $this->response['message'] = 'Mail sent successfully. We will get back to you soon.';
             $this->response['data'] = array();
             echo json_encode($this->response);
+            return false;
+        }
+    }
+
+    public function save_subscription()
+    {
+        $this->form_validation->set_rules('email_subscription', 'Email', 'trim|required|xss_clean|valid_email');
+
+        if (!$this->form_validation->run()) {
+            $this->response['error'] = true;
+            $this->response['message'] = validation_errors();
+            print_r(json_encode($this->response));
+            return false;
+        } else {
+            $email = $this->input->post("email_subscription");
+            $this->home_model->save_subscription(array("email"=>$email));
+            $this->response['error'] = false;
+            $this->response['message'] = "";
+            print_r(json_encode($this->response));
             return false;
         }
     }

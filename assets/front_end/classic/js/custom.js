@@ -4122,3 +4122,34 @@ $(document).on("change", "#store_logo", function(e) {
     // var dataURL = canvas.toDataURL("image/png");
     // return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 });
+
+$(document).on("submit", "#subscription-form", function(e) {
+    e.preventDefault();
+    var subscription_submit_btn = $('#send-subscription').html();
+    $('#send-subscription').html('Please Wait...').attr('disabled', true);
+    var formdata = new FormData(this);
+    var url = $(this).attr('action');
+    formdata.append(csrfName, csrfHash);
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        beforeSend: function () {
+            $('#send-subscription').html('Please Wait...').attr('disabled', true);
+        },
+        success: function (result) {
+            csrfName = result.csrfName;
+            csrfHash = result.csrfHash;
+            $('#send-subscription').html(subscription_submit_btn).attr('disabled', false);
+            if(result.error) {
+                Swal.fire('Opps...', result.message, 'error');
+            } else {
+                Swal.fire('Submitted!', result.message, 'success');
+            }
+        }
+    });
+});

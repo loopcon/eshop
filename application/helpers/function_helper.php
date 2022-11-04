@@ -75,6 +75,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
    74. update_balance($amount, $delivery_boy_id, $action)
    75. get_products_option_html($products, $selected_vals = null)
    76. get_main_categories()
+   77. get_categories()
 */
 
 function create_unique_slug($string, $table, $field = 'slug', $key = NULL, $value = NULL)
@@ -688,7 +689,7 @@ function fetch_product($user_id = NULL, $filter = NULL, $id = NULL, $category_id
             $replace_with = array("", "h3", "p");
             $n = 0;
             foreach ($tags_to_strip as $tag) {
-                $product[$i]['description'] = output_escaping(str_replace('\r\n', '&#13;&#10;', $product[$i]['description']));
+                $product[$i]['description'] = output_escaping(str_replace('\r\n', '&#13;&#10;', (string)$product[$i]['description']));
                 $n++;
             }
             $variant_attributes = [];
@@ -4284,6 +4285,15 @@ function get_main_categories($selected_val)
         $html .= '<option value="' . $categories[$i]['id'] . '" class="" ' . $pre_selected . '  >' . output_escaping($categories[$i]['name']) . '</option>';
     }
     return $html;
+}
+
+function get_categories() {
+    $t = &get_instance();
+    $t->load->model('category_model');
+    $sort = 'row_order';
+    $order = 'ASC';
+    $categories = $t->category_model->get_categories('', '', '', $sort, $order, 'false');
+    return $categories;
 }
 
 function update_cash_received($amount, $delivery_boy_id, $action)

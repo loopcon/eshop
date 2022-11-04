@@ -29,12 +29,14 @@
             </div>
         </section>
         <section>
-            <div class="row">
+            <div class="row category-main-sub">
                 <?php if(!empty($homepage_settings['main_category_1'])) { ?>
                     <div class="col-3 p-2">
                         <div class="makeupmain">
-                            <img class="img-fluid" src="<?php echo base_url($homepage_settings['main_category_1']['image']); ?>" alt="">
-                            <h3 class="text-center"><?php echo $homepage_settings['main_category_1']['name']; ?></h3>
+                            <a href="<?= base_url('products/category/' . $homepage_settings['main_category_1']['slug']) ?>">
+                                <img class="img-fluid" src="<?php echo base_url($homepage_settings['main_category_1']['image']); ?>" alt="">
+                                <h3 class="text-center"><?php echo $homepage_settings['main_category_1']['name']; ?></h3>
+                            </a>
                         </div>
                     </div>
                     <div class="col-9">
@@ -46,8 +48,10 @@
                             ?>
                             <div class="col-3">
                                 <div class="makebox">
-                                    <img src="<?php echo base_url($sub_categories_1['image']); ?>" class="img-fluid">
-                                    <h4 class="maktitle"><?php echo $sub_categories_1['name']; ?></h4>
+                                    <a href="<?= base_url('products/category/' . $sub_categories_1['slug']) ?>">
+                                        <img src="<?php echo base_url($sub_categories_1['image']); ?>" class="img-fluid">
+                                        <h4 class="maktitle"><?php echo $sub_categories_1['name']; ?></h4>
+                                    </a>
                                 </div>
                             </div>
                             <?php
@@ -75,12 +79,14 @@
         </div>
     </section>
     <section>
-        <div class="row">
+        <div class="row category-main-sub">
             <?php if(!empty($homepage_settings['main_category_2'])) { ?>
                 <div class="col-3 p-2">
                     <div class="makeupmain">
-                        <img class="img-fluid" src="<?php echo base_url($homepage_settings['main_category_2']['image']); ?>" alt="">
-                        <h3 class="text-center"><?php echo $homepage_settings['main_category_2']['name']; ?></h3>
+                        <a href="<?= base_url('products/category/' . $homepage_settings['main_category_2']['slug']) ?>">
+                            <img class="img-fluid" src="<?php echo base_url($homepage_settings['main_category_2']['image']); ?>" alt="">
+                            <h3 class="text-center"><?php echo $homepage_settings['main_category_2']['name']; ?></h3>
+                        </a>
                     </div>
                 </div>
                 <div class="col-9">
@@ -92,8 +98,10 @@
                         ?>
                         <div class="col-3">
                             <div class="makebox">
-                                <img src="<?php echo base_url($sub_categories_2['image']); ?>" class="img-fluid">
-                                <h4 class="maktitle"><?php echo $sub_categories_2['name']; ?></h4>
+                                <a href="<?= base_url('products/category/' . $sub_categories_2['slug']) ?>">
+                                    <img src="<?php echo base_url($sub_categories_2['image']); ?>" class="img-fluid">
+                                    <h4 class="maktitle"><?php echo $sub_categories_2['name']; ?></h4>
+                                </a>
                             </div>
                         </div>
                         <?php
@@ -214,8 +222,11 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div class="form">
-                    <input type="email" class="form__email" placeholder="Enter your email address" />
-                    <button class="form__button">Send</button>
+                    <form name="subscription-form" id="subscription-form" action="<?=base_url("home/save_subscription")?>">
+                        <input type="email" class="form__email" name="email_subscription" placeholder="Enter your email address" />
+                        <button type="submit" class="form__button" id="send-subscription">Send</button>
+                        <span id="send-subscription-result"></span>
+                    </form>
                 </div>
             </div>
         </div>

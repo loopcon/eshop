@@ -1,0 +1,34 @@
+@media only screen and (max-width: 450px) {
+    .filter-bars {
+        display: inline-block;
+        line-height: 33px;
+        padding: 9px 36px 9px 12px;
+        width: 38px;
+    }
+}
+@media only screen and (max-width:600px) {
+    .listing-page .filter-nav, .sidebar-filter-sm {
+        display: none
+    }
+    .filter-bars {
+        display: inline-block;
+        line-height: 33px;
+        padding: 9px 36px 9px 12px;
+        width: 38px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .filter-bars {
+        display: inline-block;
+        line-height: 33px;
+        padding: 9px 36px 9px 12px;
+        width: 38px;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .filter-nav-sm {
+        display: none;
+    }
+}

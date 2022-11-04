@@ -295,3 +295,39 @@ body { padding: 0px; }
     height: 234px;
     border-radius: 15px;
 }
+
+.category-main-sub .makeupmain a, .category-main-sub .makebox a  { text-decoration: none; color: #212529; }
+.footer-cat-link a { text-decoration: none; color: #212529; }
+.search-box-header { border: 1px solid #212529; border-radius: 30px; }
+.category-section .category-image img { width: 100%; height: 196px; }
+.category-section .cat-img-box { height: 220px; margin-bottom: 20px; }
+
+.listing-page .menu__line:first-child {
+    top: 13px;
+}
+.listing-page .menu__line:nth-child(2) {
+    top: 20px;
+}
+.listing-page .menu__line:nth-child(3) {
+    bottom: 11px;
+}
+.listing-page .menu {
+    background-color: #f8f9fa;
+    cursor: pointer;
+    display: block;
+    height: 40px;
+    position: relative;
+    width: 40px
+}
+
+.listing-page .menu__line {
+    background-color: #000;
+    border-radius: 13px;
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    transition-duration: .4s;
+    width: 24px
+}

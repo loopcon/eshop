@@ -177,4 +177,11 @@ class Home_model extends CI_Model
         $product_count = $count_res->get('order_items')->result_array();
         return $product_count[0]['total'];
     }
+
+    public function save_subscription($data)
+    {
+        $data = escape_array($data);
+        $subscription_data['email'] = $data['email'];
+        $this->db->insert('subscription', escape_array($subscription_data));
+    }
 }

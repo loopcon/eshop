@@ -10,6 +10,7 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 <!--<< font link start  -->
 <link rel="stylesheet" href="https://www.1001fonts.com/typey-mctypeface-font.html">
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs-responsive.css' ?>" />
 <link rel="icon" href="<?= base_url($favicon) ?>" type="image/gif" sizes="16x16">
 <!-- font awesome link   -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -18,6 +19,11 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 
 <!-- swier slider  -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+<!-- Sweeta Alert 2 -->
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/sweetalert2.min.css' ?>" />
+
+
 <!-- Jquery -->
 <script src="<?= THEME_ASSETS_URL . 'js/jquery.min.js' ?>"></script>
 <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>

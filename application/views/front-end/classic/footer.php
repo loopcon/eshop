@@ -21,12 +21,12 @@
                         <li><a href="<?= base_url('home/return-policy') ?>"><?= !empty($this->lang->line('return_policy')) ? $this->lang->line('return_policy') : 'Return Policy' ?></a></li>
                         <li><a href="<?= base_url('home/terms-and-conditions') ?>"><?= !empty($this->lang->line('terms_and_condition')) ? $this->lang->line('terms_and_condition') : 'Terms of Use' ?></a></li>
                         <li><a href="<?= base_url('home/privacy-policy') ?>"><?= !empty($this->lang->line('privacy_policy')) ? $this->lang->line('privacy_policy') : 'Privacy Policy' ?></a></li>
-                        <li><a href="">Sitemap</a></li>
+                        <?php /* <li><a href="">Sitemap</a></li> */ ?>
                     </div>
                     <div class="col-2">
                         <h5>HELP</h5>
                         <li><a href="<?= base_url('home/shipping-policy') ?>"><?= !empty($this->lang->line('shipping_policy')) ? $this->lang->line('shipping_policy') : 'Shipping' ?></a></li>
-                        <li><a href=""><?= !empty($this->lang->line('faq')) ? $this->lang->line('faq') : 'FAQ' ?></a></li>
+                        <?php /* <li><a href=""><?= !empty($this->lang->line('faq')) ? $this->lang->line('faq') : 'FAQ' ?></a></li> */ ?>
                     </div>
                     <div class="col-4">
                         <li><img src="<?= THEME_ASSETS_URL.'images/fastdelivery.png';?>"> <a>Fast Delivery & Shipping</a></li>
@@ -60,10 +60,11 @@
 <section>
     <div class="bgmain p-4">
         <div class="container">
+            <?php $categories = get_categories(); ?>
             <?php foreach($categories as $category_level_1) { ?>
-                <div class="row">
+                <div class="row footer-cat-link">
                     <div class="col-2">
-                        <p><b><?=$category_level_1['name']?> :-</b></p>
+                        <p><b><a href="<?=base_url('products/category/' . $category_level_1['slug']) ?>"><?=$category_level_1['name']?></a> :-</b></p>
                     </div>
                     <div class="col-10">
                         <p>
@@ -71,14 +72,14 @@
                                 $level_2 = [];
                                 $count_level_2 = 0;
                                 foreach($category_level_1['children'] as $category_level_2) {
-                                    echo stripslashes($category_level_2['name']);
+                                    echo "<a href='".base_url('products/category/' . $category_level_2['slug'])."'>".stripslashes($category_level_2['name'])."</a>";
                                     $count_level_2++;
                                     if($count_level_2 < count($category_level_1['children'])) {
                                         echo ", ";
                                     }
                                     $count_level_3 = 0;
                                     foreach($category_level_2['children'] as $category_level_3) {
-                                        echo stripslashes($category_level_3['name']);
+                                        echo "<a href='".base_url('products/category/' . $category_level_3['slug'])."'>".stripslashes($category_level_3['name'])."</a>";
                                         $count_level_3++;
                                         if($count_level_3 < count($category_level_2['children'])) {
                                             echo ", ";
