@@ -1,6 +1,6 @@
 <?php $web_settings = get_settings('web_settings', true); ?>
 <!-- footer start -->
-<section class="common ">
+<section class="common <?=($this->router->fetch_class()!="home" ? "footer-saperator" : ""); ?>">
     <div class="container">
         <div class="row">
             <div class="col-3">

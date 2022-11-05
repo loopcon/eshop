@@ -9,6 +9,10 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 
 <!--<< font link start  -->
 <link rel="stylesheet" href="https://www.1001fonts.com/typey-mctypeface-font.html">
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/style.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/products.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/star-rating.min.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/eshop-bundle-main.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs-responsive.css' ?>" />
 <link rel="icon" href="<?= base_url($favicon) ?>" type="image/gif" sizes="16x16">

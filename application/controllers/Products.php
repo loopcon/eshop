@@ -275,7 +275,7 @@ class Products extends CI_Controller
         $this->data['right_breadcrumb'] = array(
             '<a href="' . base_url('home/categories') . '">' . $category_lang . '</a>',
         );
-        $this->data['products'] = fetch_product(null, $filter, null, $category_id, $limit, $offset, $sort, $order);
+        $this->data['products'] = fetch_product($user_id, $filter, null, $category_id, $limit, $offset, $sort, $order);
         $this->data['filters'] = (isset($this->data['products']['filters'])) ? json_encode($this->data['products']['filters']) : "";
         $this->data['filters_key'] = 'category_products_' . $category_slug;
         $this->data['single_category'] = $category;

@@ -386,7 +386,7 @@ $('.add-to-fav-btn').on('click', function (e) {
                 if (fav_btn.hasClass('far')) {
                     fav_btn.removeClass('far').addClass('fa text-danger');
                 } else {
-                    fav_btn.removeClass('fa text-danger').addClass('far');
+                    fav_btn.removeClass('fa text-danger');//.addClass('far');
                     fav_btn.css('color', '#adadad');
                 }
             }

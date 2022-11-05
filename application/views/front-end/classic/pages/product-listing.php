@@ -1,7 +1,7 @@
 <!-- breadcrumb -->
 <section class="container breadcrumb-title-bar colored-breadcrumb">
     <div class="main-content responsive-breadcrumb px-3">
-        <?php /* <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2> */ ?>
+        <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= !empty($this->lang->line('home')) ? $this->lang->line('home') : 'Home' ?></a></li>
@@ -19,7 +19,7 @@
 <!-- end breadcrumb -->
 <input type="hidden" id="product-filters" value='<?= (!empty($filters)) ? escape_array($filters) : ""  ?>' data-key="<?= $filters_key ?>" />
 <section class="container listing-page content main-content">
-    <div class="product-listing card-solid pb-4">
+    <div class="product-listing card-solid py-4">
         <div class="row mx-0">
             <!-- Dektop Sidebar -->
             <?php if (isset($products['filters']) && !empty($products['filters'])) { ?>
@@ -71,7 +71,7 @@
                 </div>
             <?php } ?>
             <div class="col-md-12 order-md-2 <?= (isset($products['filters']) && !empty($products['filters'])) ? "col-lg-9" : "col-lg-12" ?>">
-                <div class="container-fluid filter-section "> <?php //  pt-3 pb-3 ?>
+                <div class="container-fluid filter-section pt-3 pb-3">
                     <div class="col-12 pl-0">
                         <div class="dropdown">
                             <div class="filter-bars">
