@@ -65,6 +65,38 @@ class Home extends CI_Controller
             } else {
                 $this->data['homepage_settings']['sub_categories_2'] = array();
             }
+            
+            if(!empty($this->data['homepage_settings']['main_category_3'])) {
+                $main_category_3 = $this->data['homepage_settings']['main_category_3'];
+                $cat_detail = fetch_details("categories", "id='".$main_category_3."'", "id, name, slug, image");
+                $this->data['homepage_settings']['main_category_3'] = array();
+                $this->data['homepage_settings']['main_category_3'] = $cat_detail[0];
+            } else {
+                $this->data['homepage_settings']['main_category_3'] = array();
+            }
+            if(!empty($this->data['homepage_settings']['sub_categories_3'])) {
+                $sub_categories_3 = implode(",", $this->data['homepage_settings']['sub_categories_3']);
+                $subcat_detail = fetch_details("categories", "id IN (".$sub_categories_3.")", "id, name, slug, image");
+                $this->data['homepage_settings']['sub_categories_3'] = $subcat_detail;
+            } else {
+                $this->data['homepage_settings']['sub_categories_3'] = array();
+            }
+            
+            if(!empty($this->data['homepage_settings']['main_category_4'])) {
+                $main_category_4 = $this->data['homepage_settings']['main_category_4'];
+                $cat_detail = fetch_details("categories", "id='".$main_category_4."'", "id, name, slug, image");
+                $this->data['homepage_settings']['main_category_4'] = array();
+                $this->data['homepage_settings']['main_category_4'] = $cat_detail[0];
+            } else {
+                $this->data['homepage_settings']['main_category_4'] = array();
+            }
+            if(!empty($this->data['homepage_settings']['sub_categories_4'])) {
+                $sub_categories_4 = implode(",", $this->data['homepage_settings']['sub_categories_4']);
+                $subcat_detail = fetch_details("categories", "id IN (".$sub_categories_4.")", "id, name, slug, image");
+                $this->data['homepage_settings']['sub_categories_4'] = $subcat_detail;
+            } else {
+                $this->data['homepage_settings']['sub_categories_4'] = array();
+            }
         } else {
             $this->data['homepage_settings']['categories'] = array();
             $this->data['homepage_settings']['main_category_1'] = array();

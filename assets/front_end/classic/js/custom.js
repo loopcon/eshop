@@ -4005,6 +4005,30 @@ $(document).on('submit', '#forgot_password_new_password_form', function (e) {
     // });
 });
 
+$(document).on('click', '#login', function() {
+    $('#login').addClass('active');
+    $('#login_div').removeClass('hide');
+    $('#register').removeClass('active');
+    $('#register_div').addClass('hide');
+    $('#forgot_password_div').addClass('hide');
+    $('#register-as-seller').removeClass('active');
+    $('#register_as_seller_div').addClass('hide');
+    $('#login-as-seller').removeClass('active');
+    $('#login_as_seller_div').addClass('hide');
+});
+
+$(document).on('click', '#register', function() {
+    $('#login').removeClass('active');
+    $('#login_div').addClass('hide');
+    $('#register').addClass('active');
+    $('#register_div').removeClass('hide');
+    $('#forgot_password_div').addClass('hide');
+    $('#register-as-seller').removeClass('active');
+    $('#register_as_seller_div').addClass('hide');
+    $('#login-as-seller').removeClass('active');
+    $('#login_as_seller_div').addClass('hide');
+});
+
 $(document).on('click', '#register-as-seller', function() {
     $('#login').removeClass('active');
     $('#login_div').addClass('hide');

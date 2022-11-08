@@ -1,7 +1,7 @@
 <!-- breadcrumb -->
 <section class="container breadcrumb-title-bar colored-breadcrumb">
     <div class="main-content responsive-breadcrumb px-3">
-        <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
+        <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb.' Category' : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= !empty($this->lang->line('home')) ? $this->lang->line('home') : 'Home' ?></a></li>
@@ -82,8 +82,8 @@
 
                                 </div>
                             </div>
-                            <div class="col-12 sort-by py-3 pl-0">
-                                <?php if (isset($products) && !empty($products['product'])) { ?>
+                            <?php if (isset($products) && !empty($products['product'])) { ?>
+                                <div class="col-12 sort-by py-3 pl-0">
                                     <div class="dropdown float-md-right d-flex mb-4">
                                         <label class="mr-2 dropdown-label"> <?= !empty($this->lang->line('show')) ? $this->lang->line('show') : 'Show' ?>:</label>
                                         <a class="btn dropdown-border btn-lg dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= ($this->input->get('per-page', true) ? $this->input->get('per-page', true) : '12') ?> <span class="caret"></span></a>
@@ -109,27 +109,27 @@
                                             </select>
                                         </div>
                                     </div>
-                                <?php } ?>
-                            </div>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                     <?php if (isset($sub_categories) && !empty($sub_categories)) { ?>
-                        <div class="col-md-9 col-sm-12 text-left py-3">
+                        <?php /* <div class="col-md-9 col-sm-12 text-left py-3">
                             <?php if (isset($single_category) && !empty($single_category)) { ?>
                                 <span class="h3"><?= $single_category['name'] ?> <?= !empty($this->lang->line('category')) ? $this->lang->line('category') : 'Category' ?></span>
                             <?php } ?>
-                        </div>
+                        </div> */ ?>
                         <div class="category-section container-fluid text-center">
                             <div class="row">
                                 <?php foreach ($sub_categories as $key => $row) { ?>
                                     <div class="col-md-2 col-sm-6 cat-img-box">
                                         <div class="category-image"><?php //  w-75 ?>
                                             <a href="<?= base_url('products/category/' . html_escape($row->slug)) ?>">
-                                                <img class="pic-1 lazy" data-src="<?= $row->image ?>">
+                                                <img class="pic-1 lazy mb-2" data-src="<?= $row->image ?>">
+                                                <div class="social">
+                                                    <span><?= html_escape(stripslashes($row->name)) ?></span>
+                                                </div>
                                             </a>
-                                            <div class="social">
-                                                <span><?= html_escape(stripslashes($row->name)) ?></span>
-                                            </div>
                                         </div>
                                     </div>
                                 <?php } ?>

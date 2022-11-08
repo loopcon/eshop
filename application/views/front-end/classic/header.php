@@ -95,7 +95,7 @@ $web_settings = get_settings('web_settings', true);
 <div class="shopping-cart-sidebar is-closed-right bg-white">
     <input type="hidden" name="is_loggedin" id="is_loggedin" value="<?= (isset($user->id)) ? 1 : 0 ?>">
     <div class="container header ">
-        <div class="row my-2 text-uppercase d-flex align-items-center">
+        <div class="my-2 text-uppercase d-flex align-items-center">
             <div class="col-8 title">
                 <h1><?= !empty($this->lang->line('shopping_cart')) ? $this->lang->line('shopping_cart') : 'Shopping Cart' ?></h1>
             </div>
@@ -112,7 +112,7 @@ $web_settings = get_settings('web_settings', true);
                     foreach ($cart_items as $items) {
                         $price = $items['special_price'] != '' && $items['special_price'] > 0 && $items['special_price'] != null ? $items['special_price'] : $items['price'];
         ?>
-            <div class="row">
+            <div class="">
                 <div class="cart-product product-sm col-md-12">
                     <div class="product-image">
                         <img class="pic-1 lazy" data-src="<?= base_url($items['image']) ?>" alt="<?= html_escape($items['name']) ?>" title="<?= html_escape($items['name']) ?>">
@@ -155,7 +155,7 @@ $web_settings = get_settings('web_settings', true);
 </div>
 <!-- navbar start  -->
 <div>
-    <div class="<?=($this->router->fetch_class()=="home" ? "navbg" : ""); ?>">
+    <div class="<?=($this->router->fetch_class()=="home" ? "navbg" : ""); ?>" <?=($this->router->fetch_class()=="home" ? 'style="background:url(\''.$homepage_settings['banner'].'\');background-repeat:no-repeat;background-size:100%;"' : '');?>>
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
@@ -195,12 +195,27 @@ $web_settings = get_settings('web_settings', true);
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="login" href="javascript:void(0);"> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?> <img src="<?= THEME_ASSETS_URL. 'img/login.png' ?>"> </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register" href="javascript:void(0);"> <?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
-                            </li>
+                            <?php if ($this->ion_auth->logged_in()) { ?>
+                                <li class="nav-item dropdown active">
+                                    <a class="m-1" data-toggle="dropdown" href="#"><i class="fas fa-user fa-lg link-color"></i>
+                                        <span class="text-dark font-weight-bold"> <?= (isset($user->username) && !empty($user->username)) ? "Hello " . $user->username  : 'Login / Register' ?></span>
+                                        <i class="fas fa-angle-down link-color"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-lg">
+                                        <a href="<?= base_url('my-account/wallet') ?>" class="dropdown-item"><i class="fas fa-wallet mr-2 text-primary link-color"></i> <?= $settings['currency'] . ' ' . number_format($user->balance, 2) ?></a>
+                                        <a href="<?= base_url('my-account') ?>" class="dropdown-item"><i class="fas fa-user mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('profile')) ? $this->lang->line('profile') : 'Profile' ?> </a>
+                                        <a href="<?= base_url('my-account/orders') ?>" class="dropdown-item"><i class="fas fa-history mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('orders')) ? $this->lang->line('orders') : 'Orders' ?> </a>
+                                        <a href="<?= base_url('login/logout') ?>" class="dropdown-item"><i class="fa fa-sign-out-alt mr-2 text-primary link-color"></i><?= !empty($this->lang->line('logout')) ? $this->lang->line('logout') : 'Logout' ?></a>
+                                    </div>
+                                </li>
+                            <?php } else { ?>
+                                <li class="nav-item">
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="login" href="javascript:void(0);"> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?> <img src="<?= THEME_ASSETS_URL. 'img/login.png' ?>"> </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register" href="javascript:void(0);"> <?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
+                                </li>
+                            <?php } ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>" class="m-2 "> </a>
                             </li>

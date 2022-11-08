@@ -1,7 +1,7 @@
 <?php $web_settings = get_settings('web_settings', true); ?>
 <!-- footer start -->
-<section class="common <?=($this->router->fetch_class()!="home" ? "footer-saperator" : ""); ?>">
-    <div class="container">
+<section class="footer-section footer-saperator pt-5">
+    <div class="container container-fluid">
         <div class="row">
             <div class="col-3">
                 <div class="d-flex justify-content-center ">
@@ -54,17 +54,14 @@
             </div>
         </div>
     </div>
-</section>
-
-<!-- detail start  -->
-<section>
-    <div class="bgmain p-4">
-        <div class="container">
+    <!-- Category List - Start -->
+    <div class="p-4">
+        <div class="container container-fluid">
             <?php $categories = get_categories(); ?>
             <?php foreach($categories as $category_level_1) { ?>
                 <div class="row footer-cat-link">
                     <div class="col-2">
-                        <p><b><a href="<?=base_url('products/category/' . $category_level_1['slug']) ?>"><?=$category_level_1['name']?></a> :-</b></p>
+                        <p><strong><a href="<?=base_url('products/category/' . $category_level_1['slug']) ?>"><?=$category_level_1['name']?></a> :-</strong></p>
                     </div>
                     <div class="col-10">
                         <p>
@@ -93,6 +90,7 @@
             <?php } ?>
         </div>
     </div>
+    <!-- Category List - End -->
 </section>
 <!-- detail end  -->
 <?php if (ALLOW_MODIFICATION == 0) { ?>
@@ -138,7 +136,7 @@
     <button data-iziModal-close class="icon-close">x</button>
     <header>
         <a href="" id="login"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a>
-        <a href="" id="register" class="active"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a>
+        <a href="" id="register"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a>
         <?php /* <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a> */ ?>
         <a href="" id="register-as-seller"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a>
     </header>
@@ -163,7 +161,7 @@
             </div>
         </form>
     </section>
-    <section id="register_div">
+    <section class="hide" id="register_div">
         <?php /* <form id='send-otp-form' class='send-otp-form' action='#'>
             <div class="row sign-up-verify-number">
                 <div class="col-12 d-flex justify-content-center pb-4">
@@ -310,7 +308,7 @@
             </footer>
         </form>
     </section>
-    <section classs="hide" id="login_as_seller_div">
+    <section class="hide" id="login_as_seller_div">
         <form action="<?= base_url('home/login-seller') ?>" class='seller-login-form-submit-event' id="login_form" method="post">
             <div class="input-group">
                 <input type="email" class="form-control" name="identity" placeholder="Email" value="" required>

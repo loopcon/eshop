@@ -6216,6 +6216,30 @@ $(document).on('click', '.delete-deal', function () {
 });
 
 //25.Homepage-Setting-Module
+$('#hps-categories').each(function () {
+    $(this).select2({
+        theme: 'bootstrap4',
+        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+        placeholder: $(this).data('placeholder'),
+        allowClear: Boolean($(this).data('allow-clear')),
+        dropdownCssClass: "test",
+        templateResult: function (data) {
+            // We only really care if there is an element to pull classes from
+            if (!data.element) {
+                return data.text;
+            }
+
+            var $element = $(data.element);
+
+            var $wrapper = $('<span></span>');
+            $wrapper.addClass($element[0].className);
+
+            $wrapper.text(data.text);
+
+            return $wrapper;
+        }
+    });
+});
 $(document).on('change', '#main_category_1', function () {
     var category_id = $(this).val();
     $.ajax({
@@ -6283,6 +6307,76 @@ if(main_category_2!="" && sub_categories_2!="") {
             $("#sub_categories_2").html(response.option);
         } else {
             $("#sub_categories_2").html(response.option);
+        }
+    });
+}
+$(document).on('change', '#main_category_3', function () {
+    var category_id = $(this).val();
+    $.ajax({
+        type: 'GET',
+        url: base_url + 'admin/homepage_setting/get_sub_category',
+        data: {
+            category_id: category_id,
+            subcategory_id: ''
+        },
+        dataType: 'json'
+    }).done(function (response, textStatus) {
+        if (response.error == false) {
+            $("#sub_categories_3").html(response.option);
+        } else {
+            $("#sub_categories_3").html(response.option);
+        }
+    });
+});
+if(main_category_3!="" && sub_categories_3!="") {
+    $.ajax({
+        type: 'GET',
+        url: base_url + 'admin/homepage_setting/get_sub_category',
+        data: {
+            category_id: main_category_3,
+            subcategory_id: sub_categories_3
+        },
+        dataType: 'json'
+    }).done(function (response, textStatus) {
+        if (response.error == false) {
+            $("#sub_categories_3").html(response.option);
+        } else {
+            $("#sub_categories_3").html(response.option);
+        }
+    });
+}
+$(document).on('change', '#main_category_4', function () {
+    var category_id = $(this).val();
+    $.ajax({
+        type: 'GET',
+        url: base_url + 'admin/homepage_setting/get_sub_category',
+        data: {
+            category_id: category_id,
+            subcategory_id: ''
+        },
+        dataType: 'json'
+    }).done(function (response, textStatus) {
+        if (response.error == false) {
+            $("#sub_categories_4").html(response.option);
+        } else {
+            $("#sub_categories_4").html(response.option);
+        }
+    });
+});
+if(main_category_4!="" && sub_categories_4!="") {
+    $.ajax({
+        type: 'GET',
+        url: base_url + 'admin/homepage_setting/get_sub_category',
+        data: {
+            category_id: main_category_4,
+            subcategory_id: sub_categories_4
+        },
+        dataType: 'json'
+    }).done(function (response, textStatus) {
+        if (response.error == false) {
+            $("#sub_categories_4").html(response.option);
+        } else {
+            $("#sub_categories_4").html(response.option);
         }
     });
 }
