@@ -155,7 +155,7 @@ $web_settings = get_settings('web_settings', true);
 </div>
 <!-- navbar start  -->
 <div>
-    <div class="<?=($this->router->fetch_class()=="home" ? "navbg" : ""); ?>" <?=($this->router->fetch_class()=="home" ? 'style="background:url(\''.$homepage_settings['banner'].'\');background-repeat:no-repeat;background-size:100%;"' : '');?>>
+    <div class="<?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "navbg" : ""); ?>" <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? 'style="background:url(\''.$homepage_settings['banner'].'\');background-repeat:no-repeat;background-size:100%;"' : '');?>>
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
@@ -175,18 +175,29 @@ $web_settings = get_settings('web_settings', true);
                             </form>
                         </div>
                     <?php } ?>
-                    <?php if($this->router->fetch_class()=="home") { ?>
+                    <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav <?=($this->router->fetch_class()=="home" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
+                            <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <ul class="dropdown-menu cat-level-1">
+                                        <?php foreach($categories as $category_level_1) { ?>
+                                            <li>
+                                                <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-arrow-left arrow-level-1"></i></a>
+                                                <ul class="cat-level-2">
+                                                    <?php foreach($category_level_1['children'] as $category_level_2) { ?>
+                                                        <li>
+                                                            <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-arrow-left arrow-level-2"></i></a>
+                                                            <ul class="cat-level-3">
+                                                                <?php foreach($category_level_2['children'] as $category_level_3) { ?>
+                                                                    <li><a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_3['slug'])) ?>"><?=html_escape(stripslashes($category_level_3['name']))?></a></li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </li>
+                                                    <?php } ?>
+                                                </ul>
+                                            </li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             </ul>
@@ -243,7 +254,7 @@ $web_settings = get_settings('web_settings', true);
                 </div>
             </nav>
 
-            <?php if($this->router->fetch_class()=="home") { ?>
+            <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                 <div class="searchmain">
                     <form class="search">
                         <div>

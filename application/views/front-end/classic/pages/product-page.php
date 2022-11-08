@@ -2,7 +2,7 @@
 <!-- breadcrumb -->
 <section class="breadcrumb-title-bar colored-breadcrumb">
     <div class="main-content responsive-breadcrumb">
-        <h2><?= $product['product'][0]['name'] ?></h2>
+        <?php /* <h2><?= $product['product'][0]['name'] ?></h2> */ ?>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url('products') ?>"><?= !empty($this->lang->line('product')) ? $this->lang->line('product') : 'Products' ?></a></li>
@@ -362,11 +362,11 @@
                 <button type="button" name="compare" class="buttons btn-6-6 extra-small m-0 compare" id="compare" data-product-id="<?= $product['product'][0]['id'] ?>" data-product-variant-id="<?= $variant_id ?>">
                     <i class="fa fa-random"></i> Compare
                 </button>
-                <button type="button" name="add_cart" class="buttons btn-6-6 extra-small m-0 add_to_cart mt-1" id="add_cart" data-product-id="<?= $product['product'][0]['id'] ?>" data-product-title="<?= $product['product'][0]['name'] ?>" data-product-image="<?= $product['product'][0]['image'] ?>" data-product-price="<?= $variant['special_price']; ?>" data-product-description="<?= $product['product'][0]['short_description']; ?>" data-step="<?= (isset($product['product'][0]['minimum_order_quantity']) && !empty($product['product'][0]['quantity_step_size'])) ? $product['product'][0]['quantity_step_size'] : 1 ?>" data-min="<?= (isset($product['product'][0]['minimum_order_quantity']) && !empty($product['product'][0]['minimum_order_quantity'])) ? $product['product'][0]['minimum_order_quantity'] : 1 ?>" data-max="<?= (isset($product['product'][0]['total_allowed_quantity']) && !empty($product['product'][0]['total_allowed_quantity'])) ? $product['product'][0]['total_allowed_quantity'] : '' ?>" data-product-variant-id="<?= $variant_id ?>">
+                <button type="button" name="add_cart" class="buttons btn-6-6 extra-small m-0 add_to_cart" id="add_cart" data-product-id="<?= $product['product'][0]['id'] ?>" data-product-title="<?= $product['product'][0]['name'] ?>" data-product-image="<?= $product['product'][0]['image'] ?>" data-product-price="<?= $variant['special_price']; ?>" data-product-description="<?= $product['product'][0]['short_description']; ?>" data-step="<?= (isset($product['product'][0]['minimum_order_quantity']) && !empty($product['product'][0]['quantity_step_size'])) ? $product['product'][0]['quantity_step_size'] : 1 ?>" data-min="<?= (isset($product['product'][0]['minimum_order_quantity']) && !empty($product['product'][0]['minimum_order_quantity'])) ? $product['product'][0]['minimum_order_quantity'] : 1 ?>" data-max="<?= (isset($product['product'][0]['total_allowed_quantity']) && !empty($product['product'][0]['total_allowed_quantity'])) ? $product['product'][0]['total_allowed_quantity'] : '' ?>" data-product-variant-id="<?= $variant_id ?>">
                     <i class="fas fa-cart-plus"></i> <?= !empty($this->lang->line('add_to_cart')) ? $this->lang->line('add_to_cart') : 'Add to Cart' ?>
                 </button>
                 <?php if ($product['product'][0]['is_favorite'] == 0) { ?>
-                    <button class="buttons btn-6-1 extra-small m-0 add-fav mt-1" id="add_to_favorite_btn" data-product-id="<?= $product['product'][0]['id'] ?>">
+                    <button class="buttons btn-6-1 extra-small m-0 add-fav" id="add_to_favorite_btn" data-product-id="<?= $product['product'][0]['id'] ?>">
                         <i class="fas fa-heart mr-2"></i>
                         <span><?= !empty($this->lang->line('add_to_favorite')) ? $this->lang->line('add_to_favorite') : 'Add to Favorite' ?></span>
                     </button>

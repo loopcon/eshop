@@ -563,7 +563,7 @@
                                     <p>Client Api Keys</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a href="<?= base_url('admin/updater') ?>" class="nav-link">
                                     <i class="fas fa-sync nav-icon "></i>
                                     <p>System Updater</p>
@@ -574,7 +574,7 @@
                                     <i class="fas fa-check nav-icon"></i>
                                     <p>System Registration</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                         </ul>
                     </li>
 
@@ -599,12 +599,12 @@
                                     <p>Home page Settings</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a href="<?= base_url('admin/themes') ?>" class="nav-link">
                                     <i class="fa fa-palette nav-icon "></i>
                                     <p>Themes</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('admin/language') ?>" class="nav-link">
                                     <i class="fa fa-language nav-icon "></i>

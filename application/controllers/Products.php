@@ -339,6 +339,7 @@ class Products extends CI_Controller
             return false;
         }
         $product['product'][0]['zipcode'] = $valid_zipcode;
+        $product['product'][0]['short_description'] = strip_tags($product['product'][0]['short_description']);
         $product = $product['product'][0];
         $product['get_price'] = get_price_range_of_product($product['id']);
         print_r(json_encode($product));

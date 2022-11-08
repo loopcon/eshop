@@ -109,14 +109,14 @@ class Home extends CI_Controller
         $this->data['banners'] = $this->banner_model->get_banners(NULL, 2);
         $this->data['brands'] = $this->brand_model->get_brands();
 
-        $limit =  12;
-        $offset =  0;
+        // $limit =  12;
+        // $offset =  0;
         $sort = 'row_order';
         $order =  'ASC';
         $has_child_or_item = 'false';
         $filters = [];
         /* Fetching Categories Sections */
-        // $categories = $this->category_model->get_categories('', $limit, $offset, $sort, $order, 'false');
+        $categories = $this->category_model->get_categories('', '', '', $sort, $order, 'false');
         /* Fetching Featured Sections */
 
         /* $sections = $this->db->limit($limit, $offset)->order_by('row_order')->get('sections')->result_array();
@@ -157,7 +157,7 @@ class Home extends CI_Controller
         }
        
         $this->data['sections'] = $sections; */
-        // $this->data['categories'] = $categories;
+        $this->data['categories'] = $categories;
         $this->data['username'] = $this->session->userdata('username');
         $this->data['sliders'] = get_sliders();
         $this->load->view('front-end/' . THEME . '/template', $this->data);

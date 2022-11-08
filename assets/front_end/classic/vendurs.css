@@ -90,6 +90,29 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
     left: 50%;
     transform:  translate( -50% , -50%);
 }
+.nav-item ul.dropdown-menu li ul {
+    top: 0;
+    position: absolute;
+    left: 100%;
+    background-color: #FFFFFF;
+    opacity: 0;
+    pointer-events: none;
+}
+.nav-item ul.dropdown-menu li a i { opacity: 0; }
+.nav-item ul.dropdown-menu li:hover a i.arrow-level-1, .nav-item ul.dropdown-menu li ul li:hover a i.arrow-level-2 { opacity: 1; }
+.nav-item ul.dropdown-menu li ul ul {
+    top: 0;
+    position: absolute;
+    left: 100%;
+    background-color: #FFFFFF;
+    opacity: 0;
+    pointer-events: none;
+    display: block!important;
+}
+.nav-item ul.dropdown-menu li:hover ul.cat-level-2, .nav-item ul.dropdown-menu li ul li:hover ul.cat-level-3 { opacity: 1; pointer-events: visible; }
+.navbar .navbar-nav ul.cat-level-1 { height: 410px; }
+.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 { height: 410px; }
+.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 ul.cat-level-3 { height: 410px; }
 
 /* Categories start  */
 .catbg {
@@ -371,12 +394,18 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .listing-page .filter-section .category-section { box-shadow: none; }
 .category-image .social span { font-size: 1rem; letter-spacing: 2px; }
 .category-section .category-image a:hover .social span { text-decoration: underline; }
-.breadcrumb-title-bar { padding: 1rem 0; }
+.breadcrumb { position: unset!important; transform: none; }
+.breadcrumb-title-bar { padding: 15px 0; }
+.breadcrumb-title-bar .main-content { max-width: 1305px; }
 .breadcrumb-title-bar h2 { font-size: 1.5rem; }
+.content .product-listing h2 { margin-bottom: 0; text-align: center; }
 /* Category/Product Listing page - End */
 
 /* Product page - Start */
 .swiper-container { overflow: hidden; }
 .product-preview-image-section-md .product-view-image-container img { height: 280px; width: auto; margin: 0px auto; }
+#quick-view .product-preview-image-section-md .product-view-image-container img { height: auto; width: auto; margin: 0px auto; }
 .swiper-button-next, .swiper-button-prev { top: 22%!important; }
 .product-gallery-thumbs img { height: 100px!important; }
+#quick-view.product-page-content .product-title { font-size: 22px!important; line-height: 22px; }
+.product-page-content .product-image-swiper { width: 100%!important; }

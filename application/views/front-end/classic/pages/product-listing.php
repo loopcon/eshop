@@ -1,7 +1,7 @@
 <!-- breadcrumb -->
 <section class="container breadcrumb-title-bar colored-breadcrumb">
     <div class="main-content responsive-breadcrumb px-3">
-        <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb.' Category' : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
+        <?php /* <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb.' Category' : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2> */ ?>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url() ?>"><?= !empty($this->lang->line('home')) ? $this->lang->line('home') : 'Home' ?></a></li>
@@ -72,6 +72,7 @@
             <?php } ?>
             <div class="col-md-12 order-md-2 <?= (isset($products['filters']) && !empty($products['filters'])) ? "col-lg-9" : "col-lg-12" ?>">
                 <div class="container-fluid filter-section pt-3 pb-3">
+                    <h2><?= isset($page_main_bread_crumb) ? $page_main_bread_crumb.' Category' : 'Products' ?><?= (isset($seller) && !empty($seller[0]['store_name'])) ? " By " . $seller[0]['store_name'] : '' ?></h2>
                     <div class="col-12 pl-0">
                         <div class="dropdown">
                             <div class="filter-bars">
@@ -79,7 +80,6 @@
                                     <span class="menu__line"></span>
                                     <span class="menu__line"></span>
                                     <span class="menu__line"></span>
-
                                 </div>
                             </div>
                             <?php if (isset($products) && !empty($products['product'])) { ?>
@@ -226,7 +226,7 @@
                                     <h4 class="h4"><?= !empty($this->lang->line('products')) ? $this->lang->line('products') : 'Products' ?></h4>
                                 </div>
                                 <?php foreach ($products['product'] as $row) { ?>
-                                    <div class="col-md-4 col-sm-6">
+                                    <div class="col-md-4 col-sm-6 mb-2">
                                         <div class="product-grid">
                                             <aside class="add-favorite">
                                                 <button type="button" class="btn far fa-heart add-to-fav-btn <?= ($row['is_favorite'] == 1) ? 'fa text-danger' : '' ?>" data-product-id="<?= $row['id'] ?>"></button>
