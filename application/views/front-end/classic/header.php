@@ -170,17 +170,65 @@ $web_settings = get_settings('web_settings', true);
                                 <div>
                                     <input class="form-field search_product1" type="email" placeholder="Search for product">
                                     <!--<select class='form-field search_product' name="search"></select>-->
-                                    <i class="fa-solid fa-magnifying-glass  searchbox "></i>
+                                    <i class="fa-solid fa-magnifying-glass  searchiconheader "></i>
                                 </div>
                             </form>
                         </div>
                     <?php } ?>
                     <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
-                                <li class="nav-item dropdown">
+
+                        
+                        <div class="nav-item dropdown ms-auto   ">
+                        <a class="nav-link nava " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                <div class="dropdown-menu">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <ul>
+                                                <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
+                                                <ul class="dropdown-menu">
+                                                     <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
+                                                     <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
+                                                     <li> <a class="dropdown-item" href="#"> 3 </a> </li>
+                                                     <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
+                                                </ul>
+                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
+                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
+                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
+                                                
+                                            </ul>
+                                        </div>
+                                        <div class="col-4">
+                                        <ul>
+                                               <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
+                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
+                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
+                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
+                                                </ul>
+                                        </div>
+                                        <div class="col-4">
+
+                                        <ul>
+                                        <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
+                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
+                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
+                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+
+
+
+
+
+
+                            <?php /*   <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
+                                <li class="nav-item dropdown ">
                                     <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="dropdown-menu cat-level-1">
+                                    <ul class="dropdown-menu cat-level-1 ">
                                         <?php foreach($categories as $category_level_1) { ?>
                                             <li>
                                                 <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-angle-right arrow-level-1"></i></a>
@@ -200,7 +248,7 @@ $web_settings = get_settings('web_settings', true);
                                         <?php } ?>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> */?>
                         </div>
                     <?php } ?>
 
