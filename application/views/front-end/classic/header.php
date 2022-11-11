@@ -183,11 +183,11 @@ $web_settings = get_settings('web_settings', true);
                                     <ul class="dropdown-menu cat-level-1">
                                         <?php foreach($categories as $category_level_1) { ?>
                                             <li>
-                                                <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-arrow-left arrow-level-1"></i></a>
+                                                <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-angle-right arrow-level-1"></i></a>
                                                 <ul class="cat-level-2">
                                                     <?php foreach($category_level_1['children'] as $category_level_2) { ?>
                                                         <li>
-                                                            <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-arrow-left arrow-level-2"></i></a>
+                                                            <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-angle-right arrow-level-2"></i></a>
                                                             <ul class="cat-level-3">
                                                                 <?php foreach($category_level_2['children'] as $category_level_3) { ?>
                                                                     <li><a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_3['slug'])) ?>"><?=html_escape(stripslashes($category_level_3['name']))?></a></li>
@@ -269,64 +269,6 @@ $web_settings = get_settings('web_settings', true);
     </div>
 </div>
 <?php /*
-<div class="shopping-cart-sidebar is-closed-right bg-white">
-    <input type="hidden" name="is_loggedin" id="is_loggedin" value="<?= (isset($user->id)) ? 1 : 0 ?>">
-    <div class="container header ">
-        <div class="row my-2 text-uppercase d-flex align-items-center">
-            <div class="col-8 title">
-                <h1><?= !empty($this->lang->line('shopping_cart')) ? $this->lang->line('shopping_cart') : 'Shopping Cart' ?></h1>
-            </div>
-            <div class="col-4 text-right close-sidebar"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : 'Close' ?> <i class="fa fa-times"></i></a></div>
-        </div>
-    </div>
-    <hr class="m-0">
-    <div class="text-center mt-2"><a class="button button-danger button-rounded" href="<?= base_url('products') ?>"> <?= !empty($this->lang->line('return_to_shop')) ? $this->lang->line('return_to_shop') : 'Return To Shop' ?></a></div>
-    <div class="shopping-cart-sm container bg-white rounded mt-4 mb-2" id="cart-item-sidebar">
-        <?php
-        if (isset($user->id)) {
-            $cart_items = $this->cart_model->get_user_cart($user->id);
-            if (count($cart_items) != 0) {
-                foreach ($cart_items as $items) {
-                    $price = $items['special_price'] != '' && $items['special_price'] > 0 && $items['special_price'] != null ? $items['special_price'] : $items['price'];
-        ?>
-                    <div class="row">
-                        <div class="cart-product product-sm col-md-12">
-                            <div class="product-image">
-                                <img class="pic-1 lazy" data-src="<?= base_url($items['image']) ?>" alt="<?= html_escape($items['name']) ?>" title="<?= html_escape($items['name']) ?>">
-                            </div>
-                            <div class="product-details">
-                                <?php $check_current_stock_status = validate_stock([$items['product_variant_id']], [$items['qty']]); ?>
-                                <div class="product-title"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['name']))) ?> <?= (isset($check_current_stock_status['error'])  && $check_current_stock_status['error'] == TRUE) ? "<span class='badge badge-danger'>  Out of Stock </span>" :  "" ?> </div>
-                                <span>
-                                    <?php if (!empty($items['product_variants'])) { ?>
-                                        <?= str_replace(',', ' | ', $items['product_variants'][0]['variant_values']) ?>
-                                    <?php } ?>
-                                </span>
-                                <p class="product-descriptions"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['short_description']))) ?></p>
-                            </div>
-                            <div class="product-pricing d-flex py-2 px-1 w-100">
-                                <div class="product-price align-self-center"><?= $settings['currency'] . ' ' . $price ?></div>
-                                <div class="product-quantity product-sm-quantity px-1">
-                                    <input type="number" name="header_qty" class="form-input" value="<?= $items['qty'] ?>" data-id="<?= $items['product_variant_id'] ?>" data-price="<?= $price ?>" min="<?= $items['minimum_order_quantity'] ?>" max="<?= $items['total_allowed_quantity'] ?>" step="<?= $items['quantity_step_size'] ?>">
-                                </div>
-                                <div class="product-sm-removal align-self-center">
-                                    <button class="remove-product button button-danger" data-id="<?= $items['product_variant_id'] ?>">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                                <div class="product-line-price align-self-center px-1"><?= $settings['currency'] . ' ' . number_format($items['qty'] * $price, 2) ?></div>
-                            </div>
-                        </div>
-                    </div>
-                <?php
-                } ?>
-            <?php } else { ?>
-                <h1 class="h4 text-center"><?= !empty($this->lang->line('empty_cart_message')) ? $this->lang->line('empty_cart_message') : 'Your Cart Is Empty' ?></h1>
-        <?php }
-        } ?>
-    </div>
-    <div class="text-center mt-2"><a class="button button-success button-rounded view_cart_button" href="<?= base_url('cart') ?>"><?= !empty($this->lang->line('view_cart')) ? $this->lang->line('view_cart') : 'View Cart' ?></a></div>
-</div>
 <div class='block-div' onclick="closeNav()"></div>
 <header id="header" class="topper-white header-varient">
     <div class="topbar topbar-text-color">

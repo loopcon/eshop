@@ -50,7 +50,7 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .navbar .dropdown { background-color: transparent !important;}
 .navbar ul.navbar-nav .nav-item.dropdown { font-size: 16px; }
 .navbar ul.navbar-nav .nav-item.dropdown a { line-height: 40px; }
-.navbar ul.navbar-nav .nav-item.dropdown .dropdown-menu a { line-height: normal; }
+.navbar ul.navbar-nav .nav-item.dropdown .dropdown-menu a { line-height: normal; padding: 0.25rem 1rem; }
 .nava {
     font-weight: 700;
     font-size: 1.1rem;
@@ -98,7 +98,7 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
     opacity: 0;
     pointer-events: none;
 }
-.nav-item ul.dropdown-menu li a i { opacity: 0; }
+.nav-item ul.dropdown-menu li a i { opacity: 0; float: right; line-height: 25px; }
 .nav-item ul.dropdown-menu li:hover a i.arrow-level-1, .nav-item ul.dropdown-menu li ul li:hover a i.arrow-level-2 { opacity: 1; }
 .nav-item ul.dropdown-menu li ul ul {
     top: 0;
@@ -110,9 +110,9 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
     display: block!important;
 }
 .nav-item ul.dropdown-menu li:hover ul.cat-level-2, .nav-item ul.dropdown-menu li ul li:hover ul.cat-level-3 { opacity: 1; pointer-events: visible; }
-.navbar .navbar-nav ul.cat-level-1 { height: 410px; }
-.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 { height: 410px; }
-.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 ul.cat-level-3 { height: 410px; }
+.navbar .navbar-nav ul.cat-level-1 { height: 410px; width: 350px; }
+.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 { height: 410px; width: 350px; border-left: 1px solid #DDDDDD; }
+.navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 ul.cat-level-3 { height: 410px; width: 350px }
 
 /* Categories start  */
 .catbg {
