@@ -177,54 +177,36 @@ $web_settings = get_settings('web_settings', true);
                     <?php } ?>
                     <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                        
-                        <div class="nav-item dropdown ms-auto   ">
-                        <a class="nav-link nava " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                <div class="dropdown-menu">
+                            <div class="nav-item dropdown ms-auto">
+                                <a class="nav-link nava " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                <div class="dropdown-menu category-menu">
                                     <div class="row">
                                         <div class="col-4">
-                                            <ul>
-                                                <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
-                                                <ul class="dropdown-menu">
-                                                     <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
-                                                     <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
-                                                     <li> <a class="dropdown-item" href="#"> 3 </a> </li>
-                                                     <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
-                                                </ul>
-                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
-                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
-                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
-                                                
+                                            <ul class="mb-2 mb-lg-0 cat-level-1">
+                                                <?php foreach($categories as $category_level_1) { ?>
+                                                    <li>
+                                                        <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-angle-right arrow-level-1"></i></a>
+                                                        <?php if(count($category_level_1['children']) > 0) { ?>
+                                                            <ul class="dropdown-menu cat-level-2">
+                                                                <?php foreach($category_level_1['children'] as $category_level_2) { ?>
+                                                                    <li>
+                                                                        <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-angle-right arrow-level-2"></i></a>
+                                                                        <ul class="cat-level-3">
+                                                                            <?php foreach($category_level_2['children'] as $category_level_3) { ?>
+                                                                                <li><a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_3['slug'])) ?>"><?=html_escape(stripslashes($category_level_3['name']))?></a></li>
+                                                                            <?php } ?>
+                                                                        </ul>
+                                                                    </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        <?php } ?>
+                                                    </li>
+                                                <?php } ?>
                                             </ul>
-                                        </div>
-                                        <div class="col-4">
-                                        <ul>
-                                               <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
-                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
-                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
-                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
-                                                </ul>
-                                        </div>
-                                        <div class="col-4">
-
-                                        <ul>
-                                        <li> <a class="dropdown-item" href="#"> 1 </a>  </li>
-                                                <li> <a class="dropdown-item" href="#"> 2 </a>  </li>
-                                                <li> <a class="dropdown-item" href="#"> 3 </a> </li>
-                                                <li> <a class="dropdown-item" href="#"> 4 </a>  </li>
-                                        </ul>
                                         </div>
                                     </div>
                                 </div>
-                        </div>
-
-
-
-
-
-
-
+                            </div>
                             <?php /*   <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
                                 <li class="nav-item dropdown ">
                                     <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
@@ -288,10 +270,11 @@ $web_settings = get_settings('web_settings', true);
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
                                         <span class="badge badge-danger badge-sm" id='cart-count'>
                                             <?php if($is_logged_in==1) { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?>
                                             <?php } else { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?></span>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?>
                                             <?php } ?>
+                                        </span>
                                     </a>
                                 </li>
                             <?php } else { ?>

@@ -149,6 +149,22 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 { height: 410px; width: 350px; border-left: 1px solid #DDDDDD; }
 .navbar .navbar-nav ul.cat-level-1 ul.cat-level-2 ul.cat-level-3 { height: 410px; width: 350px }
 
+.nav-item .category-menu { height: 400px; padding: 0px; }
+.nav-item .category-menu .row { height: 100%; }
+.nav-item .category-menu ul.cat-level-1 { height: 100%; border-right: 1px solid rgba(0, 0, 0, .15); }
+.nav-item .category-menu ul.cat-level-1 li { /* position: relative; */ padding: 5px 0px; }
+.nav-item .category-menu ul.cat-level-1 li a i { float: right; display: none; }
+.nav-item .category-menu ul.cat-level-1 li:hover a i { display: block; }
+.nav-item .category-menu ul.cat-level-1 li:hover ul.cat-level-2 { display: block; top: 0px; left: 429px; height: 399px; margin-top:0; overflow-y: auto; }
+
+.nav-item .category-menu ul.cat-level-1 ul.cat-level-2 { padding: 0; }
+.nav-item .category-menu ul.cat-level-1 ul.cat-level-2 li a i { float: right; display: none; }
+.nav-item .category-menu ul.cat-level-1 ul.cat-level-2 li:hover a i { display: block; opacity: 1; }
+.nav-item .category-menu ul.cat-level-1 ul.cat-level-2 li:hover ul.cat-level-3 { display: block; opacity: 1; }
+.nav-item .category-menu ul.cat-level-1 ul.cat-level-2 li:hover ul li { pointer-events: visible; }
+.nav-item .category-menu ul.cat-level-2 { box-shadow: none!important; }
+.nav-item .cat-level-1 .cat-level-2 .cat-level-3 { top: 0; left: 440px; border: 0px solid; height: 398px!important; }
+
 /* Categories start  */
 .catbg {
     background: #ffffff;
