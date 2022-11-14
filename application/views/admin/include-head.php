@@ -61,6 +61,10 @@
         csrfName = "<?= $this->security->get_csrf_token_name() ?>";
         csrfHash = "<?= $this->security->get_csrf_hash() ?>";
         form_name = '<?= '#' . $main_page . '_form' ?>';
+        main_category_1 = '';
+        main_category_2 = '';
+        main_category_3 = '';
+        main_category_4 = '';
     </script>
 
 </head>

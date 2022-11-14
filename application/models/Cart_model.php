@@ -20,19 +20,41 @@ class Cart_model extends CI_Model
         }
 
         for ($i = 0; $i < count($product_variant_id); $i++) {
-            $cart_data = [
-                'user_id' => $data['user_id'],
-                'product_variant_id' => $product_variant_id[$i],
-                'qty' => $qty[$i],
-                'is_saved_for_later' => (isset($data['is_saved_for_later']) && !empty($data['is_saved_for_later']) && $data['is_saved_for_later'] == '1') ? $data['is_saved_for_later'] : '0',
-            ];
-            if ($qty[$i] == 0) {
-                $this->remove_from_cart($cart_data);
-            } else {
-                if ($this->db->select('*')->where(['user_id' => $data['user_id'], 'product_variant_id' => $product_variant_id[$i]])->get('cart')->num_rows() > 0) {
-                    $this->db->set($cart_data)->where(['user_id' => $data['user_id'], 'product_variant_id' => $product_variant_id[$i]])->update('cart');
+            if($data['user_id'] > 0) {
+                $cart_data = [
+                    'user_id' => $data['user_id'],
+                    'product_variant_id' => $product_variant_id[$i],
+                    'qty' => $qty[$i],
+                    'is_saved_for_later' => (isset($data['is_saved_for_later']) && !empty($data['is_saved_for_later']) && $data['is_saved_for_later'] == '1') ? $data['is_saved_for_later'] : '0',
+                    'is_guest' => 0,
+                    'guest_user_id' => 0,
+                ];
+                if ($qty[$i] == 0) {
+                    $this->remove_from_cart($cart_data);
                 } else {
-                    $this->db->insert('cart', $cart_data);
+                    if ($this->db->select('*')->where(['user_id' => $data['user_id'], 'product_variant_id' => $product_variant_id[$i]])->get('cart')->num_rows() > 0) {
+                        $this->db->set($cart_data)->where(['user_id' => $data['user_id'], 'product_variant_id' => $product_variant_id[$i]])->update('cart');
+                    } else {
+                        $this->db->insert('cart', $cart_data);
+                    }
+                }
+            } else {
+                $cart_data = [
+                    'user_id' => 0,
+                    'product_variant_id' => $product_variant_id[$i],
+                    'qty' => $qty[$i],
+                    'is_saved_for_later' => (isset($data['is_saved_for_later']) && !empty($data['is_saved_for_later']) && $data['is_saved_for_later'] == '1') ? $data['is_saved_for_later'] : '0',
+                    'is_guest' => 1,
+                    'guest_user_id' => $data['guest_user_id'],
+                ];
+                if ($qty[$i] == 0) {
+                    $this->remove_from_cart($cart_data);
+                } else {
+                    if ($this->db->select('*')->where(['guest_user_id' => $data['guest_user_id'], 'product_variant_id' => $product_variant_id[$i]])->get('cart')->num_rows() > 0) {
+                        $this->db->set($cart_data)->where(['guest_user_id' => $data['guest_user_id'], 'product_variant_id' => $product_variant_id[$i]])->update('cart');
+                    } else {
+                        $this->db->insert('cart', $cart_data);
+                    }
                 }
             }
         }
@@ -41,8 +63,15 @@ class Cart_model extends CI_Model
 
     function remove_from_cart($data)
     {
-        if (isset($data['user_id']) && !empty($data['user_id'])) {
+        if (isset($data['user_id']) && !empty($data['user_id']) && $data['user_id'] > 0) {
             $this->db->where('user_id', $data['user_id']);
+            if (isset($data['product_variant_id'])) {
+                $product_variant_id = explode(',', $data['product_variant_id']);
+                $this->db->where_in('product_variant_id', $product_variant_id);
+            }
+            return $this->db->delete('cart');
+        } elseif (isset($data['guest_user_id']) && !empty($data['guest_user_id']) && $data['guest_user_id'] > 0) {
+            $this->db->where('guest_user_id', $data['guest_user_id']);
             if (isset($data['product_variant_id'])) {
                 $product_variant_id = explode(',', $data['product_variant_id']);
                 $this->db->where_in('product_variant_id', $product_variant_id);
@@ -53,14 +82,21 @@ class Cart_model extends CI_Model
         }
     }
 
-    function get_user_cart($user_id, $is_saved_for_later = 0, $product_variant_id = '')
+    function get_user_cart($user_id, $is_saved_for_later = 0, $product_variant_id = '', $is_guest = 0)
     {
-
-        $q = $this->db->join('product_variants pv', 'pv.id=c.product_variant_id')
-            ->join('products p', 'p.id=pv.product_id')
-            ->join('`taxes` tax', 'tax.id = p.tax', 'LEFT')
-            ->join('`seller_data` sd', 'sd.user_id = p.seller_id')
-            ->where(['c.user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+        if($is_guest==0) {
+            $q = $this->db->join('product_variants pv', 'pv.id=c.product_variant_id')
+                ->join('products p', 'p.id=pv.product_id')
+                ->join('`taxes` tax', 'tax.id = p.tax', 'LEFT')
+                ->join('`seller_data` sd', 'sd.user_id = p.seller_id')
+                ->where(['c.user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+        } else {
+            $q = $this->db->join('product_variants pv', 'pv.id=c.product_variant_id')
+                ->join('products p', 'p.id=pv.product_id')
+                ->join('`taxes` tax', 'tax.id = p.tax', 'LEFT')
+                ->join('`seller_data` sd', 'sd.user_id = p.seller_id')
+                ->where(['c.guest_user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+        }
         if (!empty($product_variant_id)) {
             $q->where('c.product_variant_id', $product_variant_id);
         }

@@ -21,17 +21,28 @@ class Cart extends CI_Controller
 
     public function index()
     {
-        if ($this->data['is_logged_in']) {
-            $this->data['main_page'] = 'cart';
-            $this->data['title'] = 'Product Cart | ' . $this->data['web_settings']['site_title'];
-            $this->data['keywords'] = 'Product Cart, ' . $this->data['web_settings']['meta_keywords'];
-            $this->data['description'] = 'Product Cart | ' . $this->data['web_settings']['meta_description'];
+        // if ($this->data['is_logged_in']) {
+        //     $this->data['main_page'] = 'cart';
+        //     $this->data['title'] = 'Product Cart | ' . $this->data['web_settings']['site_title'];
+        //     $this->data['keywords'] = 'Product Cart, ' . $this->data['web_settings']['meta_keywords'];
+        //     $this->data['description'] = 'Product Cart | ' . $this->data['web_settings']['meta_description'];
+        //     $this->data['cart'] = get_cart_total($this->data['user']->id);
+        //     $this->data['save_for_later'] = get_cart_total($this->data['user']->id, false, '1');
+        //     $this->load->view('front-end/' . THEME . '/template', $this->data);
+        // } else {
+        //     redirect(base_url());
+        // }
+        $this->data['main_page'] = 'cart';
+        $this->data['title'] = 'Product Cart | ' . $this->data['web_settings']['site_title'];
+        $this->data['keywords'] = 'Product Cart, ' . $this->data['web_settings']['meta_keywords'];
+        $this->data['description'] = 'Product Cart | ' . $this->data['web_settings']['meta_description'];
+        if ($this->data['is_logged_in']==1) {
             $this->data['cart'] = get_cart_total($this->data['user']->id);
-            $this->data['save_for_later'] = get_cart_total($this->data['user']->id, false, '1');
-            $this->load->view('front-end/' . THEME . '/template', $this->data);
         } else {
-            redirect(base_url());
+            $this->data['cart'] = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
         }
+        $this->data['save_for_later'] = get_cart_total($this->data['user']->id, false, '1');
+        $this->load->view('front-end/' . THEME . '/template', $this->data);
     }
 
     public function manage()
@@ -53,6 +64,8 @@ class Cart extends CI_Controller
                 'qty' => $this->input->post('qty', true),
                 'is_saved_for_later' => $this->input->post('is_saved_for_later', true),
                 'user_id' => $this->data['user']->id,
+                'is_guest' => 0,
+                'guest_user_id' => 0,
             );
 
             $_POST['user_id'] = $this->data['user']->id;
@@ -94,11 +107,68 @@ class Cart extends CI_Controller
                 return false;
             }
         } else {
-            $this->response['error'] = true;
-            $this->response['message'] = 'Please Login first to use Cart.';
-            $this->response['data'] = $this->data;
-            echo json_encode($this->response);
-            return false;
+            $this->form_validation->set_rules('product_variant_id', 'Product Variant', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('is_saved_for_later', 'Saved For Later', 'trim|xss_clean');
+            $_POST['qty'] = (isset($_POST['qty']) && $_POST['qty'] != '') ? $_POST['qty'] : 1;
+            $this->form_validation->set_rules('qty', 'Quantity', 'trim|xss_clean');
+            if (!$this->form_validation->run()) {
+                $this->response['error'] = true;
+                $this->response['message'] = validation_errors();
+                $this->response['data'] = array();
+                print_r(json_encode($this->response));
+                return false;
+            }
+            $data = array(
+                'product_variant_id' => $this->input->post('product_variant_id', true),
+                'qty' => $this->input->post('qty', true),
+                'is_saved_for_later' => $this->input->post('is_saved_for_later', true),
+                'user_id' => 0,
+                'is_guest' => 1,
+                'guest_user_id' => $_POST['guest_user_id'],
+            );
+
+            $settings = get_settings('system_settings', true);
+            $cart_count = get_guestuser_cart_count($_POST['guest_user_id']);
+            $is_variant_available_in_cart = is_variant_available_in_cart($_POST['product_variant_id'], $_POST['user_id']);
+            if (!$is_variant_available_in_cart) {
+                if ($cart_count[0]['total'] >= $settings['max_items_cart']) {
+                    $this->response['error'] = true;
+                    $this->response['message'] = 'Maximum ' . $settings['max_items_cart'] . ' Item(s) Can Be Added Only!';
+                    $this->response['data'] = array();
+                    print_r(json_encode($this->response));
+                    return;
+                }
+            }
+            $saved_for_later = (isset($_POST['is_saved_for_later']) && $_POST['is_saved_for_later'] != "") ? $this->input->post('is_saved_for_later', true) : 0;
+            $check_status = ($saved_for_later == 1) ? false : true;
+            if (!$this->cart_model->add_to_cart($data, $check_status)) {
+                if ($_POST['qty'] == 0) {
+                    $res = get_guestuser_cart_total($_POST['guest_user_id'], false);
+                } else {
+                    $res = get_guestuser_cart_total($_POST['guest_user_id'], $_POST['product_variant_id']);
+                }
+
+                $this->response['error'] = false;
+                $this->response['message'] = 'Item added to Cart.';
+                $this->response['data'] = [
+                    'total_quantity' => ($_POST['qty'] == 0) ? '0' : strval($_POST['qty']),
+                    'sub_total' => strval($res['sub_total']),
+                    'total_items' => (isset($res[0]['total_items'])) ? strval($res[0]['total_items']) : "0",
+                    'tax_percentage' => (isset($res['tax_percentage'])) ? strval($res['tax_percentage']) : "0",
+                    'tax_amount' => (isset($res['tax_amount'])) ? strval($res['tax_amount']) : "0",
+                    'cart_count' => (isset($res[0]['cart_count'])) ? strval($res[0]['cart_count']) : "0",
+                    'max_items_cart' => $this->data['settings']['max_items_cart'],
+                    'overall_amount' => $res['overall_amount'],
+                    'items' => $this->cart_model->get_user_cart($_POST['guest_user_id'], 0, '', 1),
+                ];
+                print_r(json_encode($this->response));
+                return false;
+            }
+            // $this->response['error'] = true;
+            // $this->response['message'] = 'Please Login first to use Cart.';
+            // $this->response['data'] = $this->data;
+            // echo json_encode($this->response);
+            // return false;
         }
     }
 
@@ -339,8 +409,12 @@ class Cart extends CI_Controller
     }
     public function checkout()
     {
-        if ($this->data['is_logged_in']) {
-            $cart = $this->cart_model->get_user_cart($this->data['user']->id);
+        // if ($this->data['is_logged_in']) {
+            if($this->data['is_logged_in']==0) {
+                $cart = $this->cart_model->get_user_cart($this->session->userdata['guest_user_id'], 0, '', 1);
+            } else {
+                $cart = $this->cart_model->get_user_cart($this->data['user']->id);
+            }
             if (empty($cart)) {
                 redirect(base_url());
             }
@@ -350,7 +424,11 @@ class Cart extends CI_Controller
             $this->data['title'] = 'Checkout | ' . $this->data['web_settings']['site_title'];
             $this->data['keywords'] = 'Checkout, ' . $this->data['web_settings']['meta_keywords'];
             $this->data['description'] = 'Checkout | ' . $this->data['web_settings']['meta_description'];
-            $cart_total_data = get_cart_total($this->data['user']->id);
+            if($this->data['is_logged_in']==0) {
+                $cart_total_data = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
+            } else {
+                $cart_total_data = get_cart_total($this->data['user']->id);
+            }
             $this->data['cart'] = $cart_total_data;
             $this->data['payment_methods'] = get_settings('payment_method', true);
             $this->data['time_slots'] = fetch_details('time_slots', 'status=1', '*');
@@ -376,17 +454,17 @@ class Cart extends CI_Controller
                 }
             }
             $this->data['currency'] = $currency;
+            $this->data['guest_user_id'] = $this->session->userdata['guest_user_id'];
             $this->load->view('front-end/' . THEME . '/template', $this->data);
-        } else {
-            redirect(base_url());
-        }
+        // } else {
+        //     redirect(base_url());
+        // }
     }
 
     public function place_order()
     {
-        if ($this->data['is_logged_in']) {
-            /*
-            mobile:9974692496
+        // if ($this->data['is_logged_in']) {
+            /* mobile:9974692496
             product_variant_id: 1,2,3
             quantity: 3,3,1
             latitude:40.1451
@@ -398,21 +476,22 @@ class Cart extends CI_Controller
             delivery_time:Today - Evening (4:00pm to 7:00pm)
             is_wallet_used:1 {By default 0}
             wallet_balance_used:1
-            active_status:awaiting {optional}
-      
-        */
+            active_status:awaiting {optional} */
+            
             // total:60.0
             // delivery_charge:20.0
             // tax_amount:10
             // tax_percentage:10
             // final_total:55
             $limit = (isset($_FILES['documents']['name'])) ? count($_FILES['documents']['name']) : 0;
-            if (!isset($_POST['address_id']) || empty($_POST['address_id'])) {
-                $this->response['error'] = true;
-                $this->response['message'] = "Please choose address.";
-                $this->response['data'] = array();
-                print_r(json_encode($this->response));
-                return false;
+            if ($this->data['is_logged_in']) {
+                if (!isset($_POST['address_id']) || empty($_POST['address_id'])) {
+                    $this->response['error'] = true;
+                    $this->response['message'] = "Please choose address.";
+                    $this->response['data'] = array();
+                    print_r(json_encode($this->response));
+                    return false;
+                }
             }
             $this->form_validation->set_rules('mobile', 'Mobile', 'trim|required|numeric|xss_clean');
             $this->form_validation->set_rules('product_variant_id', 'Product Variant Id', 'trim|required|xss_clean');
@@ -421,15 +500,17 @@ class Cart extends CI_Controller
             $this->form_validation->set_rules('order_note', 'Special Note', 'trim|xss_clean');
 
             /*
-        ------------------------------
-        If Wallet Balance Is Used
-        ------------------------------
-        */
+            ------------------------------
+            If Wallet Balance Is Used
+            ------------------------------
+            */
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('longitude', 'Longitude', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('delivery_date', 'Delivery Date', 'trim|xss_clean');
             $this->form_validation->set_rules('delivery_time', 'Delivery time', 'trim|xss_clean');
-            $this->form_validation->set_rules('address_id', 'Address id', 'trim|required|numeric|xss_clean', array('required' => 'Please choose address'));
+            if ($this->data['is_logged_in']) {
+                $this->form_validation->set_rules('address_id', 'Address id', 'trim|required|numeric|xss_clean', array('required' => 'Please choose address'));
+            }
 
             if ($_POST['payment_method'] == "Razorpay") {
                 $this->form_validation->set_rules('razorpay_order_id', 'Razorpay Order ID', 'trim|required|xss_clean');
@@ -447,6 +528,9 @@ class Cart extends CI_Controller
 
             $_POST['user_id'] = $this->data['user']->id;
             $_POST['customer_email'] = $this->data['user']->email;
+            if ($this->data['is_logged_in']==0) {
+                $_POST['customer_email'] = $this->input->post('email');
+            }
             $_POST['is_wallet_used'] = 0;
             $data = array();
             if (!$this->form_validation->run()) {
@@ -458,7 +542,7 @@ class Cart extends CI_Controller
             } else {
                 $_POST['order_note'] = (isset($_POST['order_note']) && !empty($_POST['order_note'])) ? $this->input->post("order_note", true) : NULL;
                 //checking for product availability 
-                $area_id = fetch_details('addresses', ['id' => $_POST['address_id']], 'area_id');
+                /* $area_id = fetch_details('addresses', ['id' => $_POST['address_id']], 'area_id');
                 $product_delivarable = check_cart_products_delivarable($area_id[0]['area_id'], $_POST['user_id']);
                 if (!empty($product_delivarable)) {
                     $product_not_delivarable = array_filter($product_delivarable, function ($var) {
@@ -475,7 +559,7 @@ class Cart extends CI_Controller
                         print_r(json_encode($this->response));
                         return;
                     }
-                }
+                } */
                 $product_variant_id = explode(',', $_POST['product_variant_id']);
                 for ($i = 0; $i < count($product_variant_id); $i++) {
                     $product_id = fetch_details("product_variants", ['id' => $product_variant_id[$i]], 'product_id');
@@ -646,9 +730,9 @@ class Cart extends CI_Controller
                 print_r(json_encode($this->response));
                 return false;
             }
-        } else {
-            return false;
-        }
+        // } else {
+        //     return false;
+        // }
     }
 
     public function validate_promo_code()
@@ -913,5 +997,16 @@ class Cart extends CI_Controller
                 return false;
             }
         }
+    }
+
+    public function save_localstorage_guest_user_id()
+    {
+        if($this->data['is_logged_in']==0) {
+            $this->session->set_userdata('guest_user_id', $_POST['guest_user_id']);
+        }
+        $this->response['csrfName'] = $this->security->get_csrf_token_name();
+        $this->response['csrfHash'] = $this->security->get_csrf_hash();
+        echo json_encode($this->response);
+        return false;
     }
 }

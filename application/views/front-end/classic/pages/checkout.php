@@ -20,16 +20,53 @@
                 <div class="col-xl-8 bg-white mt-5">
                     <h2 class="checkout-form-title"><?= !empty($this->lang->line('billing_details')) ? $this->lang->line('billing_details') : 'Billing Details' ?></h2>
                     <div class="ship-details-wrapper">
-                        <div class="align-item-center ship-title-details justify-content-between user-add d-flex">
-                            <h5 class="pb-3"><?= !empty($this->lang->line('shipping_address')) ? $this->lang->line('shipping_address') : 'Shipping Address' ?></h5>
-                            <a href="#" data-izimodal-open=".address-modal"><i class="fas fa-edit edit-icon"></i></a>
-                        </div>
-                        <div class="shipped-details mt-3">
-                            <p class="text-muted" id="address-name-type"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['name'] . ' - ' . ucfirst($default_address[0]['type']) : '' ?></p>
-                            <p class="text-muted" id="address-full"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['area'] . ' , ' . $default_address[0]['city'] : '' ?></p>
-                            <p class="text-muted" id="address-country"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['state'] . ' , ' . $default_address[0]['country'] . ' - ' . $default_address[0]['pincode'] : '' ?></p>
-                            <p class="text-muted" id="address-mobile"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : '' ?></p>
-                        </div>
+                        <?php if($is_logged_in==0) { ?>
+                            <input type="hidden" name="is_logged_in" value="<?=$is_logged_in?>" />
+                            <input type="hidden" name="guest_user_id" value="<?=$guest_user_id?>" />
+                            <div class="row mt-3">
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="lastname" placeholder="Lastname" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="Email" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="mobile" placeholder="Mobile" value="" required>
+                                </div>
+                                <div class="col-12 input-group pb-3">
+                                    <input type="text" class="form-control" name="address_line_1" placeholder="Address Line 1" value="" required>
+                                </div>
+                                <div class="col-12 input-group pb-3">
+                                    <input type="text" class="form-control" name="address_line_2" placeholder="Address Line 2" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="city" placeholder="City" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="state" placeholder="State" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="country" placeholder="Country" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <input type="text" class="form-control" name="zipcode" placeholder="Zipcode" value="" required>
+                                </div>
+                            </div>
+                        <?php } else { ?>
+                            <div class="align-item-center ship-title-details justify-content-between user-add d-flex">
+                                <h5 class="pb-3"><?= !empty($this->lang->line('shipping_address')) ? $this->lang->line('shipping_address') : 'Shipping Address' ?></h5>
+                                <a href="#" data-izimodal-open=".address-modal"><i class="fas fa-edit edit-icon"></i></a>
+                            </div>
+                            <div class="shipped-details mt-3">
+                                <p class="text-muted" id="address-name-type"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['name'] . ' - ' . ucfirst($default_address[0]['type']) : '' ?></p>
+                                <p class="text-muted" id="address-full"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['area'] . ' , ' . $default_address[0]['city'] : '' ?></p>
+                                <p class="text-muted" id="address-country"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['state'] . ' , ' . $default_address[0]['country'] . ' - ' . $default_address[0]['pincode'] : '' ?></p>
+                                <p class="text-muted" id="address-mobile"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : '' ?></p>
+                            </div>
+                        <?php } ?>
                         </br>
                         <!-- checking product deliverable or not  -->
                         <div id="deliverable_status">
@@ -54,8 +91,10 @@
                             <?php }
                             } ?>
                         </div>
-                        <input type="hidden" name="address_id" id="address_id" value="<?= isset($default_address) && !empty($default_address) ? $default_address[0]['id'] : '' ?>" />
-                        <input type="hidden" name="mobile" id="mobile" value="<?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : $wallet_balance[0]['mobile'] ?>" />
+                        <?php if($is_logged_in==1) { ?>
+                            <input type="hidden" name="address_id" id="address_id" value="<?= isset($default_address) && !empty($default_address) ? $default_address[0]['id'] : '' ?>" />
+                            <input type="hidden" name="mobile" id="mobile" value="<?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : $wallet_balance[0]['mobile'] ?>" />
+                        <?php } ?>
                     </div>
                     <hr>
                     <input type="hidden" name="total" value="<?= number_format($cart['sub_total'], 2) ?>">

@@ -334,6 +334,20 @@ class Order_model extends CI_Model
             }
             $order_data['notes'] = $data['order_note'];
 
+            if($data['is_logged_in']==0) {
+                $order_data['is_guest'] = 1;
+                $order_data['guest_user_id'] = $data['guest_user_id'];
+                $order_data['firstname'] = $data['firstname'];
+                $order_data['lastname'] = $data['lastname'];
+                $order_data['email'] = $data['email'];
+                $order_data['address_line_1'] = $data['address_line_1'];
+                $order_data['address_line_2'] = $data['address_line_2'];
+                $order_data['city'] = $data['city'];
+                $order_data['state'] = $data['state'];
+                $order_data['country'] = $data['country'];
+                $order_data['zipcode'] = $data['zipcode'];
+            }
+            
             $this->db->insert('orders', $order_data);
             $last_order_id = $this->db->insert_id();
 
@@ -355,6 +369,11 @@ class Order_model extends CI_Model
                     'active_status' => $status,
                     'otp' => ($system_settings['is_delivery_boy_otp_setting_on'] == '1') ? $otp : 0,
                 ];
+
+                if($data['is_logged_in']==0) {
+                    $product_variant_data[$i]['is_guest'] = 1;
+                    $product_variant_data[$i]['guest_user_id'] = $data['guest_user_id'];
+                }
 
                 $this->db->insert('order_items', $product_variant_data[$i]);
             }

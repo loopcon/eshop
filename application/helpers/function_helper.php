@@ -1756,6 +1756,102 @@ function get_cart_total($user_id, $product_variant_id = false, $is_saved_for_lat
     return $data;
 }
 
+function get_guestuser_cart_total($guest_user_id, $product_variant_id = false, $is_saved_for_later = '0', $address_id = '')
+{
+    $t = &get_instance();
+    $t->db->select('(select sum(c.qty)  from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id  where c.guest_user_id="' . $guest_user_id . '" and qty!=0  and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as total_items,(select count(c.id) from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id where c.guest_user_id="' . $guest_user_id . '" and qty!=0 and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as cart_count,`c`.qty,p.is_prices_inclusive_tax,p.cod_allowed,p.minimum_order_quantity,p.slug,p.quantity_step_size,p.total_allowed_quantity, p.name, p.image,p.short_description,`c`.user_id,pv.*,tax.percentage as tax_percentage,tax.title as tax_title');
+
+    if ($product_variant_id == true) {
+        $t->db->where(['c.product_variant_id' => $product_variant_id, 'c.guest_user_id' => $guest_user_id, 'c.qty !=' => '0']);
+    } else {
+        $t->db->where(['c.guest_user_id' => $guest_user_id, 'c.qty !=' => '0']);
+    }
+
+    if ($is_saved_for_later == 0) {
+        $t->db->where('is_saved_for_later', 0);
+    } else {
+        $t->db->where('is_saved_for_later', 1);
+    }
+
+    $t->db->join('product_variants pv', 'pv.id=c.product_variant_id');
+    $t->db->join('products p ', 'pv.product_id=p.id');
+    $t->db->join('seller_data sd ', 'sd.user_id=p.seller_id');
+    $t->db->join('`taxes` tax', 'tax.id = p.tax', 'LEFT');
+    $t->db->join('categories ctg', 'p.category_id = ctg.id', 'left');
+    $t->db->where(['p.status' => '1', 'pv.status' => 1, 'sd.status' => 1]);
+    $t->db->group_by('c.id')->order_by('c.id', "DESC");
+    $data = $t->db->get('cart c')->result_array();
+    $total = array();
+    $variant_id = array();
+    $quantity = array();
+    $percentage = array();
+    $amount = array();
+    $cod_allowed = 1;
+
+    for ($i = 0; $i < count($data); $i++) {
+
+        $tax_title = (isset($data[$i]['tax_title']) && !empty($data[$i]['tax_title'])) ? $data[$i]['tax_title'] : '';
+        $prctg = (isset($data[$i]['tax_percentage']) && intval($data[$i]['tax_percentage']) > 0 && $data[$i]['tax_percentage'] != null) ? $data[$i]['tax_percentage'] : '0';
+        $data[$i]['item_tax_percentage'] = $prctg;
+        $data[$i]['tax_title'] = $tax_title;
+        if ((isset($data[$i]['is_prices_inclusive_tax']) && $data[$i]['is_prices_inclusive_tax'] == 0) || (!isset($data[$i]['is_prices_inclusive_tax'])) && $prctg > 0) {
+            $price_tax_amount = $data[$i]['price'] * ($prctg / 100);
+            $special_price_tax_amount = $data[$i]['special_price'] * ($prctg / 100);
+        } else {
+            $price_tax_amount = 0;
+            $special_price_tax_amount = 0;
+        }
+        $data[$i]['image_sm'] = get_image_url($data[$i]['image'], 'thumb', 'sm');
+        $data[$i]['image_md'] = get_image_url($data[$i]['image'], 'thumb', 'md');
+        $data[$i]['image'] = get_image_url($data[$i]['image']);
+        if ($data[$i]['cod_allowed'] == 0) {
+            $cod_allowed = 0;
+        }
+        $variant_id[$i] = $data[$i]['id'];
+        $quantity[$i] = intval($data[$i]['qty']);
+       
+        if (floatval($data[$i]['special_price']) > 0) {
+            $total[$i] = floatval($data[$i]['special_price'] + $special_price_tax_amount) * $data[$i]['qty'];
+        } else {
+            $total[$i] = floatval($data[$i]['price'] + $price_tax_amount) * $data[$i]['qty'];
+        }
+        $data[$i]['special_price'] = $data[$i]['special_price'] + $special_price_tax_amount;
+        $data[$i]['price'] = $data[$i]['price'] + $price_tax_amount;
+
+        $percentage[$i] = (isset($data[$i]['tax_percentage']) && floatval($data[$i]['tax_percentage']) > 0) ? $data[$i]['tax_percentage'] : 0;
+        if ($percentage[$i] != NUll && $percentage[$i] > 0) {
+            $amount[$i] = (!empty($special_price_tax_amount)) ? $special_price_tax_amount : $price_tax_amount;
+        } else {
+            $amount[$i] = 0;
+            $percentage[$i] = 0;
+        }
+
+        $data[$i]['product_variants'] = get_variants_values_by_id($data[$i]['id']);
+    }
+    $total = array_sum($total);
+   
+    $system_settings = get_settings('system_settings', true);
+    $delivery_charge = $system_settings['delivery_charge'];
+    if (!empty($address_id)) {
+        $delivery_charge = get_delivery_charge($address_id, $total);
+    }
+    $delivery_charge = str_replace(",", "", $delivery_charge);
+    $overall_amt = 0;
+    $tax_amount = array_sum($amount);
+    $overall_amt = $total + $delivery_charge;
+    $data[0]['is_cod_allowed'] = $cod_allowed;
+    $data['sub_total'] = strval($total);
+    $data['quantity'] = strval(array_sum($quantity));
+    $data['tax_percentage'] = strval(array_sum($percentage));
+    $data['tax_amount'] = strval(array_sum($amount));
+    $data['total_arr'] = $total;
+    $data['variant_id'] = $variant_id;
+    $data['delivery_charge'] = $delivery_charge;
+    $data['overall_amount'] = strval($overall_amt);
+    $data['amount_inclusive_tax'] = strval($overall_amt + $tax_amount);
+    return $data;
+}
+
 function get_frontend_categories_html()
 {
     $t = &get_instance();
@@ -4025,6 +4121,17 @@ function get_cart_count($user_id)
     if (!empty($user_id)) {
         $ci->db->where('user_id', $user_id);
     }
+    $ci->db->where('qty !=', 0);
+    $ci->db->where('is_saved_for_later =', 0);
+    $ci->db->distinct();
+    $ci->db->select('count(id) as total');
+    $res = $ci->db->get('cart')->result_array();
+    return $res;
+}
+function get_guestuser_cart_count($guest_user_id)
+{
+    $ci = &get_instance();
+    $ci->db->where('guest_user_id', $guest_user_id);
     $ci->db->where('qty !=', 0);
     $ci->db->where('is_saved_for_later =', 0);
     $ci->db->distinct();

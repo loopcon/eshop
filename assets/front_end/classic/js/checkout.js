@@ -257,14 +257,16 @@ $(document).ready(function () {
             $('#place_order_btn').attr('disabled', false).html(btn_html);
             return false;
         }
-        var address_id = $('#address_id').val();
-        if (address_id == null || address_id == undefined || address_id == '') {
-            Toast.fire({
-                icon: 'error',
-                title: "Please add/choose address."
-            });
-            $('#place_order_btn').attr('disabled', false).html(btn_html);
-            return false;
+        if(is_loggedin==1) {
+            var address_id = $('#address_id').val();
+            if (address_id == null || address_id == undefined || address_id == '') {
+                Toast.fire({
+                    icon: 'error',
+                    title: "Please add/choose address."
+                });
+                $('#place_order_btn').attr('disabled', false).html(btn_html);
+                return false;
+            }
         }
         var payment_methods = $("input[name='payment_method']:checked").val();
         if (payment_methods == "Stripe") {
@@ -427,6 +429,7 @@ $(document).ready(function () {
                         title: data.message
                     });
                 }
+                localStorage.setItem("guest_user_id", 0);
             }
         })
     }

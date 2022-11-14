@@ -13,6 +13,7 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/products.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/star-rating.min.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/eshop-bundle-main.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/daterangepicker.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs-responsive.css' ?>" />
 <link rel="icon" href="<?= base_url($favicon) ?>" type="image/gif" sizes="16x16">
@@ -48,4 +49,21 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
             clickable: true,
         },
     });
+    save_localstorage_guest_user_id();
+    function save_localstorage_guest_user_id() {
+        var guest_user_id = localStorage.getItem('guest_user_id');
+        $.ajax({
+            type: 'POST',
+            url: base_url + 'cart/save_localstorage_guest_user_id',
+            data: {
+                [csrfName]: csrfHash,
+                guest_user_id: guest_user_id,
+            },
+            dataType: 'json',
+            success: function (result) {
+                csrfName = result.csrfName;
+                csrfHash = result.csrfHash;
+            }
+        });
+    }
 </script>

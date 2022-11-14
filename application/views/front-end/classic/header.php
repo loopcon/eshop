@@ -238,14 +238,25 @@ $web_settings = get_settings('web_settings', true);
                                 <li class="nav-item">
                                     <a href="<?= base_url('cart') ?>" class="">
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
-                                        <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
+                                        <span class="badge badge-danger badge-sm" id='cart-count'>
+                                            <?php if($is_logged_in==1) { ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
+                                            <?php } else { ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?></span>
+                                            <?php } ?>
                                     </a>
                                 </li>
                             <?php } else { ?>
                                 <li class="nav-item">
                                     <a href="javascript:void(0);" class="" onclick=openCartSidebar()>
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
-                                        <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
+                                        <span class="badge badge-danger badge-sm" id='cart-count'>
+                                            <?php if($is_logged_in==1) { ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?>
+                                            <?php } else { ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?>
+                                            <?php } ?>
+                                        </span>
                                     </a>
                                 </li>
                             <?php } ?>

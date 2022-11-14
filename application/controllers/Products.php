@@ -275,11 +275,16 @@ class Products extends CI_Controller
         $this->data['right_breadcrumb'] = array(
             '<a href="' . base_url('home/categories') . '">' . $category_lang . '</a>',
         );
-        $this->data['products'] = fetch_product($user_id, $filter, null, $category_id, $limit, $offset, $sort, $order);
+        $sub_categories = $this->category_model->sub_categories($category['id'], 1);
+        if(count($sub_categories) > 0) {
+            $this->data['products'] = array();
+        } else {
+            $this->data['products'] = fetch_product($user_id, $filter, null, $category_id, $limit, $offset, $sort, $order);
+        }
         $this->data['filters'] = (isset($this->data['products']['filters'])) ? json_encode($this->data['products']['filters']) : "";
         $this->data['filters_key'] = 'category_products_' . $category_slug;
         $this->data['single_category'] = $category;
-        $this->data['sub_categories'] = $this->category_model->sub_categories($category['id'], 1);
+        $this->data['sub_categories'] = $sub_categories;
         $this->data['page_main_bread_crumb'] = $page_title;
         $this->load->view('front-end/' . THEME . '/template', $this->data);
     }
