@@ -177,7 +177,7 @@ $web_settings = get_settings('web_settings', true);
                     <?php } ?>
                     <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <div class="nav-item dropdown ms-auto">
+                            <?php /* <div class="nav-item dropdown ms-auto">
                                 <a class="nav-link nava " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
                                 <div class="dropdown-menu category-menu">
                                     <div class="row">
@@ -206,8 +206,15 @@ $web_settings = get_settings('web_settings', true);
                                         </div>
                                     </div>
                                 </div>
+                            </div> */ ?>
+                            <div class="nav-item dropdown ms-auto marketplace-menu">
+                                <a class="nav-link nava marketplace" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                <div class="dropdown-menu category-menu">
+                                    <div class="row">
+                                    </div>
+                                </div>
                             </div>
-                            <?php /*   <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
+                            <?php /* <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
                                 <li class="nav-item dropdown ">
                                     <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
                                     <ul class="dropdown-menu cat-level-1 ">
@@ -235,14 +242,14 @@ $web_settings = get_settings('web_settings', true);
                     <?php } ?>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 user-login-menu">
                             <?php if ($this->ion_auth->logged_in()) { ?>
                                 <li class="nav-item dropdown active">
                                     <a class="m-1" data-toggle="dropdown" href="#"><i class="fas fa-user fa-lg link-color"></i>
                                         <span class="text-dark font-weight-bold"> <?= (isset($user->username) && !empty($user->username)) ? "Hello " . $user->username  : 'Login / Register' ?></span>
                                         <i class="fas fa-angle-down link-color"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-lg">
+                                    <div class="dropdown-menu dropdown-menu-lg after-login-menu">
                                         <a href="<?= base_url('my-account/wallet') ?>" class="dropdown-item"><i class="fas fa-wallet mr-2 text-primary link-color"></i> <?= $settings['currency'] . ' ' . number_format($user->balance, 2) ?></a>
                                         <a href="<?= base_url('my-account') ?>" class="dropdown-item"><i class="fas fa-user mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('profile')) ? $this->lang->line('profile') : 'Profile' ?> </a>
                                         <a href="<?= base_url('my-account/orders') ?>" class="dropdown-item"><i class="fas fa-history mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('orders')) ? $this->lang->line('orders') : 'Orders' ?> </a>
@@ -310,6 +317,54 @@ $web_settings = get_settings('web_settings', true);
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).on("click", ".marketplace", function() {
+        var categories = <?php echo json_encode($categories); ?>;
+        var level1 = '';
+        var level2 = '';
+        var level3 = '';
+        var html = '<div class="col-12 row">';
+        level1 += '<div class="col-4 mb-2 mb-lg-0 cat-level-1">';
+        level1 += '<ul>';
+        $.each(categories, function(i) {
+            level1 += '<li data-cat1slug="'+categories[i].slug+'" class="l1-menu"><a class="dropdown-item" href="'+base_url+'products/category/'+categories[i].slug+'">'+categories[i].name+' <i class="fa fa-angle-right arrow-level-1"></i></a></li>';
+            level2 += '<div id="'+categories[i].slug+'" class="col-4 mb-2 mb-lg-0 cat-level-2 d-none">';
+            if(categories[i]['children'].length > 0) {
+                level2 += '<ul>';
+                $.each(categories[i]['children'], function(j) {
+                    level2 += '<li data-cat2slug="'+categories[i]['children'][j].slug+'" class="l2-menu"><a class="dropdown-item" href="'+base_url+'products/category/'+categories[i]['children'][j].slug+'">'+categories[i]['children'][j].name+' <i class="fa fa-angle-right arrow-level-2"></i></a></li>';
+                    level3 += '<div id="'+categories[i]['children'][j].slug+'" class="col-4 mb-2 mb-lg-0 cat-level-3 d-none">';
+                    if(categories[i]['children'][j]['children'].length > 0) {
+                        level3 += '<ul>';
+                        $.each(categories[i]['children'][j]['children'], function(k) {
+                            level3 += '<li class="l3-menu"><a class="dropdown-item" href="'+base_url+'products/category/'+categories[i]['children'][j]['children'][k].slug+'">'+categories[i]['children'][j]['children'][k].name+'</a></li>';
+                        });
+                        level3 += '</ul>';
+                    }
+                    level3 += '</div>';
+                });
+                level2 += '</ul>';
+            }
+            level2 += '</div>';
+        });
+        level1 += '</ul>';
+        level1 += '</div>';
+        html += level1 + level2 + level3;
+        html += '</div>';
+        $(this).closest('.marketplace-menu').find('.category-menu .row').html(html);
+    });
+    $(document).on("mouseover", ".l1-menu", function() {
+        var cat1slug = $(this).data('cat1slug');
+        $('.cat-level-2').addClass('d-none');
+        $('.cat-level-3').addClass('d-none');
+        $('#'+cat1slug).removeClass('d-none');
+    });
+    $(document).on("mouseover", ".l2-menu", function() {
+        var cat2slug = $(this).data('cat2slug');
+        $('.cat-level-3').addClass('d-none');
+        $('#'+cat2slug).removeClass('d-none');
+    });
+</script>
 <?php /*
 <div class='block-div' onclick="closeNav()"></div>
 <header id="header" class="topper-white header-varient">
