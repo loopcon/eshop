@@ -106,7 +106,8 @@ $web_settings = get_settings('web_settings', true);
     <div class="text-center mt-2"><a class="button button-danger button-rounded" href="<?= base_url('products') ?>"> <?= !empty($this->lang->line('return_to_shop')) ? $this->lang->line('return_to_shop') : 'Return To Shop' ?></a></div>
     <div class="shopping-cart-sm container bg-white rounded mt-4 mb-2" id="cart-item-sidebar">
         <?php
-            if (isset($user->id)) {
+            // if (isset($user->id)) {
+            if ($is_logged_in) {
                 $cart_items = $this->cart_model->get_user_cart($user->id);
                 if (count($cart_items) != 0) {
                     foreach ($cart_items as $items) {
@@ -125,7 +126,50 @@ $web_settings = get_settings('web_settings', true);
                                 <?= str_replace(',', ' | ', $items['product_variants'][0]['variant_values']) ?>
                             <?php } ?>
                         </span>
-                        <p class="product-descriptions"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['short_description']))) ?></p>
+                        <?php /* <p class="product-descriptions"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['short_description']))) ?></p> */ ?>
+                    </div>
+                    <div class="product-pricing d-flex py-2 px-1 w-100">
+                        <div class="product-price align-self-center"><?= $settings['currency'] . ' ' . $price ?></div>
+                        <div class="product-quantity product-sm-quantity px-1">
+                            <input type="number" name="header_qty" class="form-input" value="<?= $items['qty'] ?>" data-id="<?= $items['product_variant_id'] ?>" data-price="<?= $price ?>" min="<?= $items['minimum_order_quantity'] ?>" max="<?= $items['total_allowed_quantity'] ?>" step="<?= $items['quantity_step_size'] ?>">
+                        </div>
+                        <div class="product-sm-removal align-self-center">
+                            <button class="remove-product button button-danger" data-id="<?= $items['product_variant_id'] ?>">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="product-line-price align-self-center px-1"><?= $settings['currency'] . ' ' . number_format($items['qty'] * $price, 2) ?></div>
+                    </div>
+                </div>
+            </div>
+        <?php
+                    }
+                } else {
+        ?>
+            <h1 class="h4 text-center"><?= !empty($this->lang->line('empty_cart_message')) ? $this->lang->line('empty_cart_message') : 'Your Cart Is Empty' ?></h1>
+        <?php
+                }
+            } else {
+                $user_id = $this->session->userdata('guest_user_id');
+                $cart_items = $this->cart_model->get_user_cart($user_id, 0, '', 1);
+                if (count($cart_items) != 0) {
+                    foreach ($cart_items as $items) {
+                        $price = $items['special_price'] != '' && $items['special_price'] > 0 && $items['special_price'] != null ? $items['special_price'] : $items['price'];
+        ?>
+            <div class="">
+                <div class="cart-product product-sm col-md-12">
+                    <div class="product-image">
+                        <img class="pic-1 lazy" data-src="<?= base_url($items['image']) ?>" alt="<?= html_escape($items['name']) ?>" title="<?= html_escape($items['name']) ?>">
+                    </div>
+                    <div class="product-details">
+                        <?php $check_current_stock_status = validate_stock([$items['product_variant_id']], [$items['qty']]); ?>
+                        <div class="product-title"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['name']))) ?> <?= (isset($check_current_stock_status['error'])  && $check_current_stock_status['error'] == TRUE) ? "<span class='badge badge-danger'>  Out of Stock </span>" :  "" ?> </div>
+                        <span>
+                            <?php if (!empty($items['product_variants'])) { ?>
+                                <?= str_replace(',', ' | ', $items['product_variants'][0]['variant_values']) ?>
+                            <?php } ?>
+                        </span>
+                        <?php /* <p class="product-descriptions"><?= strip_tags(output_escaping(str_replace('\r\n', '&#13;&#10;', $items['short_description']))) ?></p> */ ?>
                     </div>
                     <div class="product-pricing d-flex py-2 px-1 w-100">
                         <div class="product-price align-self-center"><?= $settings['currency'] . ' ' . $price ?></div>
@@ -166,47 +210,17 @@ $web_settings = get_settings('web_settings', true);
                     </button>
                     <?php if($this->router->fetch_class()!="home") { ?>
                         <div class="search-box-header">
-                            <form class="search">
+                            <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
                                 <div>
-                                    <input class="form-field search_product1" type="email" placeholder="Search for product">
-                                    <!--<select class='form-field search_product' name="search"></select>-->
-                                    <i class="fa-solid fa-magnifying-glass  searchiconheader "></i>
+                                    <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
+                                    <button type="submit"><i class="fa-solid fa-magnifying-glass  searchiconheader "></i></button>
                                 </div>
+                                <div id="search-list" class="d-none"></div>
                             </form>
                         </div>
                     <?php } ?>
                     <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <?php /* <div class="nav-item dropdown ms-auto">
-                                <a class="nav-link nava " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                <div class="dropdown-menu category-menu">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <ul class="mb-2 mb-lg-0 cat-level-1">
-                                                <?php foreach($categories as $category_level_1) { ?>
-                                                    <li>
-                                                        <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-angle-right arrow-level-1"></i></a>
-                                                        <?php if(count($category_level_1['children']) > 0) { ?>
-                                                            <ul class="dropdown-menu cat-level-2">
-                                                                <?php foreach($category_level_1['children'] as $category_level_2) { ?>
-                                                                    <li>
-                                                                        <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-angle-right arrow-level-2"></i></a>
-                                                                        <ul class="cat-level-3">
-                                                                            <?php foreach($category_level_2['children'] as $category_level_3) { ?>
-                                                                                <li><a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_3['slug'])) ?>"><?=html_escape(stripslashes($category_level_3['name']))?></a></li>
-                                                                            <?php } ?>
-                                                                        </ul>
-                                                                    </li>
-                                                                <?php } ?>
-                                                            </ul>
-                                                        <?php } ?>
-                                                    </li>
-                                                <?php } ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */ ?>
                             <div class="nav-item dropdown ms-auto marketplace-menu">
                                 <a class="nav-link nava marketplace" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
                                 <div class="dropdown-menu category-menu">
@@ -214,30 +228,6 @@ $web_settings = get_settings('web_settings', true);
                                     </div>
                                 </div>
                             </div>
-                            <?php /* <ul class="navbar-nav <?=($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index" ? "ms-auto" : ""); ?> mb-2 mb-lg-0">
-                                <li class="nav-item dropdown ">
-                                    <a class="nav-link nava" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                    <ul class="dropdown-menu cat-level-1 ">
-                                        <?php foreach($categories as $category_level_1) { ?>
-                                            <li>
-                                                <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_1['slug'])) ?>"><?=html_escape(stripslashes($category_level_1['name']))?> <i class="fa fa-angle-right arrow-level-1"></i></a>
-                                                <ul class="cat-level-2">
-                                                    <?php foreach($category_level_1['children'] as $category_level_2) { ?>
-                                                        <li>
-                                                            <a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_2['slug'])) ?>"><?=html_escape(stripslashes($category_level_2['name']))?> <i class="fa fa-angle-right arrow-level-2"></i></a>
-                                                            <ul class="cat-level-3">
-                                                                <?php foreach($category_level_2['children'] as $category_level_3) { ?>
-                                                                    <li><a class="dropdown-item" href="<?= base_url('products/category/' . html_escape($category_level_3['slug'])) ?>"><?=html_escape(stripslashes($category_level_3['name']))?></a></li>
-                                                                <?php } ?>
-                                                            </ul>
-                                                        </li>
-                                                    <?php } ?>
-                                                </ul>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                </li>
-                            </ul> */?>
                         </div>
                     <?php } ?>
 
@@ -277,9 +267,9 @@ $web_settings = get_settings('web_settings', true);
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
                                         <span class="badge badge-danger badge-sm" id='cart-count'>
                                             <?php if($is_logged_in==1) { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : '0'); ?>
                                             <?php } else { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 1)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 1)) : '0'); ?>
                                             <?php } ?>
                                         </span>
                                     </a>
@@ -290,9 +280,9 @@ $web_settings = get_settings('web_settings', true);
                                         <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
                                         <span class="badge badge-danger badge-sm" id='cart-count'>
                                             <?php if($is_logged_in==1) { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : '0'); ?>
                                             <?php } else { ?>
-                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 0)) : ''); ?>
+                                                <?= (count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 1)) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('guest_user_id'), 0, '', 1)) : '0'); ?>
                                             <?php } ?>
                                         </span>
                                     </a>
@@ -305,12 +295,12 @@ $web_settings = get_settings('web_settings', true);
 
             <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                 <div class="searchmain">
-                    <form class="search">
+                    <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
                         <div>
-                            <input class="form-field search_product1" type="email" placeholder="Search for product">
-                            <!--<select class='form-field search_product' name="search"></select>-->
-                            <i class="fa-solid fa-magnifying-glass  searchbox "></i>
+                            <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
+                            <button type="submit"><i class="fa-solid fa-magnifying-glass  searchbox "></i></button>
                         </div>
+                        <div id="search-list" class="d-none"></div>
                     </form>
                 </div>
             <?php } ?>

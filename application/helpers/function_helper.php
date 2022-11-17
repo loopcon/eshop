@@ -4436,3 +4436,13 @@ function labels($label, $alt = '')
         return trim($alt);
     }
 }
+
+function search_product($search)
+{
+    $t = &get_instance();
+    $t->db->select("id, name, slug");
+    $t->db->from("products");
+    $t->db->like("name", $search, "both");
+    $result = $t->db->get()->result_array();
+    return $result;
+}

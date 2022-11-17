@@ -645,4 +645,13 @@ class Home extends CI_Controller
             return false;
         }
     }
+
+    public function search_products()
+    {
+        $search = $this->input->post('search');
+        $products = search_product($search);
+        $this->response['data']['products'] = $products;
+        print_r(json_encode($this->response));
+        return false;
+    }
 }

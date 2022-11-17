@@ -922,7 +922,7 @@ $(function () {
                     $.each(result.data.items, function (i, e) {
                         var variant = typeof (e.product_variants.variant_values) != 'undefined' && e.product_variants.variant_values != null ? e.product_variants.variant_values : '';
                         var price = e.special_price < e.price && e.special_price != 0 ? e.special_price : e.price;
-                        html += '<div class="row">'
+                        html += '<div class="">'
                             + '<div class="cart-product product-sm col-md-12">'
                             + '<div class="product-image">'
                             + '<img class="pic-1" src="' + base_url + e.image + '" alt="Not Found">'
@@ -930,7 +930,7 @@ $(function () {
                             + '<div class="product-details">'
                             + '<div class="product-title">' + e.name + '</div>'
                             + '<span>' + variant + '</span>'
-                            + '<p class="product-descriptions">' + e.short_description + '</p>'
+                            // + '<p class="product-descriptions">' + e.short_description + '</p>'
                             + '</div>'
                             + '<div class="product-pricing d-flex py-2 px-1 w-100">'
                             + '<div class="product-price align-self-center">' + currency + ' ' + price + '</div>'
@@ -1355,7 +1355,7 @@ $(document).ready(function () {
         var is_save_for_later = typeof ($(this).data('is-save-for-later')) != 'undefined' && $(this).data('is-save-for-later') == 1 ? '1' : '0';
         var product = $(this).parent().parent().parent();
         if (confirm("Are you sure want to remove this?")) {
-            if (is_loggedin == 1) {
+            // if (is_loggedin == 1) {
                 // remove from server
                 $.ajax({
                     url: base_url + 'cart/remove',
@@ -1383,19 +1383,19 @@ $(document).ready(function () {
                         }
                     }
                 });
-            } else {
-                // remove from local storage
-                removeItem(product);
-                var cart = localStorage.getItem("cart");
-                cart = (localStorage.getItem("cart") !== null) ? JSON.parse(cart) : null;
-                if (cart) {
-                    var new_cart = cart.filter(function (item) { return item.product_variant_id != id });
-                    localStorage.setItem("cart", JSON.stringify(new_cart));
-                    if (cart)
-                        display_cart(new_cart);
-                }
+            // } else {
+            //     // remove from local storage
+            //     removeItem(product);
+            //     var cart = localStorage.getItem("cart");
+            //     cart = (localStorage.getItem("cart") !== null) ? JSON.parse(cart) : null;
+            //     if (cart) {
+            //         var new_cart = cart.filter(function (item) { return item.product_variant_id != id });
+            //         localStorage.setItem("cart", JSON.stringify(new_cart));
+            //         if (cart)
+            //             display_cart(new_cart);
+            //     }
 
-            }
+            // }
         }
     });
 
@@ -2527,7 +2527,7 @@ $(document).on('click', '.add_to_cart', function (e) {
                     $.each(result.data.items, function (i, e) {
                         var variant = typeof (e.product_variants.variant_values) != 'undefined' && e.product_variants.variant_values != null ? e.product_variants.variant_values : '';
                         var price = e.special_price < e.price && e.special_price != 0 ? e.special_price : e.price;
-                        html += '<div class="row">'
+                        html += '<div class="">'
                             + '<div class="cart-product product-sm col-md-12">'
                             + '<div class="product-image">'
                             + '<img class="pic-1" src="' + base_url + e.image + '" alt="Not Found">'
@@ -2535,7 +2535,7 @@ $(document).on('click', '.add_to_cart', function (e) {
                             + '<div class="product-details">'
                             + '<div class="product-title">' + e.name + '</div>'
                             + '<span>' + variant + '</span>'
-                            + '<p class="product-descriptions">' + e.short_description + '</p>'
+                            // + '<p class="product-descriptions">' + e.short_description + '</p>'
                             + '</div>'
                             + '<div class="product-pricing d-flex py-2 px-1 w-100">'
                             + '<div class="product-price align-self-center">' + currency + ' ' + price + '</div>'
@@ -4213,4 +4213,42 @@ $(document).on("submit", "#subscription-form", function(e) {
             }
         }
     });
+});
+
+$(document).on("keyup", "form.search input.search-input", function() {
+    var searchInput = $(this).val();
+    if(searchInput.length > 3) {
+        var formdata = new FormData();
+        formdata.append(csrfName, csrfHash);
+        formdata.append('search', searchInput);
+        $.ajax({
+            type: 'POST',
+            url: base_url + 'home/search_products',
+            data: formdata,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function () {
+            },
+            success: function (result) {
+                csrfName = result.csrfName;
+                csrfHash = result.csrfHash;
+                var products = result.data.products;
+                if(products.length) {
+                    var product_list = '<ul>';
+                    $.each(products, function(i) {
+                        console.log(products[i]);
+                        product_list += '<li><a href="'+base_url+'products/details/'+products[i].slug+'">'+products[i].name+'</a></li>';
+                    });
+                    product_list += '</ul>';
+                    $("#search-list").removeClass("d-none");
+                    $("#search-list").html(product_list);
+                }
+            }
+        });
+    } else {
+        $("#search-list").addClass("d-none");
+        $("#search-list").html('');
+    }
 });

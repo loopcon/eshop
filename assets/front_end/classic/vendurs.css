@@ -49,9 +49,10 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
   
 .dropdown-menu {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)!important;
-    width: 98% !important;  
+    /* width: 98% !important;   */
     margin-left: 1%;
 }
+.dropdown-menu.category-menu { width: 98%!important; }
 
 
 .shopthemenuhead{
@@ -120,11 +121,17 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
     margin-left: -45px;
 }
 .searchmain {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform:  translate( -50% , -50%);
+    /* position: absolute; */
+    /* top: 45%; */
+    /* left: 50%; */
+    /* transform:  translate( -50% , -50%); */
+    text-align: center;
+    margin-top: 150px;
 }
+.searchmain #search-list { margin: auto; width: 350px; background: #FFFFFF; }
+.searchmain #search-list ul li { list-style: none; padding: 10px 15px; text-align: start; border: 1px solid #D4ECFF; }
+.searchmain button { border: 0px; }
+.searchmain button i { margin-right: 10px; }
 .nav-item ul.dropdown-menu li ul {
     top: 0;
     position: absolute;
@@ -212,50 +219,6 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .category-list-section a:hover .cname { text-decoration: underline; }
 
 /* mekeup start  */
-.Lipstick {
-    background: url("img/Lipstick.png");
-    background-size: 100%;
-    height: 100%;
-    /* padding: auto; */
-}
-.lipstick2 {
-    background: url('img/lipstick2.png');
-    background-size: 100%;
-    height: 100%;
-}
-.lipstick3 {
-    background: url('img/lipstick3.png');
-    background-size: 100%;
-    height: 100%;
-    padding: auto;
-}
-.lipstick4 {
-    background: url('img/lipstick4.png');
-    background-size: 100%;
-    height: 100%;
-}
-.lipstick5 {
-    background: url('img/lipstick5.png');
-    background-size: 100%;
-    height: 100%;
-    padding: auto;
-}
-.lipstick6 {
-    background: url('img/lipstick6.png');
-    background-size: 100%;
-    height: 100%;
-    padding: auto;
-}
-.lipstick7 {
-    background: url('img/lipstick7.png');
-    background-size: 100%;
-    height: 100%;
-}
-.lipstick8 {
-    background: url('img/lipstick8.png');
-    background-size: 100%;
-    height: 100%;
-}
 .maktitle {
     text-align: center;
     font-size: 1rem;
@@ -421,7 +384,10 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .footer-cat-link a { text-decoration: none; color: #212529; }
 .footer-cat-link a:hover { text-decoration: underline!important; }
 .footer-cat-link strong a { font-weight: bold; }
-.search-box-header { border: 1px solid #212529; border-radius: 30px; }
+.search-box-header { border: 1px solid #212529; border-radius: 30px; position: relative; }
+.search-box-header #search-list { position: absolute; background: #FFFFFF; width: 89%; z-index: 1; margin-left: 22px; margin-top: 1px; }
+.search-box-header #search-list ul li { list-style: none; padding: 10px 15px; text-align: start; border: 1px solid #D4ECFF; }
+.search-box-header button { border: 0px; background: none; }
 .category-section .category-image img { width: 100%; height: 196px; }
 .category-section .cat-img-box { height: 245px; margin-bottom: 20px; border: 1px solid #CCCCCC; max-width: 174px; margin-right: 5px; margin-left: 5px; }
 

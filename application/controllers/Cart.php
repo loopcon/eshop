@@ -277,8 +277,12 @@ class Cart extends CI_Controller
             return false;
         } else {
             //Fetching cart items to check wheather cart is empty or not
-            $cart_total_response = get_cart_total($this->data['user']->id);
-            if (isset($_POST['is_save_for_later']) && empty($_POST['is_save_for_later'])) {
+            if($this->data['is_logged_in']) {
+                $cart_total_response = get_cart_total($this->data['user']->id);
+            } else {
+                $cart_total_response = get_cart_total($this->session->userdata('guest_user_id'));
+            }
+            if (isset($_POST['is_save_for_later']) && empty($_POST['is_save_for_later']) && $_POST['is_save_for_later']!=0) {
                 if (!isset($cart_total_response[0]['total_items'])) {
                     $this->response['error'] = true;
                     $this->response['message'] = 'Cart Is Already Empty !';
@@ -288,10 +292,17 @@ class Cart extends CI_Controller
                 }
             }
 
-            $data = array(
-                'user_id' => $this->data['user']->id,
-                'product_variant_id' => $this->input->post('product_variant_id', true),
-            );
+            if($this->data['is_logged_in']) {
+                $data = array(
+                    'user_id' => $this->data['user']->id,
+                    'product_variant_id' => $this->input->post('product_variant_id', true),
+                );
+            } else {
+                $data = array(
+                    'guest_user_id' => $this->session->userdata('guest_user_id'),
+                    'product_variant_id' => $this->input->post('product_variant_id', true),
+                );
+            }
             if ($this->cart_model->remove_from_cart($data)) {
                 $this->response['error'] = false;
                 $this->response['message'] = 'Removed From Cart !';
