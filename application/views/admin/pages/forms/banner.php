@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" >
-                                    <label for="image">Main Image <span class='text-danger text-sm'>*</span></label>
+                                    <label for="image">Banner Image <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
                                         <div class='col-md-3'>
                                             <a class="uploadFile img btn btn-primary text-white btn-sm" data-input='banner_input_image' data-isremovable='0' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a>

@@ -99,7 +99,7 @@ class Banner extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_banner'])) ? 'Banner Updated Successfully' : 'Banner Added Successfully';
+                $message = (isset($_POST['edit_banner'])) ? 'Banner Updated Successfully!' : 'Banner Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }

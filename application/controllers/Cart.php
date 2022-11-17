@@ -354,10 +354,44 @@ class Cart extends CI_Controller
                 return false;
             }
         } else {
-            $this->response['error'] = true;
-            $this->response['message'] = 'Please Login first to use Cart.';
-            echo json_encode($this->response);
-            return false;
+            $cart_total_response = get_guestuser_cart_total($this->session->userdata('guest_user_id'));
+            if (!isset($cart_total_response[0]['total_items'])) {
+                $this->response['error'] = true;
+                $this->response['message'] = 'Cart Is Already Empty !';
+                $this->response['data'] = array();
+                print_r(json_encode($this->response));
+                return;
+            }
+
+            $data = array(
+                'guest_user_id' => $this->session->userdata('guest_user_id'),
+            );
+            if ($this->cart_model->remove_from_cart($data)) {
+                $cart_total_response = get_guestuser_cart_total($data['user_id']);
+                $this->response['error'] = false;
+                $this->response['message'] = 'Product Clear From Cart !';
+                if (!empty($cart_total_response) && isset($cart_total_response)) {
+                    $this->response['data'] = [
+                        'total_quantity' => strval($cart_total_response['quantity']),
+                        'sub_total' => strval($cart_total_response['sub_total']),
+                        'total_items' => (isset($cart_total_response[0]['total_items'])) ? strval($cart_total_response[0]['total_items']) : "0",
+                        'max_items_cart' => $this->data['settings']['max_items_cart']
+                    ];
+                } else {
+                    $this->response['data'] = [];
+                }
+                print_r(json_encode($this->response));
+                return false;
+            } else {
+                $this->response['error'] = true;
+                $this->response['message'] = 'Cannot remove this Item from cart.';
+                echo json_encode($this->response);
+                return false;
+            }
+            // $this->response['error'] = true;
+            // $this->response['message'] = 'Please Login first to use Cart.';
+            // echo json_encode($this->response);
+            // return false;
         }
     }
 

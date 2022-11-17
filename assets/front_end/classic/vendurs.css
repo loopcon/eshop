@@ -127,6 +127,8 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
     /* transform:  translate( -50% , -50%); */
     text-align: center;
     margin-top: 150px;
+    position: relative;
+    z-index: 1;
 }
 .searchmain #search-list { margin: auto; width: 350px; background: #FFFFFF; }
 .searchmain #search-list ul li { list-style: none; padding: 10px 15px; text-align: start; border: 1px solid #D4ECFF; }
