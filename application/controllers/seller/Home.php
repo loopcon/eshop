@@ -15,7 +15,7 @@ class Home extends CI_Controller
 
     public function index()
     {
-        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             $user_id = $this->session->userdata('user_id');
             $user_res = $this->db->select('balance,username')->where('id', $user_id)->get('users')->result_array();
             $this->data['main_page'] = FORMS . 'home';
@@ -48,7 +48,7 @@ class Home extends CI_Controller
 
     public function profile()
     {
-        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             $identity_column = $this->config->item('identity', 'ion_auth');
             $settings = get_settings('system_settings', true);
             $user_id = $this->session->userdata('user_id');

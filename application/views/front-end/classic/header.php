@@ -253,6 +253,9 @@ $web_settings = get_settings('web_settings', true);
                                 <li class="nav-item">
                                     <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register" href="javascript:void(0);"> <?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
                                 </li>
+                                <li class="nav-item active">
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller" href="javascript:void(0);"> <?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
+                                </li>
                             <?php } ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>" class="m-2 "> </a>

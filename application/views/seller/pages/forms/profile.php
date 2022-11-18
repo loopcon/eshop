@@ -52,7 +52,7 @@
                                         <input type="email" class="form-control" id="email" placeholder="Enter Email" name="email" value="<?= @$fetched_data[0]['email'] ?>">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <?php /* <div class="form-group row">
                                     <label for="old" class="col-sm-2 col-form-label">Old Password</label>
                                     <div class="col-sm-10">
                                         <input type="password" class="form-control" id="old" placeholder="Type Password here" name="old">
@@ -69,7 +69,7 @@
                                     <div class="col-sm-10">
                                         <input type="password" class="form-control" id="new_confirm" placeholder="Type Confirm Password here" name="new_confirm">
                                     </div>
-                                </div>
+                                </div> */ ?>
                                 <div class="form-group row">
                                     <label for="address" class="col-sm-2 col-form-label">Address <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
@@ -183,17 +183,23 @@
                                         <input type="text" class="form-control" id="pan_number" placeholder="Pan Number" name="pan_number" value="<?= @$fetched_data[0]['pan_number'] ?>">
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Status <span class='text-danger text-sm'>*</span></label>
-                                    <div id="status" class="btn-group col-sm-4">
-                                        <label class="btn btn-default" data-toggle-class="btn-default" data-toggle-passive-class="btn-default">
-                                            <input type="radio" name="status" value="0" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '0') ? 'Checked' : '' ?>> Deactive
-                                        </label>
-                                        <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                            <input type="radio" name="status" value="1" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '1') ? 'Checked' : '' ?>> Active
-                                        </label>
+                                <?php if(!$this->ion_auth->is_seller()) { ?>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Status <span class='text-danger text-sm'>*</span></label>
+                                        <div id="status" class="btn-group col-sm-4">
+                                            <label class="btn btn-default" data-toggle-class="btn-default" data-toggle-passive-class="btn-default">
+                                                <input type="radio" name="status" value="0" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '0') ? 'Checked' : '' ?>> Deactive
+                                            </label>
+                                            <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                <input type="radio" name="status" value="1" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '1') ? 'Checked' : '' ?>> Active
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php } else { ?>
+                                    <div class="form-group row">
+                                        <input type="hidden" id="status" name="status" value="<?=$fetched_data[0]['status']?>" />
+                                    </div>
+                                <?php } ?>
                                 <div class="form-group row">
                                     <label for="national_identity_card" class="col-sm-2 col-form-label">National Identity Card <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">

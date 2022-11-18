@@ -47,7 +47,7 @@ class Login extends CI_Controller
             }
             $this->data['identity_column'] = $identity_column;
             $this->load->view('seller/login', $this->data);
-        } else if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        } else if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             redirect('seller/home', 'refresh');
         } else if ($this->ion_auth->logged_in() && $this->ion_auth->is_delivery_boy()) {
             redirect('delivery_boy/home', 'refresh');
@@ -88,7 +88,7 @@ class Login extends CI_Controller
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
 
             if (!isset($_POST['edit_seller'])) {
                 $this->form_validation->set_rules('store_logo', 'Store Logo', 'trim|xss_clean');

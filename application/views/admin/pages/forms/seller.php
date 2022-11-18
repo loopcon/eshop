@@ -220,6 +220,9 @@
                                         <label class="btn btn-danger" data-toggle-class="btn-danger" data-toggle-passive-class="btn-default">
                                             <input type="radio" name="status" value="2" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '2') ? 'Checked' : '' ?>> Not-Approved
                                         </label>
+                                        <label class="btn btn-warning" data-toggle-class="btn-warning" data-toggle-passive-class="btn-warning">
+                                            <input type="radio" name="status" value="3" <?= (isset($fetched_data[0]['status']) && $fetched_data[0]['status'] == '3') ? 'Checked' : '' ?>> Pending
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="form-group row">

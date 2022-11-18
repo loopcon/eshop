@@ -258,47 +258,47 @@
     <section class="hide" id="register_as_seller_div">
         <form id='register-as-seller-form' class='register-seller-form' action='<?= base_url('auth/register-seller') ?>' method="POST">
             <div class="row seller-signup">
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Business Name" id="store_name" name="store_name">
                     <?php echo form_error('store_name', '<div class="error">', '</div>'); ?>
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="First Name" id="first_name" name="first_name">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Last Name" id="last_name" name="last_name">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="email" class='form-input' placeholder="Email" id="seller_email" name="email">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Mobile" id="seller_mobile" name="mobile">
                 </div>
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="City" id="city" name="city">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="State" id="state" name="state">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
                 </div>
-                <div class="col-6 d-flex justify-content-center pb-4">
+                <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Country" id="country" name="country">
                 </div>
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Password" id="seller_password" name="password">
                 </div>
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
                 </div>
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms"><span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>
                 </div>
-                <div class="col-12 d-flex justify-content-center pb-4">
+                <div class="col-12 d-flex justify-content-center">
                     <div id='seller-registration-error' class='text-center p-3 text-danger'></div>
                 </div>
             </div>

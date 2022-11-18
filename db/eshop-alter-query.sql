@@ -13,3 +13,6 @@ ALTER TABLE `orders` ADD `address_line_1` VARCHAR(255) NOT NULL AFTER `mobile`, 
 
 ALTER TABLE `order_items` ADD `is_guest` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '(0:No|1:Yes)' AFTER `id`;
 ALTER TABLE `order_items` ADD `guest_user_id` INT(11) NOT NULL AFTER `user_id`;
+
+-- 18-11-2022
+ALTER TABLE `seller_data` CHANGE `status` `status` TINYINT(2) NOT NULL DEFAULT '3' COMMENT 'approved: 1 | not-approved: 2 | deactive:3 | deactive:0 | removed :7';

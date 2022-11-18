@@ -97,8 +97,8 @@ class Auth extends CI_Controller
                     if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember)) {
                         //if the login is successful
                         $seller_status = $this->ion_auth->seller_status($this->session->userdata('user_id'));
-                        $messages = array("0" => "Your acount is deactivated", "1" => "Logged in successfully", "2" => "Your account is not yet approved.", "7" => "Your account has been removed by the admin. Contact admin for more information.");
-                        if (!$this->input->is_ajax_request() && ($seller_status == '1' || $seller_status == '0')) {
+                        $messages = array("0" => "Your acount is deactivated.", "1" => "Logged in successfully.", "2" => "Your account is not yet approved.", "3" => "Logged in successfully and provide your remaining details.", "7" => "Your account has been removed by the admin. Contact admin for more information.");
+                        if (!$this->input->is_ajax_request() && ($seller_status == '1' || $seller_status == '0' || $seller_status == '3')) {
                             redirect('seller/home', 'refresh');
                         }
                         $response['error'] = false;
