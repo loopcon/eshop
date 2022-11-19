@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/style.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/star-rating.min.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/theme.css') ?>">
-    <!-- Eshop Custom CSS -->
+    <!-- Vendurs Custom CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/vendurs-custom.css') ?>">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300&display=swap" rel="stylesheet">

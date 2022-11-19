@@ -45,7 +45,7 @@ class Orders extends CI_Controller
             $this->data['main_page'] = FORMS . 'edit-orders';
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'View Order | ' . $settings['app_name'];
-            $this->data['meta_description'] = 'Eshop  | View Order | ' . $settings['app_name'];
+            $this->data['meta_description'] = 'Vendurs  | View Order | ' . $settings['app_name'];
             $res = $this->Order_model->get_order_details(['o.id' => $_GET['edit_id']]);
             if ($delivery_boy->id == $res[0]['delivery_boy_id'] && isset($_GET['edit_id']) && !empty($_GET['edit_id']) && !empty($res) && is_numeric($_GET['edit_id'])) {
                 $items = [];
