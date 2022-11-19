@@ -12,7 +12,7 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/style.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/products.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/star-rating.min.css' ?>" />
-<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/eshop-bundle-main.css' ?>" />
+<link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/vendurs-bundle-main.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'css/daterangepicker.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs.css' ?>" />
 <link rel="stylesheet" href="<?= THEME_ASSETS_URL . 'vendurs-responsive.css' ?>" />
@@ -35,7 +35,7 @@ $path = ($is_rtl == 1) ? 'rtl/' : "";
 
 <!-- swipper slider  -->
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script src="<?= THEME_ASSETS_URL . 'js/eshop-bundle-top-js.js' ?>"></script>
+<script src="<?= THEME_ASSETS_URL . 'js/vendurs-bundle-top-js.js' ?>"></script>
 <script type="text/javascript">
     base_url = "<?= base_url() ?>";
     currency = "<?= $settings['currency'] ?>";

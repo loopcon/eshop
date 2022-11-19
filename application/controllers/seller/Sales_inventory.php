@@ -18,7 +18,7 @@ class Sales_inventory extends CI_Controller
                               $this->data['main_page'] = TABLES . 'sales-inventory';
                               $settings = get_settings('system_settings', true);
                               $this->data['title'] = 'Sales Inventory Report Management |' . $settings['app_name'];
-                              $this->data['meta_description'] = 'eShop - Multivendor | Sales Inventory Report Management';
+                              $this->data['meta_description'] = 'Vendurs - Multivendor | Sales Inventory Report Management';
                               $this->load->view('seller/template', $this->data);
                     } else {
                               redirect('seller/login', 'refresh');

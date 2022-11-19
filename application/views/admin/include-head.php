@@ -48,8 +48,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/admin/css/jquery.fancybox.min.css') ?>" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/admin/custom/custom.css') ?>">
-    <!-- Eshop Custom CSS -->
-    <link rel="stylesheet" href="<?= base_url('assets/admin/css/eshop-custom.css') ?>">
+    <!-- Vendurs Custom CSS -->
+    <link rel="stylesheet" href="<?= base_url('assets/admin/css/vendurs-custom.css') ?>">
     <!-- jQuery -->
     <script src="<?= base_url('assets/admin/js/jquery.min.js') ?>"></script>
     <!-- Star rating js -->

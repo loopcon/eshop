@@ -20,7 +20,7 @@ class Sales_report extends CI_Controller
             $this->data['main_page'] = TABLES . 'sales-report';
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'Sales Report |' . $settings['app_name'];
-            $this->data['meta_description'] = 'eShop - Multivendor';
+            $this->data['meta_description'] = 'Vendurs - Multivendor';
             $this->load->view('seller/template', $this->data);
         } else {
             redirect('seller/login', 'refresh');
