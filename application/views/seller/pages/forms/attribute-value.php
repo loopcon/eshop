@@ -23,7 +23,7 @@
                     <div class="card card-info">
                         <!-- form start  -->
 
-                        <form class="form-horizontal form-submit-event" action="<?= base_url('admin/attribute_value/add_attribute_value'); ?>" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal form-submit-event" action="<?= base_url('seller/attribute_value/add_attribute_value'); ?>" method="POST" enctype="multipart/form-data">
                             <div class="card-body">
 
                                 <div class="form-group row">
