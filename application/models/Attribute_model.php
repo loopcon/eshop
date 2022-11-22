@@ -16,7 +16,9 @@ class Attribute_model extends CI_Model
         $data = escape_array($data);
 
         $attr_data = [
-            'name' => $data['name']
+            'name' => $data['name'],
+            'added_user_is' => $data['added_user_is'],
+            'added_by' => $data['added_by']
         ];
 
         if (isset($data['edit_attribute_set'])) {
@@ -64,6 +66,12 @@ class Attribute_model extends CI_Model
             $count_res->where($where);
         }
 
+        if($this->ion_auth->is_seller()) {
+            $attribute_added_by = ['attribute_set.added_user_is' => 'Seller', 'attribute_set.added_by' => $this->session->userdata('user_id')];
+        } else if($this->ion_auth->is_admin()) {
+            $attribute_added_by = ['attribute_set.added_user_is' => 'Admin', 'attribute_set.added_by' => $this->session->userdata('user_id')];
+        }
+        $count_res->where($attribute_added_by);
         $attr_count = $count_res->get('attribute_set')->result_array();
 
         foreach ($attr_count as $row) {
@@ -78,6 +86,7 @@ class Attribute_model extends CI_Model
             $search_res->where($where);
         }
 
+        $search_res->where($attribute_added_by);
         $city_search_res = $search_res->order_by($sort, $order)->limit($limit, $offset)->get('attribute_set')->result_array();
         $bulkData = array();
         $bulkData['total'] = $total;
@@ -87,24 +96,26 @@ class Attribute_model extends CI_Model
         foreach ($city_search_res as $row) {
             $row = output_escaping($row);
             if (!$this->ion_auth->is_seller()) {
-                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1 mb-1" title="Edit" data-id="' . $row['id'] . '" data-url="admin/attribute_set/"><i class="fa fa-pen"></i></a>';
+                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1" title="Edit" data-id="' . $row['id'] . '" data-url="admin/attribute_set/"><i class="fa fa-pen"></i></a>';
+            } else {
+                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1" title="Edit" data-id="' . $row['id'] . '" data-url="seller/attribute_set/"><i class="fa fa-pen"></i></a>';
             }
             if ($row['status'] == '1') {
                 $tempRow['status'] = '<a class="badge badge-success text-white" >Active</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-warning btn-xs update_active_status mr-1" data-table="attribute_set" title="Deactivate" href="javascript:void(0)" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye-slash"></i></a>';
-                }
+                // }
             } else {
                 $tempRow['status'] = '<a class="badge badge-danger text-white" >Inactive</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-primary mr-1 btn-xs update_active_status" data-table="attribute_set" href="javascript:void(0)" title="Active" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye"></i></a>';
-                }
+                // }
             }
             $tempRow['id'] = $row['id'];
             $tempRow['name'] = $row['name'];
-            if (!$this->ion_auth->is_seller()) {
+            // if (!$this->ion_auth->is_seller()) {
                 $tempRow['operate'] = $operate;
-            }
+            // }
             $rows[] = $tempRow;
         }
         $bulkData['rows'] = $rows;
@@ -117,7 +128,10 @@ class Attribute_model extends CI_Model
        
         $attr_data = [
             'name' => $data['name'],
-            'attribute_set_id' => $data['attribute_set']
+            'status' => '1',
+            'attribute_set_id' => $data['attribute_set'],
+            'added_user_is' => $data['added_user_is'],
+            'added_by' => $data['added_by']
         ];
         if (isset($data['edit_attribute'])) {
             $this->db->set($attr_data)->where('id', $data['edit_attribute'])->update('attributes');
@@ -135,6 +149,8 @@ class Attribute_model extends CI_Model
                 'swatche_type' => $data['swatche_type'][$i],
                 'swatche_value' => $data['swatche_value'][$i],
                 'status' => '1',
+                'added_user_is' => $data['added_user_is'],
+                'added_by' => $data['added_by'],
             ];
 
             if (isset($data['edit_attribute_value'])) {
@@ -289,6 +305,12 @@ class Attribute_model extends CI_Model
             $count_res->where($where);
         }
 
+        if($this->ion_auth->is_seller()) {
+            $attribute_added_by = ['attr_vals.added_user_is' => 'Seller', 'attr_vals.added_by' => $this->session->userdata('user_id')];
+        } else if($this->ion_auth->is_admin()) {
+            $attribute_added_by = ['attr_vals.added_user_is' => 'Admin', 'attr_vals.added_by' => $this->session->userdata('user_id')];
+        }
+        $count_res->where($attribute_added_by);
         $attr_count = $count_res->get('attribute_values attr_vals')->result_array();
 
         foreach ($attr_count as $row) {
@@ -302,6 +324,7 @@ class Attribute_model extends CI_Model
         if (isset($where) && !empty($where)) {
             $search_res->where($where);
         }
+        $search_res->where($attribute_added_by);
 
         $city_search_res = $search_res->order_by($sort, $order)->limit($limit, $offset)->get('attribute_values attr_vals')->result_array();
         $bulkData = array();
@@ -312,25 +335,27 @@ class Attribute_model extends CI_Model
         foreach ($city_search_res as $row) {
             $row = output_escaping($row);
             if (!$this->ion_auth->is_seller()) {
-                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1 mb-1" title="View" data-id="' . $row['id'] . '" data-url="admin/attribute_value/"><i class="fa fa-pen"></i></a>';
+                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1" title="View" data-id="' . $row['id'] . '" data-url="admin/attribute_value/"><i class="fa fa-pen"></i></a>';
+            } else {
+                $operate = ' <a href="javascript:void(0)" class="edit_btn btn btn-success btn-xs mr-1" title="View" data-id="' . $row['id'] . '" data-url="seller/attribute_value/"><i class="fa fa-pen"></i></a>';
             }
             $tempRow['id'] = $row['id'];
             $tempRow['name'] = $row['value'];
             $tempRow['attributes'] = $row['attr_name'];
             if ($row['status'] == '1') {
                 $tempRow['status'] = '<a class="badge badge-success text-white" >Active</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-warning btn-xs update_active_status mr-1" data-table="attribute_values" title="Deactivate" href="javascript:void(0)" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye-slash"></i></a>';
-                }
+                // }
             } else {
                 $tempRow['status'] = '<a class="badge badge-danger text-white" >Inactive</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-primary mr-1 btn-xs update_active_status" data-table="attribute_values" href="javascript:void(0)" title="Active" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye"></i></a>';
-                }
+                // }
             }
-            if (!$this->ion_auth->is_seller()) {
+            // if (!$this->ion_auth->is_seller()) {
                 $tempRow['operate'] = $operate;
-            }
+            // }
             $rows[] = $tempRow;
         }
         $bulkData['rows'] = $rows;

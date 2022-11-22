@@ -58,24 +58,24 @@
                             <p>Products <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a href="<?= base_url('seller/attribute_set/') ?>" class="nav-link">
                                     <i class="fa fa-cogs nav-icon"></i>
                                     <p>Attribute Sets</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                             <li class="nav-item">
-                                <a href="<?= base_url('seller/attribute/') ?>" class="nav-link">
+                                <a href="<?= base_url('seller/attributes/manage-attribute') ?>" class="nav-link">
                                     <i class="fas fa-sliders-h nav-icon"></i>
                                     <p>Attributes</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a href="<?= base_url('seller/attribute_value/') ?>" class="nav-link">
                                     <i class="fas fa-filter nav-icon"></i>
                                     <p>Attribute Values</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('seller/taxes/') ?>" class="nav-link">
                                     <i class="fas fa-percentage nav-icon"></i>

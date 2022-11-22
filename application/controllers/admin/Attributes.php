@@ -26,7 +26,7 @@ class Attributes extends CI_Controller
 			if (isset($_GET['edit_id'])) {
 				$this->data['fetched_data'] = fetch_details('attributes', ['id' => $_GET['edit_id']]);
 			}
-			$this->data['attribute_set'] = fetch_details('attribute_set', '');
+			$this->data['attribute_set'] = fetch_details('attribute_set', ['added_user_is' => "Admin", 'added_by' => $this->session->userdata('user_id')]);
 			$this->load->view('admin/template', $this->data);
 		} else {
 			redirect('admin/login', 'refresh');
@@ -97,6 +97,8 @@ class Attributes extends CI_Controller
 						return false;
 					}
 				}
+                $_POST['added_user_is'] = "Admin";
+                $_POST['added_by'] = $this->session->userdata('user_id');
 				$this->attribute_model->add_attributes($_POST);
 				$this->response['error'] = false;
 				$this->response['csrfName'] = $this->security->get_csrf_token_name();

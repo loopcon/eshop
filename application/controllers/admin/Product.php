@@ -77,6 +77,7 @@ class Product extends CI_Controller
                 ->join('attributes attr', 'attr.id=attr_val.attribute_id')
                 ->join('attribute_set attr_set', 'attr_set.id=attr.attribute_set_id')
                 ->where(['attr.status' => 1, 'attr_set.status' => 1])
+                ->where(['attr.added_user_is' => 'Admin', 'attr.added_by' => $this->session->userdata('user_id')])
                 ->get('attribute_values attr_val')->result_array();
 
             $attributes_refind = array();

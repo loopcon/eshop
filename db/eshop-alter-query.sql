@@ -16,3 +16,11 @@ ALTER TABLE `order_items` ADD `guest_user_id` INT(11) NOT NULL AFTER `user_id`;
 
 -- 18-11-2022
 ALTER TABLE `seller_data` CHANGE `status` `status` TINYINT(2) NOT NULL DEFAULT '3' COMMENT 'approved: 1 | not-approved: 2 | deactive:3 | deactive:0 | removed :7';
+
+-- 21-11-2022
+ALTER TABLE `attribute_set` ADD `added_by` INT(11) NOT NULL AFTER `status`;
+ALTER TABLE `attribute_set` ADD `added_user_is` ENUM('Seller','Admin') NULL DEFAULT NULL AFTER `status`;
+ALTER TABLE `attributes` ADD `added_by` INT(11) NOT NULL AFTER `status`;
+ALTER TABLE `attributes` ADD `added_user_is` ENUM('Seller','Admin') NULL DEFAULT NULL AFTER `status`;
+ALTER TABLE `attribute_values` ADD `added_by` INT(11) NOT NULL AFTER `status`;
+ALTER TABLE `attribute_values` ADD `added_user_is` ENUM('Seller','Admin') NULL DEFAULT NULL AFTER `status`;

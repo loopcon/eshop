@@ -15,10 +15,27 @@ class Attribute_value extends CI_Controller
     public function index()
     {
         if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
-            $this->data['main_page'] = TABLES . 'manage-attribute-value';
+            $this->data['main_page'] = FORMS . 'attribute-value';
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'Attribute Value | ' . $settings['app_name'];
             $this->data['meta_description'] = 'Attribute Value  | ' . $settings['app_name'];
+            if (isset($_GET['edit_id'])) {
+                $this->data['fetched_data'] = fetch_details('attribute_values', ['id' => $_GET['edit_id']]);
+            }
+            $this->data['attributes'] = fetch_details('attributes', '');
+            $this->load->view('seller/template', $this->data);
+        } else {
+            redirect('seller/login', 'refresh');
+        }
+    }
+
+    public function manage_attribute_value()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller()) {
+            $this->data['main_page'] = TABLES . 'manage-attribute-value';
+            $settings = get_settings('system_settings', true);
+            $this->data['title'] = 'Manage Attribute Value | ' . $settings['app_name'];
+            $this->data['meta_description'] = 'Manage Attribute Value  | ' . $settings['app_name'];
             $this->load->view('seller/template', $this->data);
         } else {
             redirect('seller/login', 'refresh');
