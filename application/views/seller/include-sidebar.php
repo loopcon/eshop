@@ -58,12 +58,12 @@
                             <p>Products <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <?php /* <li class="nav-item">
-                                <a href="<?= base_url('seller/attribute_set/') ?>" class="nav-link">
+                            <li class="nav-item">
+                                <a href="<?= base_url('seller/attribute_set/manage-attribute-set') ?>" class="nav-link">
                                     <i class="fa fa-cogs nav-icon"></i>
                                     <p>Attribute Sets</p>
                                 </a>
-                            </li> */ ?>
+                            </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('seller/attributes/manage-attribute') ?>" class="nav-link">
                                     <i class="fas fa-sliders-h nav-icon"></i>

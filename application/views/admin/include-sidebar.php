@@ -11,23 +11,17 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-flat" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item has-treeview">
                     <a href="<?= base_url('/admin/home') ?>" class="nav-link">
                         <i class="nav-icon  fas fa-th-large text-primary"></i>
-                        <p>
-                            Dashboard
-                        </p>
+                        <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon  fas fa-flag text-primary"></i>
-                        <p>
-                            Banner
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
+                        <p>Banner <i class="right fas fa-angle-left"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <?php if (has_permissions('read', 'banners')) { ?>
@@ -43,9 +37,7 @@
                 <li class="nav-item">
                     <a href="<?= base_url('admin/deals') ?>" class="nav-link">
                         <i class="nav-icon fas fa-handshake text-primary"></i>
-                        <p>
-                            Deals
-                        </p>
+                        <p>Deals</p>
                     </a>
                 </li>
 
@@ -53,10 +45,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart text-warning"></i>
-                            <p>
-                                Orders
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Orders <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'orders')) { ?>
@@ -91,10 +80,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-bullseye text-success"></i>
-                            <p>
-                                Categories
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Categories <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'categories')) { ?>
@@ -121,10 +107,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fab fa-adversal text-primary"></i>
-                            <p>
-                                Brands
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Brands <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'brands')) { ?>
@@ -143,10 +126,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-store text-danger"></i>
-                            <p>
-                                Sellers
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Sellers <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'seller')) { ?>
@@ -173,23 +153,17 @@
                     <li class="nav-item has-treeview ">
                         <a href="#" class="nav-link menu-open">
                             <i class="nav-icon fas fa-cubes text-primary"></i>
-                            <p>
-                                Products
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Products <i class="right fas fa-angle-left"></i></p>
                         </a>
-
                         <ul class="nav nav-treeview">
-
-                             <!-- <?php if (has_permissions('read', 'attribute_set')) { ?>
+                            <?php if (has_permissions('read', 'attribute_set')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/attribute_set/manage-attribute-set') ?>" class="nav-link">
                                         <i class="fa fa-cogs nav-icon"></i>
                                         <p>Attribute Sets</p>
                                     </a>
                                 </li>
-                            <?php } ?>  -->
-
+                            <?php } ?>
                             <?php if (has_permissions('read', 'attribute')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/attributes/manage-attribute') ?>" class="nav-link">
@@ -198,18 +172,14 @@
                                     </a>
                                 </li>
                             <?php } ?>
-
-
-                            <!-- <?php if (has_permissions('read', 'attribute_value')) { ?>
-
+                            <?php /* if (has_permissions('read', 'attribute_value')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/attribute_value/manage-attribute-value') ?>" class="nav-link">
                                         <i class="fas fa-filter nav-icon"></i>
                                         <p>Attribute Values</p>
                                     </a>
                                 </li>
-                            <?php } ?> -->
-
+                            <?php } */ ?>
                             <?php if (has_permissions('read', 'tax')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/taxes/manage-taxes') ?>" class="nav-link">
@@ -261,36 +231,27 @@
                         </ul>
                     </li>
                 <?php } ?>
-
                 <?php if (has_permissions('read', 'media')) { ?>
                     <li class="nav-item">
                         <a href="<?= base_url('admin/media/') ?>" class="nav-link">
                             <i class="nav-icon fas fa-icons text-danger"></i>
-                            <p>
-                                Media
-                            </p>
+                            <p>Media</p>
                         </a>
                     </li>
                 <?php } ?>
-
                 <?php if (has_permissions('read', 'home_slider_images')) { ?>
                     <li class="nav-item">
                         <a href="<?= base_url('admin/slider/manage-slider') ?>" class="nav-link">
                             <i class="nav-icon far fa-image text-success"></i>
-                            <p>
-                                Sliders
-                            </p>
+                            <p>Sliders</p>
                         </a>
                     </li>
                 <?php } ?>
-
                 <?php if (has_permissions('read', 'new_offer_images')) { ?>
                     <li class="nav-item">
                         <a href="<?= base_url('admin/offer/manage-offer') ?>" class="nav-link">
                             <i class="nav-icon fa fa-gift text-primary"></i>
-                            <p>
-                                Offers
-                            </p>
+                            <p>Offers</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -298,10 +259,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link menu-open">
                             <i class="nav-icon fas fa-ticket-alt text-danger"></i>
-                            <p>
-                                Support Tickets
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Support Tickets <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -323,9 +281,7 @@
                     <li class="nav-item">
                         <a href="<?= base_url('admin/promo-code/manage-promo-code') ?>" class="nav-link">
                             <i class="nav-icon fa fa-puzzle-piece text-warning"></i>
-                            <p>
-                                Promo code
-                            </p>
+                            <p>Promo code</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -333,10 +289,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link menu-open">
                             <i class="nav-icon fas fa-layer-group text-danger"></i>
-                            <p>
-                                Featured Sections
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Featured Sections <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -358,28 +311,25 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-user text-success"></i>
-                            <p>
-                                Customer
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
+                            <p>Customer <i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="<?= base_url('admin/customer/') ?>" class="nav-link">
                                     <i class="fas fa-users nav-icon"></i>
-                                    <p> View Customers </p>
+                                    <p>View Customers</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('admin/customer/addresses') ?>" class="nav-link">
                                     <i class="far fa-address-book nav-icon"></i>
-                                    <p> Addresses </p>
+                                    <p>Addresses</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('admin/transaction/view-transaction') ?>" class="nav-link">
                                     <i class="fas fa-money-bill-wave nav-icon "></i>
-                                    <p> Transactions </p>
+                                    <p>Transactions</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -388,7 +338,6 @@
                                     <p>Wallet Transactions</p>
                                 </a>
                             </li>
-
                         </ul>
                     </li>
                 <?php } ?>
@@ -396,9 +345,7 @@
                     <li class="nav-item has-treeview">
                         <a href="<?= base_url('admin/return-request') ?>" class="nav-link">
                             <i class="nav-icon fas fa-undo text-warning"></i>
-                            <p>
-                                Return Requests
-                            </p>
+                            <p>Return Requests</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -406,17 +353,14 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-id-card-alt text-info"></i>
-                            <p>
-                                Delivery Boys
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
+                            <p>Delivery Boys <i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'delivery_boy')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/delivery-boys/manage-delivery-boy') ?>" class="nav-link text-sm">
                                         <i class="fas fa-user-cog nav-icon "></i>
-                                        <p> Manage Delivery Boys </p>
+                                        <p>Manage Delivery Boys</p>
                                     </a>
                                 </li>
                             <?php } ?>
@@ -432,7 +376,7 @@
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/delivery-boys/manage-cash') ?>" class="nav-link text-sm">
                                         <i class="fas fa-money-bill-alt nav-icon "></i>
-                                        <p> Manage Cash Collection </p>
+                                        <p>Manage Cash Collection</p>
                                     </a>
                                 </li>
                             <?php } ?>
@@ -453,9 +397,7 @@
                     <li class="nav-item has-treeview">
                         <a href="<?= base_url('admin/Notification-settings/manage-notifications') ?>" class="nav-link">
                             <i class="nav-icon fas fa-paper-plane text-success"></i>
-                            <p>
-                                Send Notification
-                            </p>
+                            <p>Send Notification</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -463,9 +405,7 @@
                     <li class="nav-item has-treeview">
                         <a href="<?= base_url('admin/custom_notification') ?>" class="nav-link">
                             <i class="nav-icon fas fa-bell text-info"></i>
-                            <p>
-                                Custom message
-                            </p>
+                            <p>Custom message</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -473,10 +413,7 @@
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-wrench text-primary"></i>
-                            <p>
-                                System
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>System <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -577,14 +514,10 @@
                             </li> */ ?>
                         </ul>
                     </li>
-
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-globe-asia text-warning"></i>
-                            <p>
-                                Web Settings
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
+                            <p>Web Settings <i class="right fas fa-angle-left"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -624,10 +557,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-map-marked-alt text-danger"></i>
-                            <p>
-                                Location
-                                <i class="right fas fa-angle-left "></i>
-                            </p>
+                            <p>Location <i class="right fas fa-angle-left "></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <?php if (has_permissions('read', 'zipcodes')) { ?>
@@ -650,9 +580,7 @@
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/area/manage-areas') ?>" class="nav-link">
                                         <i class="fas fa-street-view nav-icon "></i>
-                                        <p>
-                                            Areas
-                                        </p>
+                                        <p>Areas</p>
                                     </a>
                                 </li>
                             <?php } ?>
@@ -660,9 +588,7 @@
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/area/manage_countries') ?>" class="nav-link">
                                         <i class="fas fa-solid fa-globe nav-icon "></i>
-                                        <p>
-                                            Countries
-                                        </p>
+                                        <p>Countries</p>
                                     </a>
                                 </li>
                             <?php } ?>
@@ -681,9 +607,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-chart-pie nav-icon text-primary"></i>
-                        <p>Reports
-                            <i class="right fas fa-angle-left "></i>
-                        </p>
+                        <p>Reports <i class="right fas fa-angle-left "></i></p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
@@ -708,20 +632,22 @@
                             <p class="text">FAQ</p>
                         </a>
                     </li>
-                    <?php }
-                $userData = get_user_permissions($this->session->userdata('user_id'));
-                if (!empty($userData)) {
-                    if ($userData[0]['role'] == 0 || $userData[0]['role'] == 1) {
-                    ?>
-                        <li class="nav-item mb-4">
-                            <a href="<?= base_url('admin/system-users/') ?>" class="nav-link">
-                                <i class="nav-icon fas fa-user-tie text-danger"></i>
-                                <p class="text">System Users</p>
-                            </a>
-                        </li>
+                <?php } ?>
                 <?php
+                    $userData = get_user_permissions($this->session->userdata('user_id'));
+                    if (!empty($userData)) {
+                        if ($userData[0]['role'] == 0 || $userData[0]['role'] == 1) {
+                ?>
+                    <li class="nav-item mb-4">
+                        <a href="<?= base_url('admin/system-users/') ?>" class="nav-link">
+                            <i class="nav-icon fas fa-user-tie text-danger"></i>
+                            <p class="text">System Users</p>
+                        </a>
+                    </li>
+                <?php
+                        }
                     }
-                } ?>
+                ?>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

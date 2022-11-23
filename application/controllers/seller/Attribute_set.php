@@ -27,6 +27,19 @@ class Attribute_set extends CI_Controller
         }
     }
 
+    public function manage_attribute_set()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller()) {
+            $this->data['main_page'] = TABLES . 'manage-attribute-set';
+            $settings = get_settings('system_settings', true);
+            $this->data['title'] = 'Manage Attribute Set | ' . $settings['app_name'];
+            $this->data['meta_description'] = 'Manage Attribute Set  | ' . $settings['app_name'];
+            $this->load->view('seller/template', $this->data);
+        } else {
+            redirect('seller/login', 'refresh');
+        }
+    }
+
     public function add_attribute_set()
     {
         // if (isset($_POST['edit_attribute_set'])) {
@@ -49,7 +62,7 @@ class Attribute_set extends CI_Controller
                 print_r(json_encode($this->response));
             } else {
                 if (isset($_POST['edit_attribute_set'])) {
-                    if (is_exist(['name' => $_POST['name']], 'attribute_set', $_POST['edit_attribute_set'])) {
+                    if (is_exist(['name' => $_POST['name'], 'added_user_is' => 'Seller', 'added_by' => $this->session->userdata('user_id')], 'attribute_set', $_POST['edit_attribute_set'])) {
                         $response["error"]   = true;
                         $response["message"] = "Name Already Exist ! Provide a unique name";
                         $response['csrfName'] = $this->security->get_csrf_token_name();

@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h4>Attribute Set</h4>
+                    <h4>Manage Attribute Set</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -19,8 +19,27 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                <div class="modal fade edit-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Edit Attribute Set</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body p-0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12 ">
                     <div class="card content-area p-4">
+                        <div class="card-header border-0">
+                            <div class="card-tools">
+                                <a href="<?= base_url() . 'seller/attribute_set/' ?>" class="btn btn-block  btn-outline-primary btn-sm">Add Attribute Set</a>
+                            </div>
+                        </div>
                         <div class="card-innr">
                             <div class="card-head">
                                 <h4 class="card-title">Attribute Set</h4>
@@ -35,6 +54,7 @@
                                         <th data-field="id" data-sortable="true">ID</th>
                                         <th data-field="name" data-sortable="false">Name</th>
                                         <th data-field="status" data-sortable="false">Status</th>
+                                        <th data-field="operate" data-sortable="true">Action</th>
                                     </tr>
                                 </thead>
                             </table>
