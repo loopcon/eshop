@@ -753,6 +753,7 @@ class Cart extends CI_Controller
                     $data['message'] = null;
                 }
 
+                $_POST['is_logged_in'] = $this->data['is_logged_in'];
                 $res = $this->order_model->place_order($_POST);
 
                 $order_item_id = fetch_details('order_items', ['order_id' => $res['order_id']], 'id,sub_total');

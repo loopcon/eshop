@@ -334,6 +334,8 @@ class Order_model extends CI_Model
             }
             $order_data['notes'] = $data['order_note'];
 
+            $order_data['is_guest'] = 0;
+            $order_data['guest_user_id'] = 0;
             if($data['is_logged_in']==0) {
                 $order_data['is_guest'] = 1;
                 $order_data['guest_user_id'] = $data['guest_user_id'];
@@ -647,7 +649,7 @@ class Order_model extends CI_Model
                 $discount_in_rupees = floor($discount_in_rupees);
                 $tempRow['id'] = $row['id'];
                 $tempRow['user_id'] = $row['user_id'];
-                $tempRow['name'] = $row['items'][0]['uname'];
+                $tempRow['name'] = ($row['items'][0]['uname']) ? $row['items'][0]['uname'] : $row['firstname']." ".$row['lastname'];
                 if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {
                     $tempRow['mobile'] = str_repeat("X", strlen($row['mobile']) - 3) . substr($row['mobile'], -3);
                 } else {
