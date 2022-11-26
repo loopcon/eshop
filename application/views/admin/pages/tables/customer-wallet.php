@@ -26,7 +26,7 @@
                             <div class="card-body">
                                 <input type="hidden" id='user_id' name='user_id'>
                                 <div class="form-group row">
-                                    <label for="customer" class="col-sm-4 col-form-label">Customer</label>
+                                    <label for="customer" class="col-sm-4 col-form-label">Customer <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" id="customer_dtls" readonly>
                                     </div>
@@ -41,13 +41,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="amount" class="col-sm-4 col-form-label">Amount</label>
+                                    <label for="amount" class="col-sm-4 col-form-label">Amount <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-8">
                                         <input type="number" class="form-control" id="amount" placeholder="Enter Amount" name="amount">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="message" class="col-sm-4 col-form-label">Message</label>
+                                    <label for="message" class="col-sm-4 col-form-label">Message <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-8">
                                         <textarea class="form-control" id="message" placeholder="Enter Message Here" name="message"></textarea>
                                     </div>

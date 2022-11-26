@@ -31,7 +31,7 @@
 
                   <label for="name" class="col-sm-2 col-form-label">Name <span class='text-danger text-sm'>*</span></label>
                   <div class="col-md-6">
-                    <input type="text" class="form-control" id="name" placeholder="Name" name="name" value="<?= @$fetched_data[0]['name'] ?>">
+                    <input type="text" class="form-control" id="name" maxlength="50" placeholder="Name" name="name" value="<?= @$fetched_data[0]['name'] ?>">
                   </div>
 
                   <!-- test code -->

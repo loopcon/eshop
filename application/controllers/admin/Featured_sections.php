@@ -53,7 +53,7 @@ class Featured_sections extends CI_Controller
             $this->form_validation->set_rules('title', ' Title ', 'trim|required|xss_clean');
             $this->form_validation->set_rules('short_description', ' Short Description ', 'trim|required|xss_clean');
             $this->form_validation->set_rules('style', ' Style ', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('product_type', ' Product Type ', 'trim|required|xss_clean', array('required' => 'Select Product Type'));
+            $this->form_validation->set_rules('product_type', ' Product Type ', 'trim|required|xss_clean', array('required' => 'Select Product Type!'));
             $this->form_validation->set_rules('product_ids[]', ' Product ', 'trim|xss_clean');
 
             if (!$this->form_validation->run()) {
@@ -141,7 +141,7 @@ class Featured_sections extends CI_Controller
             }
             if ($flag == true) {
                 $this->response['error'] = false;
-                $this->response['message'] = "Section order update successfully";
+                $this->response['message'] = "Section order update successfully!";
                 $response['csrfName'] = $this->security->get_csrf_token_name();
                 $response['csrfHash'] = $this->security->get_csrf_hash();
                 echo json_encode($this->response);

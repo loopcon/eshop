@@ -102,7 +102,7 @@ class Slider extends CI_Controller
         }
 
         $this->form_validation->set_rules('slider_type', 'Slider Type', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('image', 'Slider Image', 'trim|required|xss_clean', array('required' => 'Slider image is required'));
+        $this->form_validation->set_rules('image', 'Slider Image', 'trim|required|xss_clean', array('required' => 'Slider image is required.'));
         if (isset($_POST['slider_type']) && $_POST['slider_type'] == 'categories') {
             $this->form_validation->set_rules('category_id', 'Category', 'trim|required|xss_clean');
         }
@@ -122,7 +122,7 @@ class Slider extends CI_Controller
             $this->response['error'] = false;
             $this->response['csrfName'] = $this->security->get_csrf_token_name();
             $this->response['csrfHash'] = $this->security->get_csrf_hash();
-            $message = (isset($_POST['edit_slider'])) ? 'Slider Updated Successfully' : 'Slider Added Successfully';
+            $message = (isset($_POST['edit_slider'])) ? 'Slider Updated Successfully!' : 'Slider Added Successfully!';
             $this->response['message'] = $message;
             print_r(json_encode($this->response));
         }

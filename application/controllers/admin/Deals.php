@@ -98,7 +98,7 @@ class Deals extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_deal'])) ? 'Deal Updated Successfully' : 'Deal Added Successfully';
+                $message = (isset($_POST['edit_deal'])) ? 'Deal Updated Successfully!' : 'Deal Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }
@@ -135,7 +135,7 @@ class Deals extends CI_Controller
                 $this->response['error'] = true;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $this->response['message'] = 'Deleted Succesfully';
+                $this->response['message'] = 'Deleted Succesfully!';
                 print_r(json_encode($this->response));
             }
         } else {

@@ -69,7 +69,7 @@ class Brand extends CI_Controller
 
                 $this->form_validation->set_rules('brand_input_image', 'Image', 'trim|xss_clean');
             } else {
-                $this->form_validation->set_rules('brand_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Brand image is required'));
+                $this->form_validation->set_rules('brand_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Brand image is required.'));
             }
 
 
