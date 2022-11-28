@@ -36,7 +36,8 @@ class Area extends CI_Controller
             if (isset($_GET['edit_id'])) {
                 $this->data['fetched_data'] = fetch_details('areas', ['id' => $_GET['edit_id']]);
             }
-            $this->data['city'] = fetch_details('cities', '');
+            // $this->data['city'] = fetch_details('cities', '');
+            $this->data['country'] = fetch_details('countries', '');
             $this->data['zipcodes'] = fetch_details('zipcodes', '');
             $this->load->view('admin/template', $this->data);
         } else {
@@ -122,6 +123,8 @@ class Area extends CI_Controller
             }
 
             $this->form_validation->set_rules('area_name', ' Area Name ', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('country', ' Country ', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('state', ' State ', 'trim|required|xss_clean');
             $this->form_validation->set_rules('city', ' City ', 'trim|required|xss_clean');
             $this->form_validation->set_rules('zipcode', ' Zipcode ', 'trim|required|xss_clean');
             $this->form_validation->set_rules('minimum_free_delivery_order_amount', ' Minimum Free Delivery Amount ', 'trim|required|numeric|xss_clean');

@@ -5377,29 +5377,41 @@ $(".country_list").select2({
     placeholder: 'Search for countries',
 });
 
-$("#city_list").select2({
-    ajax: {
-        url: base_url + 'admin/area/get_cities',
-        type: "GET",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                search: params.term, // search term
-            };
-        },
-        processResults: function (response) {
-            return {
-                results: response
-            };
-        },
-        cache: true
-    },
-
-    minimumInputLength: 1,
+$("#country").select2({
     theme: 'bootstrap4',
-    placeholder: 'Search for cities',
-})
+});
+
+$("#state").select2({
+    theme: 'bootstrap4',
+});
+
+$("#s-city").select2({
+    theme: 'bootstrap4',
+});
+
+// $("#city_list").select2({
+//     ajax: {
+//         url: base_url + 'admin/area/get_cities',
+//         type: "GET",
+//         dataType: 'json',
+//         delay: 250,
+//         data: function (params) {
+//             return {
+//                 search: params.term, // search term
+//             };
+//         },
+//         processResults: function (response) {
+//             return {
+//                 results: response
+//             };
+//         },
+//         cache: true
+//     },
+
+//     minimumInputLength: 1,
+//     theme: 'bootstrap4',
+//     placeholder: 'Search for cities',
+// })
 $("#zipcode_list").select2({
     ajax: {
         url: base_url + 'admin/area/get_zipcode_list',
@@ -6461,7 +6473,6 @@ $(document).on('change', '#add_product_form #s-city', function() {
             $.each(areas, function(i) {
                 html += '<option value="'+areas[i]['id']+'">'+areas[i]['name']+'</option>';
             });
-            console.log($('#add_product_form #area').html());
             $('#add_product_form #area').html(html);
         }
     })

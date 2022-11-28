@@ -34,6 +34,8 @@ class Area_model extends CI_Model
 
         $area_data = [
             'name' => $data['area_name'],
+            'country_id' => $data['country'],
+            'state_id' => $data['state'],
             'city_id' => $data['city'],
             'zipcode_id' => $data['zipcode'],
             'minimum_free_delivery_order_amount' => $data['minimum_free_delivery_order_amount'],
@@ -104,7 +106,7 @@ class Area_model extends CI_Model
         }
 
         if ($table == 'areas') {
-            $search_res = $this->db->select(' areas.* , cities.name as city_name , zipcodes.zipcode as zipcode')->join('cities', 'areas.city_id=cities.id')->join('zipcodes', 'areas.zipcode_id=zipcodes.id');
+            $search_res = $this->db->select(' areas.*, cities.name as city_name, states.name as state_name, countries.name as country_name, zipcodes.zipcode as zipcode')->join('cities', 'areas.city_id=cities.id')->join('zipcodes', 'areas.zipcode_id=zipcodes.id')->join('countries', 'countries.id=areas.country_id')->join('states', 'states.id=areas.state_id');
         } else {
             $search_res = $this->db->select(' * ');
         }
@@ -132,6 +134,8 @@ class Area_model extends CI_Model
             $tempRow['name'] = $row['name'];
             if ($table == 'areas') {
                 $tempRow['city_name'] = $row['city_name'];
+                $tempRow['state_name'] = $row['state_name'];
+                $tempRow['country_name'] = $row['country_name'];
                 $tempRow['zipcode'] = $row['zipcode'];
                 $tempRow['minimum_free_delivery_order_amount'] = $row['minimum_free_delivery_order_amount'];
                 $tempRow['delivery_charges'] = $row['delivery_charges'];

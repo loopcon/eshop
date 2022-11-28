@@ -1012,6 +1012,8 @@ class Auth extends CI_Controller
                 'pincode' => $this->input->post('zipcode'),
                 'active' => 0
             ];
+            require_once('goshippo-client/lib/Shippo.php');
+            exit;
             $res = $this->ion_auth->register($identity, $password, $email, $additional_data, ['4']);
             update_details(['active' => 0], [$identity_column => $identity], 'users');
             $data = $this->db->select('u.id, u.username, u.email, u.mobile, u.city as city_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->group_by('email')->get('users u')->result_array();

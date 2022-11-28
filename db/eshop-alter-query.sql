@@ -30,3 +30,6 @@ ALTER TABLE `products` ADD `length` VARCHAR(100) NULL AFTER `description`, ADD `
 -- 25-11-2022
 ALTER TABLE `users` ADD `country` INT(11) NULL AFTER `country_code`, ADD `state` INT(11) NULL AFTER `country`;
 
+-- 28-11-2022
+ALTER TABLE `areas` ADD `country_id` INT(11) NULL AFTER `name`, ADD `state_id` INT(11) NULL AFTER `country_id`;
+
