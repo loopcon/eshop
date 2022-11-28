@@ -153,14 +153,14 @@ class Category extends CI_Controller
                 }
             }
 
-            $this->form_validation->set_rules('category_input_name', 'Category Name', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('category_input_name', 'Category Name', 'trim|required|xss_clean|');
             $this->form_validation->set_rules('banner', 'Banner', 'trim|xss_clean');
 
             if (isset($_POST['edit_category'])) {
 
                 $this->form_validation->set_rules('category_input_image', 'Image', 'trim|xss_clean');
             } else {
-                $this->form_validation->set_rules('category_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Category image is required'));
+                $this->form_validation->set_rules('category_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Category image is required.'));
             }
 
 
@@ -177,7 +177,7 @@ class Category extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_category'])) ? 'Category Updated Successfully' : 'Category Added Successfully';
+                $message = (isset($_POST['edit_category'])) ? 'Category Updated Successfully!' : 'Category Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }

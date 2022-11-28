@@ -28,7 +28,7 @@
                                     <input type="hidden" name="edit_attribute" value="<?= @$fetched_data[0]['id'] ?>">
                                 <?php  } ?>
                                 <div class="form-group row">
-                                    <label for="attribute_set" class="col-sm-2 col-form-label">Select Attribute Set <span class='text-danger text-sm'>*</span></label>
+                                    <label for="attribute_set" class="col-sm-2 col-form-label">Select Attribute Set<span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-5">
                                         <select class="form-control" id="attribute_set" name="attribute_set">
                                             <option value=""> None </option>

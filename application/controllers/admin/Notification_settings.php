@@ -283,7 +283,7 @@ class Notification_settings extends CI_Controller
             $this->response['notification'] = $fcmFields['notification'];
             $this->response['data'] = $fcmFields['data'];
             $this->response['error'] = false;
-            $this->response['message'] = 'Notification Sended Successfully';
+            $this->response['message'] = 'Notification Sent Successfully!';
             $this->response['csrfName'] = $this->security->get_csrf_token_name();
             $this->response['csrfHash'] = $this->security->get_csrf_hash();
             echo json_encode($this->response);

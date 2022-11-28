@@ -30,7 +30,7 @@
                                 <div class="form-group row">
                                     <label for="deal_input_title" class="col-sm-2 col-form-label">Title <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="deal_input_title" placeholder="Title" name="deal_input_title" value="<?= isset($fetched_data[0]['title'])?output_escaping($fetched_data[0]['title']):"" ?>">
+                                        <input type="text" class="form-control" id="deal_input_title" placeholder="Title" name="deal_input_title" maxlength="40" value="<?= isset($fetched_data[0]['title'])?output_escaping($fetched_data[0]['title']):"" ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -50,13 +50,13 @@
                                 <div class="form-group row">
                                     <label for="deal_input_time" class="col-sm-2 col-form-label">Time <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="deal_input_time" placeholder="Time" name="deal_input_time" value="<?= isset($fetched_data[0]['time_hours'])?output_escaping($fetched_data[0]['time_hours']):"" ?>">
+                                        <input type="number" class="form-control" id="deal_input_time" placeholder="Time" name="deal_input_time" value="<?= isset($fetched_data[0]['time_hours'])?output_escaping($fetched_data[0]['time_hours']):"" ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="deal_input_offer" class="col-sm-2 col-form-label">Offer <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="deal_input_offer" placeholder="Offer" name="deal_input_offer" value="<?= isset($fetched_data[0]['offer'])?output_escaping($fetched_data[0]['offer']):"" ?>">
+                                        <input type="number" class="form-control" id="deal_input_offer" placeholder="Offer" name="deal_input_offer"  value="<?= isset($fetched_data[0]['offer'])?output_escaping($fetched_data[0]['offer']):"" ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">

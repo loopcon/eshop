@@ -98,7 +98,7 @@ class Attribute_set extends CI_Controller
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
                 $this->response['message'] = 'Attribute Added Succesfully';
-                $message = (isset($_POST['edit_attribute_set'])) ? 'Attribute Set Updated Successfully' : 'Attribute Set Added Successfully';
+                $message = (isset($_POST['edit_attribute_set'])) ? 'Attribute Set Updated Successfully!' : 'Attribute Set Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }

@@ -29,13 +29,13 @@
                                 <div class="form-group row">
                                     <label for="title" class="col-sm-2 col-form-label">Title <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="title" placeholder="Title" name="title" value="<?= @$fetched_data[0]['title'] ?>">
+                                        <input type="text" class="form-control" id="title" placeholder="Title" name="title" maxlength="40" value="<?= @$fetched_data[0]['title'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="percentage" class="col-sm-2 col-form-label">Percentage <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="percentage" placeholder="Percentage" name="percentage" value="<?= @$fetched_data[0]['percentage'] ?>">
+                                        <input type="number" class="form-control" id="percentage" placeholder="Percentage" name="percentage" value="<?= @$fetched_data[0]['percentage'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">

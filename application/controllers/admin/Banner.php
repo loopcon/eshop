@@ -85,7 +85,7 @@ class Banner extends CI_Controller
             if (isset($_POST['edit_banner'])) {
                 $this->form_validation->set_rules('banner_input_image', 'Image', 'trim|xss_clean');
             } else {
-                $this->form_validation->set_rules('banner_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Banner image is required'));
+                $this->form_validation->set_rules('banner_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Banner image is required.'));
             }
 
             if (!$this->form_validation->run()) {

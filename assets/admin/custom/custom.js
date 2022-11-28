@@ -6092,7 +6092,7 @@ function load_attribute_section() {
 
     var html = ' <div class="form-group  row">' +
         '<div class="col-sm-4">' +
-        '<input type="text" step="any"  class="form-control"  placeholder="Enter Attribute Value" name="attribute_value[]" >' +
+        '<input type="text" step="any"  class="form-control" maxlength="40" placeholder="Enter Attribute Value" name="attribute_value[]" >' +
         '</div>' +
         '<div class="col-sm-4">' +
         '<select class="form-control swatche_type"  name="swatche_type[]">' +

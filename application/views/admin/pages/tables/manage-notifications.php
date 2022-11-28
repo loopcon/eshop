@@ -13,7 +13,7 @@
                         <li class="breadcrumb-item active">Send Notification</li>
                     </ol>
                 </div>
-            </div>
+            </div>  
         </div><!-- /.container-fluid -->
     </section>
     <section class="content">
@@ -116,7 +116,7 @@
                                 <div class="form-group">
                                     <label for="title" class="control-label ">Title <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" name="title" id="title" value="<?= (isset($fetched_data[0]['title']) ? $fetched_data[0]['title'] : '') ?>">
+                                        <input type="text" class="form-control" name="title" id="title" maxlength="50" value="<?= (isset($fetched_data[0]['title']) ? $fetched_data[0]['title'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -31,7 +31,7 @@
                                 <div class="form-group row">
                                     <label for="title" class="control-label">Title for section <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" name="title" id="title" value="<?= (isset($fetched_data[0]['title']) ? $fetched_data[0]['title'] : '') ?>" placeholder="Title">
+                                        <input type="text" class="form-control" name="title" id="title" maxlength="40" value="<?= (isset($fetched_data[0]['title']) ? $fetched_data[0]['title'] : '') ?>" placeholder="Title">
                                     </div>
                                 </div>
                                 <div class="form-group row">

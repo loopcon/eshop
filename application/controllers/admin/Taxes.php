@@ -99,7 +99,9 @@ class Taxes extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $this->response['message'] = 'Tax Details Added Successfully';
+                // $this->response['message'] = 'Tax Details Added Successfully';
+                $message = (isset($_POST['edit_tax_id'])) ? 'Tax Details Updated Successfully!' : 'Tax Details Added Successfully!';
+                $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }
         } else {
