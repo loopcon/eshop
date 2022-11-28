@@ -33,6 +33,13 @@ Common-Functions or events
 
 $(document).ready(function () {
     $('#loading').hide();
+
+    $('.numsOnly').keypress(function(e) {
+        if(e.keyCode >= 48 && e.keyCode <= 57) {
+            return true;
+        }
+        return false;
+    });
 });
 
 var from = 'admin';

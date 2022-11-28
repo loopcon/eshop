@@ -72,6 +72,27 @@ class Area extends CI_Controller
             redirect('admin/login', 'refresh');
         }
     }
+    public function manage_states()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) {
+            $this->data['main_page'] = TABLES . 'manage-states';
+            $settings = get_settings('system_settings', true);
+            $this->data['title'] = 'States Management | ' . $settings['app_name'];
+            $this->data['meta_description'] = ' States Management  | ' . $settings['app_name'];
+            $this->data['states'] = fetch_details('states', '');
+            $this->load->view('admin/template', $this->data);
+        } else {
+            redirect('admin/login', 'refresh');
+        }
+    }
+    public function state_list()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) {
+            return $this->Area_model->get_states_list();
+        } else {
+            redirect('admin/login', 'refresh');
+        }
+    }
     public function get_cities()
     {
         $search = $this->input->get('search');

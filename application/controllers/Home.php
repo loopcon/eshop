@@ -9,7 +9,7 @@ class Home extends CI_Controller
         parent::__construct();
         $this->load->database();
         $this->load->helper(['url', 'language', 'timezone_helper']);
-        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model', 'offer_model', 'banner_model', 'brand_model', 'home_model']);
+        $this->load->model(['address_model', 'category_model', 'cart_model', 'faq_model', 'offer_model', 'banner_model', 'brand_model', 'home_model', 'area_model']);
         $this->data['is_logged_in'] = ($this->ion_auth->logged_in()) ? 1 : 0;
         $this->data['user'] = ($this->ion_auth->logged_in()) ? $this->ion_auth->user()->row() : array();
         $this->data['settings'] = get_settings('system_settings', true);
@@ -651,6 +651,27 @@ class Home extends CI_Controller
         $search = $this->input->post('search');
         $products = search_product($search);
         $this->response['data']['products'] = $products;
+        print_r(json_encode($this->response));
+        return false;
+    }
+
+    public function get_states_by_country()
+    {
+        $country_id = $_POST['country_id'];
+        $states = $this->area_model->get_states_by_country($country_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $states['data'];
+        print_r(json_encode($this->response));
+        return false;
+    }
+
+    public function get_cities_by_state()
+    {
+        $country_id = $_POST['country_id'];
+        $state_id = $_POST['state_id'];
+        $states = $this->area_model->get_cities_by_state($country_id, $state_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $states['data'];
         print_r(json_encode($this->response));
         return false;
     }

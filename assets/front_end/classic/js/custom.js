@@ -4090,6 +4090,56 @@ $(document).on('click', '#login-as-seller', function() {
     $('#login_as_seller_div').removeClass('hide');
 });
 
+$(document).on('change', '#register_as_seller_div #country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#register_as_seller_div #state').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#register_as_seller_div #state', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#register_as_seller_div #country').val();
+    var state_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_cities_by_state',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var cities = response.data;
+            var html = '<option value="">Select city</option>';
+            $.each(cities, function(i) {
+                html += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+            });
+            $('#register_as_seller_div #city').html(html);
+        }
+    })
+});
+
 $(document).on('submit', '#register-as-seller-form', function (e) {
     e.preventDefault();
     $("#seller-registration-error").html('');

@@ -568,6 +568,14 @@
                                     </a>
                                 </li>
                             <?php } ?>
+                            <?php if (has_permissions('read', 'area')) { ?>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('admin/area/manage-areas') ?>" class="nav-link">
+                                        <i class="fas fa-street-view nav-icon "></i>
+                                        <p>Areas</p>
+                                    </a>
+                                </li>
+                            <?php } ?>
                             <?php if (has_permissions('read', 'city')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/area/manage-cities') ?>" class="nav-link">
@@ -578,9 +586,9 @@
                             <?php } ?>
                             <?php if (has_permissions('read', 'area')) { ?>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('admin/area/manage-areas') ?>" class="nav-link">
-                                        <i class="fas fa-street-view nav-icon "></i>
-                                        <p>Areas</p>
+                                    <a href="<?= base_url('admin/area/manage_states') ?>" class="nav-link">
+                                        <i class="fas fa-solid fa-globe nav-icon "></i>
+                                        <p>States</p>
                                     </a>
                                 </li>
                             <?php } ?>

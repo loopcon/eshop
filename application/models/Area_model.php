@@ -377,12 +377,8 @@ class Area_model extends CI_Model
         $data =  file_get_contents(base_url('countries.sql'));
     }
 
-    public function get_countries_list(
-        $offset = 0,
-        $limit = 10,
-        $sort = 'id',
-        $order = 'ASC'
-    ) {
+    public function get_countries_list($offset = 0, $limit = 10, $sort = 'id', $order = 'ASC')
+    {
         $multipleWhere = '';
 
         if (isset($_GET['offset']))
@@ -446,5 +442,142 @@ class Area_model extends CI_Model
         }
         $bulkData['rows'] = $rows;
         print_r(json_encode($bulkData));
+    }
+
+    public function get_states_list($offset = 0, $limit = 10, $sort = 'states.id', $order = 'ASC')
+    {
+        $multipleWhere = '';
+
+        if (isset($_GET['offset']))
+            $offset = $_GET['offset'];
+        if (isset($_GET['limit']))
+            $limit = $_GET['limit'];
+
+        if (isset($_GET['sort']))
+            if ($_GET['sort'] == 'id') {
+                $sort = "id";
+            } else {
+                $sort = $_GET['sort'];
+            }
+        if (isset($_GET['order']))
+            $order = $_GET['order'];
+
+        if (isset($_GET['search']) and $_GET['search'] != '') {
+            $search = $_GET['search'];
+            $multipleWhere = ['states.name' => $search, 'countries.name' => $search];
+        }
+
+        $count_res = $this->db->select(' COUNT(states.id) as `total` ')->join('countries', 'countries.id=states.country_id');
+
+        if (isset($multipleWhere) && !empty($multipleWhere)) {
+            $count_res->or_like($multipleWhere);
+        }
+        if (isset($where) && !empty($where)) {
+            $count_res->where($where);
+        }
+
+        $attr_count = $count_res->get('states')->result_array();
+
+        foreach ($attr_count as $row) {
+            $total = $row['total'];
+        }
+
+        $search_res = $this->db->select('states.id, states.name as state_name, countries.name as country_name');
+        if (isset($multipleWhere) && !empty($multipleWhere)) {
+            $search_res->or_like($multipleWhere);
+        }
+        if (isset($where) && !empty($where)) {
+            $search_res->where($where);
+        }
+
+        $city_search_res = $search_res->join('countries', 'countries.id=states.country_id')->order_by($sort, $order)->limit($limit, $offset)->get('states')->result_array();
+        $bulkData = array();
+        $bulkData['total'] = $total;
+        $rows = array();
+        $tempRow = array();
+        foreach ($city_search_res as $row) {
+            $row = output_escaping($row);
+            $tempRow['id'] = $row['id'];
+            $tempRow['state_name'] = $row['state_name'];
+            $tempRow['country_name'] = $row['country_name'];
+            $rows[] = $tempRow;
+        }
+        $bulkData['rows'] = $rows;
+        print_r(json_encode($bulkData));
+    }
+
+    function get_states_by_country($country_id, $sort = "s.name", $order = "ASC", $search = "", $limit = '', $offset = '')
+    {
+        $multipleWhere = '';
+        $where = array();
+        if (!empty($search)) {
+            $multipleWhere = [
+                's.name' => $search
+            ];
+        }
+        if ($country_id != '') {
+            $where['country_id'] = $country_id;
+        }
+        $search_res = $this->db->select('s.*');
+        if (isset($multipleWhere) && !empty($multipleWhere)) {
+            $search_res->group_start();
+            $search_res->or_like($multipleWhere);
+            $search_res->group_end();
+        }
+        if (isset($where) && !empty($where)) {
+            $search_res->where($where);
+        }
+        if($limit!='' && $offset!='') {
+            $search_res->limit($limit, $offset);
+        }
+        $states = $search_res->order_by($sort, $order)->get('states s')->result_array();
+        $bulkData = array();
+        $bulkData['error'] = (empty($states)) ? true : false;
+        if (!empty($states)) {
+            for ($i = 0; $i < count($states); $i++) {
+                $states[$i] = output_escaping($states[$i]);
+            }
+        }
+        $bulkData['data'] = (empty($states)) ? [] : $states;
+        return $bulkData;
+    }
+
+    function get_cities_by_state($country_id, $state_id, $sort = "c.name", $order = "ASC", $search = "", $limit = '', $offset = '')
+    {
+        $multipleWhere = '';
+        $where = array();
+        if (!empty($search)) {
+            $multipleWhere = [
+                'c.name' => $search
+            ];
+        }
+        if ($country_id != '') {
+            $where['country_id'] = $country_id;
+        }
+        if ($state_id != '') {
+            $where['state_id'] = $state_id;
+        }
+        $search_res = $this->db->select('c.*');
+        if (isset($multipleWhere) && !empty($multipleWhere)) {
+            $search_res->group_start();
+            $search_res->or_like($multipleWhere);
+            $search_res->group_end();
+        }
+        if (isset($where) && !empty($where)) {
+            $search_res->where($where);
+        }
+        if($limit!='' && $offset!='') {
+            $search_res->limit($limit, $offset);
+        }
+        $cities = $search_res->order_by($sort, $order)->get('cities c')->result_array();
+        $bulkData = array();
+        $bulkData['error'] = (empty($cities)) ? true : false;
+        if (!empty($cities)) {
+            for ($i = 0; $i < count($cities); $i++) {
+                $cities[$i] = output_escaping($cities[$i]);
+            }
+        }
+        $bulkData['data'] = (empty($cities)) ? [] : $cities;
+        return $bulkData;
     }
 }

@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <!-- Category List - Start -->
+    <?php /* <!-- Category List - Start -->
     <div class="p-4">
         <div class="container container-fluid">
             <?php $categories = get_categories(); ?>
@@ -90,7 +90,7 @@
             <?php } ?>
         </div>
     </div>
-    <!-- Category List - End -->
+    <!-- Category List - End --> */ ?>
 </section>
 <!-- detail end  -->
 <?php if (ALLOW_MODIFICATION == 0) { ?>
@@ -277,17 +277,32 @@
                 <div class="col-12 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
                 </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="City" id="city" name="city">
+                <div class="col-6 justify-content-center">
+                    <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
+                    <select class='form-input w-100' name="country" id="country">
+                        <option value="">Select country</option>
+                        <?php foreach($countries as $country) { ?>
+                            <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
+                        <?php } ?>
+                    </select>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="State" id="state" name="state">
+                    <select class='form-input w-100' name="state" id="state">
+                        <option value="">Select state</option>
+                    </select>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <select class='form-input w-100' name="city" id="city">
+                        <option value="">Select city</option>
+                    </select>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <select class='form-input w-100' name="area" id="area">
+                        <option value="">Select area</option>
+                    </select>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Country" id="country" name="country">
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Password" id="seller_password" name="password">
