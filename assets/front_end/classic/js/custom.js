@@ -4140,6 +4140,34 @@ $(document).on('change', '#register_as_seller_div #state', function() {
     })
 });
 
+$(document).on('change', '#register_as_seller_div #city', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#register_as_seller_div #country').val();
+    var state_id = $('#register_as_seller_div #state').val();
+    var city_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    formdata.append('city_id', city_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_areas_by_city',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var areas = response.data;
+            var html = '<option value="">Select area</option>';
+            $.each(areas, function(i) {
+                html += '<option value="'+areas[i]['id']+'">'+areas[i]['name']+'</option>';
+            });
+            $('#register_as_seller_div #area').html(html);
+        }
+    })
+});
+
 $(document).on('submit', '#register-as-seller-form', function (e) {
     e.preventDefault();
     $("#seller-registration-error").html('');

@@ -8,7 +8,7 @@ class Home extends CI_Controller
         parent::__construct();
         $this->load->database();
         $this->load->helper(['url', 'language', 'function_helper', 'bootstrap_table_helper', 'file']);
-        $this->load->model(['Home_model', 'Order_model']);
+        $this->load->model(['Home_model', 'Order_model', 'Area_model']);
     }
 
     public function index()
@@ -213,5 +213,38 @@ class Home extends CI_Controller
         $response['notifications'] = $notifications;
 
         print_r(json_encode($response));
+    }
+
+    public function get_states_by_country()
+    {
+        $country_id = $_POST['country_id'];
+        $states = $this->Area_model->get_states_by_country($country_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $states['data'];
+        print_r(json_encode($this->response));
+        return false;
+    }
+
+    public function get_cities_by_state()
+    {
+        $country_id = $_POST['country_id'];
+        $state_id = $_POST['state_id'];
+        $states = $this->Area_model->get_cities_by_state($country_id, $state_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $states['data'];
+        print_r(json_encode($this->response));
+        return false;
+    }
+
+    public function get_areas_by_city()
+    {
+        $country_id = $_POST['country_id'];
+        $state_id = $_POST['state_id'];
+        $city_id = $_POST['city_id'];
+        $areas = $this->Area_model->get_areas_by_city($country_id, $state_id, $city_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $areas['data'];
+        print_r(json_encode($this->response));
+        return false;
     }
 }

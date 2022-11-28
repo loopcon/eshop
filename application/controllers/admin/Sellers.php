@@ -255,6 +255,10 @@ class Sellers extends CI_Controller
                 $this->form_validation->set_rules('confirm_password', 'Confirm password', 'trim|required|matches[password]|xss_clean');
             }
             $this->form_validation->set_rules('address', 'Address', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('country', 'Country', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('state', 'State', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('city', 'City', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
@@ -523,6 +527,10 @@ class Sellers extends CI_Controller
                         'mobile' => $this->input->post('mobile', true),
                         'password' => $this->input->post('password', true),
                         'address' => $this->input->post('address', true),
+                        'country' => $this->input->post('country', true),
+                        'state' => $this->input->post('state', true),
+                        'city' => $this->input->post('city', true),
+                        'area' => $this->input->post('area', true),
                         'latitude' => $this->input->post('latitude', true),
                         'longitude' => $this->input->post('longitude', true)
                     );

@@ -580,4 +580,46 @@ class Area_model extends CI_Model
         $bulkData['data'] = (empty($cities)) ? [] : $cities;
         return $bulkData;
     }
+
+    function get_areas_by_city($country_id, $state_id, $city_id, $sort = "a.name", $order = "ASC", $search = "", $limit = '', $offset = '')
+    {
+        $multipleWhere = '';
+        $where = array();
+        if (!empty($search)) {
+            $multipleWhere = [
+                'a.name' => $search
+            ];
+        }
+        // if ($country_id != '') {
+        //     $where['country_id'] = $country_id;
+        // }
+        // if ($state_id != '') {
+        //     $where['state_id'] = $state_id;
+        // }
+        if ($city_id != '') {
+            $where['city_id'] = $city_id;
+        }
+        $search_res = $this->db->select('a.*');
+        if (isset($multipleWhere) && !empty($multipleWhere)) {
+            $search_res->group_start();
+            $search_res->or_like($multipleWhere);
+            $search_res->group_end();
+        }
+        if (isset($where) && !empty($where)) {
+            $search_res->where($where);
+        }
+        if($limit!='' && $offset!='') {
+            $search_res->limit($limit, $offset);
+        }
+        $areas = $search_res->order_by($sort, $order)->get('areas a')->result_array();
+        $bulkData = array();
+        $bulkData['error'] = (empty($areas)) ? true : false;
+        if (!empty($areas)) {
+            for ($i = 0; $i < count($areas); $i++) {
+                $areas[$i] = output_escaping($areas[$i]);
+            }
+        }
+        $bulkData['data'] = (empty($areas)) ? [] : $areas;
+        return $bulkData;
+    }
 }

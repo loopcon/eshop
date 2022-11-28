@@ -669,9 +669,21 @@ class Home extends CI_Controller
     {
         $country_id = $_POST['country_id'];
         $state_id = $_POST['state_id'];
-        $states = $this->area_model->get_cities_by_state($country_id, $state_id);
+        $cities = $this->area_model->get_cities_by_state($country_id, $state_id);
         $this->response['error'] = false;
-        $this->response['data'] = $states['data'];
+        $this->response['data'] = $cities['data'];
+        print_r(json_encode($this->response));
+        return false;
+    }
+
+    public function get_areas_by_city()
+    {
+        $country_id = $_POST['country_id'];
+        $state_id = $_POST['state_id'];
+        $city_id = $_POST['city_id'];
+        $areas = $this->area_model->get_areas_by_city($country_id, $state_id, $city_id);
+        $this->response['error'] = false;
+        $this->response['data'] = $areas['data'];
         print_r(json_encode($this->response));
         return false;
     }
