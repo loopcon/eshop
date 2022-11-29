@@ -4168,6 +4168,84 @@ $(document).on('change', '#register_as_seller_div #city', function() {
     })
 });
 
+$(document).on('change', '#add-address-form #country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#add-address-form #state').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#add-address-form #state', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#add-address-form #country').val();
+    var state_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_cities_by_state',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var cities = response.data;
+            var html = '<option value="">Select city</option>';
+            $.each(cities, function(i) {
+                html += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+            });
+            $('#add-address-form #u-city').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#add-address-form #u-city', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#add-address-form #country').val();
+    var state_id = $('#add-address-form #state').val();
+    var city_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    formdata.append('city_id', city_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_areas_by_city',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var areas = response.data;
+            var html = '<option value="">Select area</option>';
+            $.each(areas, function(i) {
+                html += '<option value="'+areas[i]['id']+'">'+areas[i]['name']+'</option>';
+            });
+            $('#add-address-form #area').html(html);
+        }
+    })
+});
+
 $(document).on('submit', '#register-as-seller-form', function (e) {
     e.preventDefault();
     $("#seller-registration-error").html('');

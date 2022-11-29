@@ -274,7 +274,8 @@ class My_account extends CI_Controller
             $this->data['title'] = 'Address | ' . $this->data['web_settings']['site_title'];
             $this->data['keywords'] = 'Address, ' . $this->data['web_settings']['meta_keywords'];
             $this->data['description'] = 'Address | ' . $this->data['web_settings']['meta_description'];
-            $this->data['cities'] = get_cities();
+            $this->data['countries'] = fetch_details('countries', NULL);
+            // $this->data['cities'] = get_cities();
             $this->data['areas'] = fetch_details('areas', NULL);
             $this->data['login_type'] = $this->session->userdata('login_type');
             $this->data['status'] = $this->session->userdata('status');
@@ -324,11 +325,11 @@ class My_account extends CI_Controller
             $this->form_validation->set_rules('alternate_mobile', 'Alternative Mobile', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('address', 'Address', 'trim|xss_clean|required');
             $this->form_validation->set_rules('landmark', 'Landmark', 'trim|xss_clean');
-            // $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
-            // $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('country_id', 'Country', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('state_id', 'State', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
             // $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('state', 'State', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('country', 'Country', 'trim|xss_clean|required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');
             $this->form_validation->set_rules('longitude', 'Longitude', 'trim|xss_clean');
 

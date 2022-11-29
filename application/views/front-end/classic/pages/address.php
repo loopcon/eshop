@@ -1,4 +1,7 @@
 <!-- breadcrumb -->
+<style>
+    .card-body .fixed-table-body { width: 730px; overflow-x:scroll;}
+</style>
 <section class="breadcrumb-title-bar colored-breadcrumb">
     <div class="main-content responsive-breadcrumb">
         <h2><?= !empty($this->lang->line('address')) ? $this->lang->line('address') : 'Address' ?></h2>
@@ -46,14 +49,25 @@
                                 <label for="address" class="control-label"><?= !empty($this->lang->line('address')) ? $this->lang->line('address') : 'Address' ?></label>
                                 <textarea name="address" class="form-control" id="address" cols="30" rows="4" placeholder="#Door no, Street Address, Locality, Area, Pincode"></textarea>
                             </div>
-
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                <label for="country" class="control-label"><?= !empty($this->lang->line('country')) ? $this->lang->line('country') : 'Country' ?></label>
+                                <select name="country_id" id="country" class="form-control">
+                                    <option value=""><?= !empty($this->lang->line('select_country')) ? $this->lang->line('select_country') : 'Select Country' ?></option>
+                                    <?php foreach($countries as $country) { ?>
+                                        <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                <label for="state" class="control-label"><?= !empty($this->lang->line('state')) ? $this->lang->line('state') : 'State' ?></label>
+                                <select name="state_id" id="state" class="form-control">
+                                    <option value=""><?= !empty($this->lang->line('select_state')) ? $this->lang->line('select_state') : 'Select State' ?></option>
+                                </select>
+                            </div>
                             <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                                 <label for="city" class="control-label"><?= !empty($this->lang->line('city')) ? $this->lang->line('city') : 'City' ?></label>
-                                <select name="city_id" id="city" class="form-control">
-                                    <option value=""><?= !empty($this->lang->line('select_city')) ? $this->lang->line('select_city') : '--Select City--' ?></option>
-                                    <?php foreach ($cities as $row) { ?>
-                                        <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
-                                    <?php } ?>
+                                <select name="city_id" id="u-city" class="form-control">
+                                    <option value=""><?= !empty($this->lang->line('select_city')) ? $this->lang->line('select_city') : 'Select City' ?></option>
                                 </select>
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12 form-group">
@@ -65,15 +79,7 @@
 
                             <div class="col-md-4 col-sm-12 col-xs-12 form-group">
                                 <label for="Zipcode" class="control-label"><?= !empty($this->lang->line('pincode')) ? $this->lang->line('pincode') : 'Zipcode' ?></label>
-                                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Zipcode" readonly />
-                            </div>
-                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                <label for="state" class="control-label"><?= !empty($this->lang->line('state')) ? $this->lang->line('state') : 'State' ?></label>
-                                <input type="text" class="form-control" id="state" name="state" placeholder="State" />
-                            </div>
-                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                <label for="country" class="control-label"><?= !empty($this->lang->line('country')) ? $this->lang->line('country') : 'Country' ?></label>
-                                <input type="text" class="form-control" name="country" id="country" placeholder="Country" />
+                                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Zipcode" />
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                                 <label for="country" class="control-label"><?= !empty($this->lang->line('type')) ? $this->lang->line('type') : 'Type : ' ?></label>
