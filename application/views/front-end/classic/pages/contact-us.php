@@ -25,7 +25,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4"><?= !empty($this->lang->line('username')) ? $this->lang->line('username') : 'Username' ?></label>
-                            <input type="text" class="form-control" id="inputEmail4" name="username" placeholder="Your Name">
+                            <input type="text" class="form-control" id="inputEmail4" name="username" maxlength="40" placeholder="User Name">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4"><?= !empty($this->lang->line('email')) ? $this->lang->line('email') : 'Email' ?></label>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputAddress"><?= !empty($this->lang->line('subject')) ? $this->lang->line('subject') : 'Subject' ?></label>
-                        <input type="text" class="form-control" id="inputAddress" name="subject" placeholder="Subject">
+                        <input type="text" class="form-control" id="inputAddress" name="subject" maxlength="50" placeholder="Subject">
                     </div>
                     <div class="form-group">
                         <label for="inputAddress"><?= !empty($this->lang->line('message')) ? $this->lang->line('message') : 'Message' ?></label>

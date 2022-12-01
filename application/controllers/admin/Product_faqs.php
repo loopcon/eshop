@@ -83,7 +83,7 @@ class Product_faqs extends CI_Controller
         if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) {
             $this->product_faqs_model->add_product_faqs($_POST);
             $this->response['error'] = false;
-            $this->response['message'] = 'Faq added Succesfully';
+            $this->response['message'] = 'Faq added Succesfully!';
             print_r(json_encode($this->response));
         } else {
             redirect('admin/login', 'refresh');

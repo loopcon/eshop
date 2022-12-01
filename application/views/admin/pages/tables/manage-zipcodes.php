@@ -34,7 +34,7 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="city_name">Zipcode <span class='text-danger text-sm'>*</span></label>
-                  <input type="text" class="form-control" name="zipcode" id="zipcode" value="<?= (isset($fetched_data[0]['zipcode']) ? $fetched_data[0]['zipcode'] : '') ?>">
+                  <input type="text" class="form-control" name="zipcode" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" id="zipcode" value="<?= (isset($fetched_data[0]['zipcode']) ? $fetched_data[0]['zipcode'] : '') ?>">
                 </div>
                 <div class="form-group">
                   <button type="reset" class="btn btn-warning">Reset</button>

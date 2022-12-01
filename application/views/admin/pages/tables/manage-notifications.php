@@ -102,14 +102,16 @@
                                                 <?php
                                                 if (isset($fetched_data[0]['id']) && $fetched_data[0]['type']  == 'products') {
                                                     $product_details = fetch_details('products', ['id' => $row['type_id']], 'id,name');
+
                                                     if (!empty($product_details)) {
+
                                                 ?>
                                                         <option value="<?= $product_details[0]['id'] ?>" selected> <?= $product_details[0]['name'] ?></option>
                                                 <?php
                                                     }
                                                 }
                                                 ?>
-                                            </select>
+                                            </select><br><br><br>
                                         </div>
                                     </div>
                                 </div>

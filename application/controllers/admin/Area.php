@@ -140,7 +140,7 @@ class Area extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_area'])) ? 'Area Updated Successfully' : 'Area Added Successfully';
+                $message = (isset($_POST['edit_area'])) ? 'Area Updated Successfully!' : 'Area Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }
@@ -170,7 +170,7 @@ class Area extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $this->response['message'] = 'Delivery Charge Updated Successfully';
+                $this->response['message'] = 'Delivery Charge Updated Successfully!';
                 print_r(json_encode($this->response));
             }
         } else {
@@ -284,7 +284,7 @@ class Area extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_city'])) ? 'City Updated Successfully' : 'City Added Successfully';
+                $message = (isset($_POST['edit_city'])) ? 'City Updated Successfully!' : 'City Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }
@@ -390,7 +390,7 @@ class Area extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_zipcode'])) ? 'Zipcode Updated Successfully' : 'Zipcode Added Successfully';
+                $message = (isset($_POST['edit_zipcode'])) ? 'Zipcode Updated Successfully!' : 'Zipcode Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }

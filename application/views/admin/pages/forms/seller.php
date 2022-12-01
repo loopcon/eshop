@@ -73,13 +73,13 @@
                                     <textarea cols="20" rows="20" id="cat_data" name="commission_data" style="display:none;"></textarea>
                                     <label for="name" class="col-sm-2 col-form-label">Name <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="name" placeholder="Seller Name" name="name" value="<?= @$fetched_data[0]['username'] ?>">
+                                        <input type="text" class="form-control" id="name" placeholder="Seller Name" maxlength="40" name="name" value="<?= @$fetched_data[0]['username'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="mobile" class="col-sm-2 col-form-label">Mobile <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="mobile" placeholder="Enter Mobile" name="mobile" value="<?= @$fetched_data[0]['mobile'] ?>">
+                                        <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile" minlength="10" maxlength="15" name="mobile" value="<?= @$fetched_data[0]['mobile'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -151,13 +151,13 @@
                                 <div class="form-group row">
                                     <label for="store_name" class="col-sm-2 col-form-label">Name <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="store_name" placeholder="Store Name" name="store_name" value="<?= @$fetched_data[0]['store_name'] ?>">
+                                        <input type="text" class="form-control" id="store_name" placeholder="Store Name" name="store_name" maxlength="40" value="<?= @$fetched_data[0]['store_name'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="store_url" class="col-sm-2 col-form-label">URL </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="store_url" placeholder="Store URL" name="store_url" value="<?= @$fetched_data[0]['store_url'] ?>">
+                                        <input type="url" class="form-control" id="store_url" placeholder="Store URL" name="store_url" value="<?= @$fetched_data[0]['store_url'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -185,7 +185,7 @@
                                 <div class="form-group row">
                                     <label for="account_number" class="col-sm-2 col-form-label">Account Number </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="account_number" placeholder="Account Number" name="account_number" value="<?= @$fetched_data[0]['account_number'] ?>">
+                                        <input type="number" class="form-control" id="account_number" placeholder="Account Number" name="account_number" value="<?= @$fetched_data[0]['account_number'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -197,13 +197,13 @@
                                 <div class="form-group row">
                                     <label for="bank_code" class="col-sm-2 col-form-label">Bank Code</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="bank_code" placeholder="Bank Code" name="bank_code" value="<?= @$fetched_data[0]['bank_code'] ?>">
+                                        <input type="text" class="form-control" id="bank_code" placeholder="Bank Code" maxlength="12" name="bank_code" value="<?= @$fetched_data[0]['bank_code'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="bank_name" class="col-sm-2 col-form-label">Bank Name </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="bank_name" placeholder="Bank Name" name="bank_name" value="<?= @$fetched_data[0]['bank_name'] ?>">
+                                        <input type="text" class="form-control" id="bank_name" placeholder="Bank Name" maxlength="50" name="bank_name" value="<?= @$fetched_data[0]['bank_name'] ?>">
                                     </div>
                                 </div>
                                 <h4>Other Details</h4>
@@ -242,31 +242,31 @@
                                 <div class="form-group row">
                                     <label for="tax_name" class="col-sm-2 col-form-label">Tax Name <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="tax_name" placeholder="Tax Name" name="tax_name" value="<?= @$fetched_data[0]['tax_name'] ?>">
+                                        <input type="text" class="form-control" id="tax_name" placeholder="Tax Name" maxlength="40" name="tax_name" value="<?= @$fetched_data[0]['tax_name'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="tax_number" class="col-sm-2 col-form-label">Tax Number <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="tax_number" placeholder="Tax Number" name="tax_number" value="<?= @$fetched_data[0]['tax_number'] ?>">
+                                        <input type="text" class="form-control" id="tax_number" placeholder="Tax Number" name="tax_number" maxlength="50" value="<?= @$fetched_data[0]['tax_number'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="pan_number" class="col-sm-2 col-form-label">Pan Number </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="pan_number" placeholder="Pan Number" name="pan_number" value="<?= @$fetched_data[0]['pan_number'] ?>">
+                                        <input type="text" class="form-control" id="pan_number" placeholder="Pan Number" maxlength="30" name="pan_number" value="<?= @$fetched_data[0]['pan_number'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="latitude" class="col-sm-2 col-form-label">Latitude </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="latitude" placeholder="Latitude" name="latitude" value="<?= @$fetched_data[0]['latitude'] ?>">
+                                        <input type="text" class="form-control" id="latitude" placeholder="Latitude" name="latitude" maxlength="50"> value="<?= @$fetched_data[0]['latitude'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="longitude" class="col-sm-2 col-form-label">Longitude </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="longitude" placeholder="Longitude" name="longitude" value="<?= @$fetched_data[0]['longitude'] ?>">
+                                        <input type="text" class="form-control" id="longitude" placeholder="Longitude" name="longitude" maxlength="50" value="<?= @$fetched_data[0]['longitude'] ?>">
                                     </div>
                                 </div>
                                 <h4>Permissions </h4>

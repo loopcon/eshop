@@ -40,7 +40,7 @@
                                             }
 
                                             ?>
-                                        </select>
+                                        </select><br><br>
                                     </div>
                                 </div>
                                 <div class="form-group row">

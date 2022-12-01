@@ -12,7 +12,7 @@ $web_settings = get_settings('web_settings', true);
 <div id="mySidenav" class="sidenav is-closed-left">
     <div class="container">
         <div class="row my-2 pr-2 text-uppercase d-flex align-items-center">
-            <div class="col-12 text-right close-sidenav"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : 'Close' ?> <i class="fa fa-times"></i></a></div>
+            <div class="col-12 text-right close-sidenav"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : '' ?> <i class="fa fa-times"></i></a></div>
         </div>
     </div>
     <div class="container">
@@ -99,7 +99,7 @@ $web_settings = get_settings('web_settings', true);
             <div class="col-8 title">
                 <h1><?= !empty($this->lang->line('shopping_cart')) ? $this->lang->line('shopping_cart') : 'Shopping Cart' ?></h1>
             </div>
-            <div class="col-4 text-right close-sidebar"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : 'Close' ?> <i class="fa fa-times"></i></a></div>
+            <div class="col-4 text-right close-sidebar"> <a href='#' onclick="closeNav();"><?= !empty($this->lang->line('close')) ? $this->lang->line('close') : '' ?> <i class="fa fa-times"></i></a></div>
         </div>
     </div>
     <hr class="m-0">

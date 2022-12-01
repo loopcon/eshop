@@ -2582,7 +2582,7 @@ function update_status(update_id, status, table, user) {
         success: function (result) {
             if (result['error'] == true) {
                 iziToast.success({
-                    message: '<span style="text-transform:capitalize">' + result.message + '</span> Status Updated',
+                    message: '<span style="text-transform:capitalize">' + result.message + '</span> Status Updated!',
                 });
                 $('.table').bootstrapTable('refresh');
             } else {

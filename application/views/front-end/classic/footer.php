@@ -191,13 +191,16 @@
                     <input type="text" class='form-input' placeholder="OTP" id="otp" name="otp" autocomplete="off">
                 </div> */ ?>
                 <div class="col-12 d-flex justify-content-center pb-4">
-                    <input type="text" class='form-input' placeholder="Username" id="name" name="name">
+                    <input type="text" class='form-input' maxlength="40" placeholder="Username" id="name" name="name">
                 </div>
                 <div class="col-12 d-flex justify-content-center pb-4">
                     <input type="email" class='form-input' placeholder="Email" id="email" name="email">
                 </div>
                 <div class="col-12 d-flex justify-content-center pb-4">
                     <input type="password" class='form-input' placeholder="Password" id="password" name="password">
+                </div>
+                <div class="col-12 d-flex justify-content-center pb-4">
+                    <input type="password" class='form-input' placeholder="Confirm Password" id="confirm password" name="confirm password">
                 </div>
                 <div class="col-12 d-flex justify-content-center pb-4">
                     <div id='registration-error' class='text-center p-3 text-danger'></div>
@@ -259,44 +262,44 @@
         <form id='register-as-seller-form' class='register-seller-form' action='<?= base_url('auth/register-seller') ?>' method="POST">
             <div class="row seller-signup">
                 <div class="col-12 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Business Name" id="store_name" name="store_name">
+                    <input type="text" class='form-input' maxlength="40" placeholder="Business Name" id="store_name" name="store_name">
                     <?php echo form_error('store_name', '<div class="error">', '</div>'); ?>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="First Name" id="first_name" name="first_name">
+                    <input type="text" class='form-input' maxlength="40" placeholder="First Name" id="first_name" name="first_name">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Last Name" id="last_name" name="last_name">
+                    <input type="text" class='form-input' maxlength="40" placeholder="Last Name" id="last_name" name="last_name">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <input type="email" class='form-input' placeholder="Email" id="seller_email" name="email">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Mobile" id="seller_mobile" name="mobile">
+                    <input type="text" class='form-input' placeholder="Mobile" id="seller_mobile" maxlength="12"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="mobile">
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="City" id="city" name="city">
+                    <input type="text" class='form-input' maxlength="30" placeholder="City" id="city" name="city">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="State" id="state" name="state">
+                    <input type="text" class='form-input' placeholder="State" maxlength="30" id="state" name="state">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
+                    <input type="text" class='form-input' maxlength="6"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Postal / Zip code" id="zipcode" name="zipcode">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="Country" id="country" name="country">
+                    <input type="text" class='form-input' maxlength="30" placeholder="Country" id="country" name="country">
                 </div>
                 <div class="col-12 d-flex justify-content-center">
-                    <input type="password" class='form-input' placeholder="Password" id="seller_password" name="password">
+                    <input type="password" class='form-input' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
                 </div>
                 <div class="col-12 d-flex justify-content-center">
-                    <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms"><span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>
+                    <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms">&nbsp;<span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <div id='seller-registration-error' class='text-center p-3 text-danger'></div>
@@ -304,7 +307,7 @@
             </div>
             <footer>
                 <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
-                <button type="submit" id="register_seller_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Submit' ?></button>
+                <button type="submit" id="register_seller_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Register' ?></button>
             </footer>
         </form>
     </section>

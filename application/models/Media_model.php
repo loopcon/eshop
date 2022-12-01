@@ -119,7 +119,7 @@ class Media_model extends CI_Model
                     $operate = '<a href="javascript:void(0);" class="delete-media btn btn-danger btn-xs mr-1 mb-1" title="Delete" data-id="' . $row['id'] . '" ><i class="fa fa-trash"></i></a>';
                 }
                 $operate .= '<a href="javascript:void(0);" class="copy-to-clipboard btn btn-primary btn-xs mr-1 mb-1" title="Copy to clipboard" ><i class="fa fa-copy"></i></a>';
-                $operate .= "<a href='javascript:void(0);' class='btn btn-info btn-xs mr-1 mb-1 copy-relative-path' data-path=" . $row['sub_directory'] . $row['name'] . " title='Copy image path for csv file'><i class='fa fa-copy'></i></a>";
+                // $operate .= "<a href='javascript:void(0);' class='btn btn-info btn-xs mr-1 mb-1 copy-relative-path' data-path=" . $row['sub_directory'] . $row['name'] . " title='Copy image path for csv file'><i class='fa fa-copy'></i></a>";
 
                 $tempRow['id'] = $row['id'];
                 $tempRow['seller_id'] = $row['seller_id'];

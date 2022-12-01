@@ -953,7 +953,7 @@ function update_wallet_balance($operation, $user_id, $amount, $message = "Balanc
             $data = escape_array($data);
             $t->db->insert('transactions', $data);
             $response['error'] = false;
-            $response['message'] = "Balance Update Successfully!";
+            $response['message'] = "Balance Updated Successfully!";
             $response['data'] = array();
         } else {
             $response['error'] = true;

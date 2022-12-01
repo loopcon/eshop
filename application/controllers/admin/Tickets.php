@@ -109,7 +109,7 @@ class Tickets extends CI_Controller
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
-                $message = (isset($_POST['edit_ticket_types'])) ? 'Ticket Types Updated Successfully' : 'Ticket Types Added Successfully';
+                $message = (isset($_POST['edit_ticket_type'])) ? 'Ticket Types Updated Successfully!' : 'Ticket Types Added Successfully!';
                 $this->response['message'] = $message;
                 print_r(json_encode($this->response));
             }

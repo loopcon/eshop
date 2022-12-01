@@ -30,7 +30,7 @@
             <div class="col-md-8 col-12">
                 <div class=' border-0'>
                     <div class="card-header bg-white">
-                        <h1 class="h4"><?= !empty($this->lang->line('addresses')) ? $this->lang->line('addresses') : 'Addresses' ?></h1>
+                        <h1 class="h4"><?= !empty($this->lang->line('addresses')) ? $this->lang->line('addresses') : 'Address' ?></h1>
                     </div>
                     <form action="<?= base_url('my-account/add-address') ?>" method="POST" id="add-address-form" class="mt-4 p-4">
                         <div class="row">

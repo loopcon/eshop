@@ -967,7 +967,7 @@ class Auth extends CI_Controller
             $data = $this->db->select('u.id,u.username,u.email,u.mobile,c.name as city_name,a.name as area_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->join('areas a', 'a.city_id=c.id', 'left')->group_by('email')->get('users u')->result_array();
 
             $this->response['error'] = false;
-            $this->response['message'] = 'Registered Successfully';
+            $this->response['message'] = 'Registered Successfully!';
             $this->response['data'] = $data;
         }
         print_r(json_encode($this->response));
@@ -1025,7 +1025,7 @@ class Auth extends CI_Controller
             $this->db->insert('seller_data', $seller_data);
 
             $this->response['error'] = false;
-            $this->response['message'] = 'Registered Successfully';
+            $this->response['message'] = 'Registered Successfully!';
             $this->response['data'] = $data;
         }
         print_r(json_encode($this->response));
