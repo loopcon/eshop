@@ -33,6 +33,13 @@ Common-Functions or events
 
 $(document).ready(function () {
     $('#loading').hide();
+
+    $('.numsOnly').keypress(function(e) {
+        if(e.keyCode >= 48 && e.keyCode <= 57) {
+            return true;
+        }
+        return false;
+    });
 });
 
 var from = 'admin';
@@ -5370,29 +5377,41 @@ $(".country_list").select2({
     placeholder: 'Search for countries',
 });
 
-$("#city_list").select2({
-    ajax: {
-        url: base_url + 'admin/area/get_cities',
-        type: "GET",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                search: params.term, // search term
-            };
-        },
-        processResults: function (response) {
-            return {
-                results: response
-            };
-        },
-        cache: true
-    },
-
-    minimumInputLength: 1,
+$("#country").select2({
     theme: 'bootstrap4',
-    placeholder: 'Search for cities',
-})
+});
+
+$("#state").select2({
+    theme: 'bootstrap4',
+});
+
+$("#s-city").select2({
+    theme: 'bootstrap4',
+});
+
+// $("#city_list").select2({
+//     ajax: {
+//         url: base_url + 'admin/area/get_cities',
+//         type: "GET",
+//         dataType: 'json',
+//         delay: 250,
+//         data: function (params) {
+//             return {
+//                 search: params.term, // search term
+//             };
+//         },
+//         processResults: function (response) {
+//             return {
+//                 results: response
+//             };
+//         },
+//         cache: true
+//     },
+
+//     minimumInputLength: 1,
+//     theme: 'bootstrap4',
+//     placeholder: 'Search for cities',
+// })
 $("#zipcode_list").select2({
     ajax: {
         url: base_url + 'admin/area/get_zipcode_list',
@@ -6380,3 +6399,81 @@ if(main_category_4!="" && sub_categories_4!="") {
         }
     });
 }
+
+$(document).on('change', '#add_product_form #country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'admin/home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#add_product_form #state').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#add_product_form #state', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#add_product_form #country').val();
+    var state_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'admin/home/get_cities_by_state',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var cities = response.data;
+            var html = '<option value="">Select city</option>';
+            $.each(cities, function(i) {
+                html += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+            });
+            $('#add_product_form #s-city').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#add_product_form #s-city', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#add_product_form #country').val();
+    var state_id = $('#add_product_form #state').val();
+    var city_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    formdata.append('city_id', city_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'admin/home/get_areas_by_city',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var areas = response.data;
+            var html = '<option value="">Select area</option>';
+            $.each(areas, function(i) {
+                html += '<option value="'+areas[i]['id']+'">'+areas[i]['name']+'</option>';
+            });
+            $('#add_product_form #area').html(html);
+        }
+    })
+});

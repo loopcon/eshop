@@ -50,6 +50,10 @@ class Seller_model extends CI_Model
                 'email' => $profile['email'],
                 'mobile' => $profile['mobile'],
                 'address' => $profile['address'],
+                'country' => $profile['country'],
+                'state' => $profile['state'],
+                'city' => $profile['city'],
+                'area' => $profile['area'],
                 'latitude' => $profile['latitude'],
                 'longitude' => $profile['longitude'],
             ];

@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    <!-- Category List - Start -->
+    <?php /* <!-- Category List - Start -->
     <div class="p-4">
         <div class="container container-fluid">
             <?php $categories = get_categories(); ?>
@@ -90,7 +90,7 @@
             <?php } ?>
         </div>
     </div>
-    <!-- Category List - End -->
+    <!-- Category List - End --> */ ?>
 </section>
 <!-- detail end  -->
 <?php if (ALLOW_MODIFICATION == 0) { ?>
@@ -280,7 +280,17 @@
                 <div class="col-12 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
                 </div>
+                <div class="col-6 justify-content-center">
+                    <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
+                    <select class='form-input w-100' name="country" id="country">
+                        <option value="">Select country</option>
+                        <?php foreach($countries as $country) { ?>
+                            <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
                 <div class="col-6 d-flex justify-content-center">
+<<<<<<< HEAD
                     <input type="text" class='form-input' maxlength="30" placeholder="City" id="city" name="city">
                 </div>
                 <div class="col-6 d-flex justify-content-center">
@@ -291,6 +301,24 @@
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' maxlength="30" placeholder="Country" id="country" name="country">
+=======
+                    <select class='form-input w-100' name="state" id="state">
+                        <option value="">Select state</option>
+                    </select>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <select class='form-input w-100' name="city" id="city">
+                        <option value="">Select city</option>
+                    </select>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <select class='form-input w-100' name="area" id="area">
+                        <option value="">Select area</option>
+                    </select>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
+>>>>>>> 3c305cb074cf4066206b969cea3b2bf27c24f177
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">

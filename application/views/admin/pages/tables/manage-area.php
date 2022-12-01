@@ -14,7 +14,8 @@
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <section class="content">
         <div class="container-fluid">
@@ -23,14 +24,10 @@
                     <div class="card card-info">
                         <!-- form start -->
                         <form class="form-horizontal form-submit-event" action="<?= base_url('admin/area/add_area'); ?>" method="POST" id="add_product_form" enctype="multipart/form-data">
-                            <?php
-                            if (isset($fetched_data[0]['id'])) {
-                            ?>
+                            <?php if (isset($fetched_data[0]['id'])) { ?>
                                 <input type="hidden" id="edit_area" name="edit_area" value="<?= @$fetched_data[0]['id'] ?>">
                                 <input type="hidden" id="update_id" name="update_id" value="1">
-                            <?php
-                            }
-                            ?>
+                            <?php } ?>
                             <div class="card-body">
                                 <div class="form-group row">
                                     <label for="area_name" class="control-label col-md-12">Area Name <span class='text-danger text-xs'>*</span></label>
@@ -39,13 +36,50 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label for="country" class="control-label col-md-12">Country <span class='text-danger text-xs'>*</span></label>
+                                    <div class="col-md-6">
+                                        <?php if(isset($fetched_data[0]['country_id']) && $fetched_data[0]['country_id'] > 0) { ?>
+                                            <input type="hidden" name="country" value="<?php echo $fetched_data[0]['country_id'] ?>">
+                                        <?php } ?>
+                                        <select class="form-control" name="country" id="country" <?php if(isset($fetched_data[0]['country_id']) && $fetched_data[0]['country_id'] > 0) { ?>disabled<?php } ?>>
+                                            <option value=" ">Select Country</option>
+                                            <?php foreach ($country as $row) { ?>
+                                                <option value="<?= $row['id'] ?>" <?= (isset($fetched_data[0]['country_id']) && $row['id'] == $fetched_data[0]['country_id']) ? 'selected' : '' ?>><?= $row['name'] ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="state" class="control-label col-md-12">State <span class='text-danger text-xs'>*</span></label>
+                                    <div class="col-md-6">
+                                        <?php if(isset($fetched_data[0]['state_id']) && $fetched_data[0]['state_id'] > 0) { ?>
+                                            <input type="hidden" name="state" value="<?php echo $fetched_data[0]['state_id'] ?>">
+                                        <?php } ?>
+                                        <select class="form-control" name="state" id="state" <?php if(isset($fetched_data[0]['state_id']) && $fetched_data[0]['state_id'] > 0) { ?>disabled<?php } ?>>
+                                            <option value=" ">Select State</option>
+                                            <?php if(isset($fetched_data[0]['state_id'])) { ?>
+                                                <?php $states = fetch_details('states', 'country_id="'.$fetched_data[0]['country_id'].'"', 'id, name'); ?>
+                                                <?php foreach($states as $state) { ?>
+                                                    <option value="<?php echo $state['id'];?>" <?php echo ($fetched_data[0]['state_id']==$state['id']) ? "selected" : "" ?>><?php echo $state['name'];?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="city" class="control-label col-md-12">City <span class='text-danger text-xs'>*</span></label>
                                     <div class="col-md-6">
-                                        <select class="form-control" name="city" id="city_list">
+                                        <select class="form-control" name="city" id="s-city">
                                             <option value=" ">Select City</option>
-                                            <?php foreach ($city as $row) { ?>
-                                                <option value="<?= $row['id'] ?>" <?= (isset($fetched_data[0]['city_id']) && $row['id'] == $fetched_data[0]['city_id']) ? 'selected' : ' ' ?>><?= $row['name'] ?></option>
+                                            <?php if(isset($fetched_data[0]['state_id'])) { ?>
+                                                <?php $cities = fetch_details('cities', 'country_id="'.$fetched_data[0]['country_id'].'" AND state_id="'.$fetched_data[0]['state_id'].'"', 'id, name'); ?>
+                                                <?php foreach($cities as $city1) { ?>
+                                                    <option value="<?php echo $city1['id'];?>" <?php echo ($fetched_data[0]['city_id']==$city1['id']) ? "selected" : "" ?>><?php echo $city1['name'];?></option>
+                                                <?php } ?>
                                             <?php } ?>
+                                            <?php /* foreach ($city as $row) { ?>
+                                                <option value="<?= $row['id'] ?>" <?= (isset($fetched_data[0]['city_id']) && $row['id'] == $fetched_data[0]['city_id']) ? 'selected' : ' ' ?>><?= $row['name'] ?></option>
+                                            <?php } */ ?>
                                         </select>
                                     </div>
                                 </div>
@@ -115,6 +149,8 @@
                                         <th data-field="id" data-sortable="true">ID</th>
                                         <th data-field="name" data-sortable="false">Name</th>
                                         <th data-field="city_name" data-sortable="false">City Name</th>
+                                        <th data-field="state_name" data-sortable="false">State Name</th>
+                                        <th data-field="country_name" data-sortable="false">Country Name</th>
                                         <th data-field="zipcode" data-sortable="false">Zipcode</th>
                                         <th data-field="minimum_free_delivery_order_amount" data-sortable="false">Minimum Free Delivery Order Amount</th>
                                         <th data-field="delivery_charges" data-sortable="false">Delivery Charges</th>

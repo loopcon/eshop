@@ -77,6 +77,56 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label for="country" class="col-sm-2 col-form-label">Country <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
+                                        <select class='form-input select_multiple' name="country" id="country">
+                                            <option value="">Select country</option>
+                                            <?php foreach($countries as $country) { ?>
+                                                <option value="<?php echo $country['id']; ?>" <?php echo @$fetched_data[0]['country']==$country['id'] ? "selected" : "" ?>><?php echo $country['name']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <label for="state" class="col-sm-2 col-form-label">State <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <select class='form-input select_multiple' name="state" id="state">
+                                            <option value="">Select state</option>
+                                            <?php if(@$fetched_data[0]['state'] > 0) { ?>
+                                                <?php $states = fetch_details("states", "country_id='".$fetched_data[0]['country']."'", 'id, name'); ?>
+                                                <?php foreach($states as $state) { ?>
+                                                    <option value="<?php echo $state['id']; ?>" <?php echo @$fetched_data[0]['state']==$state['id'] ? "selected" : "" ?>><?php echo $state['name']; ?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="city" class="col-sm-2 col-form-label">City <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <select class='form-input select_multiple' name="city" id="s-city">
+                                            <option value="">Select city</option>
+                                            <?php if(@$fetched_data[0]['city'] > 0) { ?>
+                                                <?php $cities = fetch_details("cities", "country_id='".$fetched_data[0]['country']."' AND state_id='".$fetched_data[0]['state']."'", 'id, name'); ?>
+                                                <?php foreach($cities as $city) { ?>
+                                                    <option value="<?php echo $city['id']; ?>" <?php echo @$fetched_data[0]['city']==$city['id'] ? "selected" : "" ?>><?php echo $city['name']; ?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                    <label for="area" class="col-sm-2 col-form-label">Area <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <select class='form-input select_multiple' name="area" id="area">
+                                            <option value="">Select area</option>
+                                            <?php if(@$fetched_data[0]['area'] > 0) { ?>
+                                                <?php $areas = fetch_details("areas", "city_id='".$fetched_data[0]['city']."'", 'id, name'); ?>
+                                                <?php foreach($areas as $area) { ?>
+                                                    <option value="<?php echo $area['id']; ?>" <?php echo @$fetched_data[0]['area']==$area['id'] ? "selected" : "" ?>><?php echo $area['name']; ?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="address_proof" class="col-sm-2 col-form-label">Address Proof <span class='text-danger text-sm'>*</span> </label>
                                     <div class="col-sm-10">
                                         <?php if (isset($fetched_data[0]['address_proof']) && !empty($fetched_data[0]['address_proof'])) { ?>

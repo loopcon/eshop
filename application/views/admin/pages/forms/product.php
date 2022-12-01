@@ -14,8 +14,10 @@
                     </ol>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
+    <!-- /.content-header -->
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -23,20 +25,18 @@
                     <div class="card card-info">
                         <!-- form start -->
                         <form class="form-horizontal" action="<?= base_url('admin/product/add_product'); ?>" method="POST" enctype="multipart/form-data" id="save-product">
-                            <?php if (isset($product_details[0]['id'])) {
-                            ?>
+                            <?php if (isset($product_details[0]['id'])) { ?>
                                 <input type="hidden" name="edit_product_id" value="<?= (isset($product_details[0]['id'])) ? $product_details[0]['id'] : "" ?>">
                                 <input type="hidden" name="category_id" value="<?= (isset($product_details[0]['category_id'])) ? $product_details[0]['category_id'] : "" ?>">
                                 <input type="hidden" name="seller_id" value="<?= (isset($product_details[0]['seller_id'])) ? $product_details[0]['seller_id'] : "" ?>">
                                 <input type="hidden" id="subcategory_id_js" value="<?= (isset($product_details[0]['subcategory_id'])) ? $product_details[0]['subcategory_id'] : "" ?>">
                             <?php } ?>
                             <div class="card-body">
-
-                                <label for="pro_input_text" class="col-form-label">Name <span class='text-danger text-sm'>*</span> </label>
                                 <div class="col-md-12">
+                                    <label for="pro_input_text" class="col-form-label">Name <span class='text-danger text-sm'>*</span> </label>
                                     <input type="text" class="form-control" id="pro_input_text" placeholder="Product Name" name="pro_input_name" maxlength="50" value="<?= (isset($product_details[0]['name'])) ? output_escaping(str_replace('\r\n', '&#13;&#10;', $product_details[0]['name'])) : "" ?>">
                                 </div>
-                                <div class="form-group">
+                                <div class="col-md-12">
                                     <label for="seller" class="col-form-label">Seller <span class='text-danger text-sm'>*</span></label>
                                     <select class='form-control' name='seller_id' id="seller_id">
                                         <option value="">Select Seller </option>
@@ -45,15 +45,42 @@
                                         <?php } ?>
                                     </select>
                                 </div>
-
-                                <label for="pro_short_description" class="col-form-label">Short Description <span class='text-danger text-sm'>*</span></label>
                                 <div class="col-md-12">
+                                    <label for="pro_short_description" class="col-form-label">Short Description <span class='text-danger text-sm'>*</span></label>
                                     <textarea type="text" class="form-control textarea addr_editor" id="short_description" placeholder="Product Short Description" name="short_description"><?= isset($product_details[0]['short_description']) ? output_escaping(str_replace('\r\n', '&#13;&#10;', $product_details[0]['short_description'])) : ""; ?></textarea>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label for="tags">Tags <small>( These tags help you in search result )</small></label>
                                         <input name='tags' class='' id='tags' placeholder="Type in some tags for example AC, Cooler, Flagship Smartphones, Mobiles, Sport Shoes etc" value="<?= (isset($product_details[0]['tags']) && !empty($product_details[0]['tags'])) ? $product_details[0]['tags'] : "" ?>" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-2">
+                                        <label for="length">Length <span class='text-danger text-sm'>*</span></label>
+                                        <input type="text" name='length' class='col-md-12 form-control numsOnly' id='length' placeholder="Length" value="<?= (isset($product_details[0]['length']) && !empty($product_details[0]['length'])) ? $product_details[0]['length'] : "" ?>" maxlength="4" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="width">Width <span class='text-danger text-sm'>*</span></label>
+                                        <input type="text" name='width' class='col-md-12 form-control numsOnly' id='width' placeholder="Width" value="<?= (isset($product_details[0]['width']) && !empty($product_details[0]['width'])) ? $product_details[0]['width'] : "" ?>" maxlength="4" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="height">Height <span class='text-danger text-sm'>*</span></label>
+                                        <input type="text" name='height' class='col-md-12 form-control numsOnly' id='height' placeholder="Height" value="<?= (isset($product_details[0]['height']) && !empty($product_details[0]['height'])) ? $product_details[0]['height'] : "" ?>" maxlength="4" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="weight">Weight <span class='text-danger text-sm'>*</span></label>
+                                        <input type="text" name='weight' class='col-md-12 form-control numsOnly' id='weight' placeholder="Weight" value="<?= (isset($product_details[0]['weight']) && !empty($product_details[0]['weight'])) ? $product_details[0]['weight'] : "" ?>" maxlength="4" />
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="weight_unit">Weight Unit <span class='text-danger text-sm'>*</span></label>
+                                        <select class="col-md-12 form-control" name="weight_unit">
+                                            <option value="">Select Weight Unit</option>
+                                            <option value="Gram">Gram</option>
+                                            <option value="Ounce">Ounce</option>
+                                            <option value="Pound">Pound</option>
+                                            <option value="Kilogram">Kilogram</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -65,18 +92,17 @@
                                                     <?php if (empty($taxes)) { ?>
                                                         <option value="0" selected> No Taxes Are Added </option>
                                                     <?php } ?>
-                                                    <?php foreach ($taxes as $row) {
-                                                        if (isset($product_details[0]['tax']) && $product_details[0]['tax'] == $row['id']) {
-                                                            $selected = 'selected';
-                                                        } else {
-                                                            $selected = '';
-                                                        }
+                                                    <?php
+                                                        foreach ($taxes as $row) {
+                                                            if (isset($product_details[0]['tax']) && $product_details[0]['tax'] == $row['id']) {
+                                                                $selected = 'selected';
+                                                            } else {
+                                                                $selected = '';
+                                                            }
                                                     ?>
                                                         <option value="<?= $row['id'] ?>" <?= $selected ?>><?= $row['title'] ?><?php echo "(" . $row['percentage'] . "%)" ?></option>
-                                                    <?php
-                                                    } ?>
+                                                    <?php } ?>
                                                 </select>
-
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="indicator" class="col-form-label">Indicator</label>
@@ -89,8 +115,7 @@
                                             <div class="col-md-4">
                                                 <label for="made_in" class="col-form-label">Made In</label>
                                                 <select class="col-md-12 form-control country_list" id="country_list" name="made_in">
-                                                    <?php if (isset($product_details[0]['made_in']) && ($product_details[0]['made_in']) != '') {
-                                                    ?>
+                                                    <?php if (isset($product_details[0]['made_in']) && ($product_details[0]['made_in']) != '') { ?>
                                                         <option value="<?= $product_details[0]['made_in'] ?>" <?= (isset($product_details[0]['made_in']) &&  $product_details[0]['made_in'] == $countries[0]['name']) ? 'selected' : ''; ?>><?= $product_details[0]['made_in'] ?></option>
                                                     <?php } ?>
                                                     <!-- countries display here  -->
@@ -99,9 +124,7 @@
                                             <div class="col-md-4">
                                                 <label for="brand" class="col-form-label">Brand</label>
                                                 <select class=" col-md-12  form-control admin_brand_list" id="admin_brand_list" name="brand">
-                                                    <?php
-                                                    if (isset($product_details[0]['brand']) && $product_details[0]['brand'] != '') {
-                                                    ?>
+                                                    <?php if (isset($product_details[0]['brand']) && $product_details[0]['brand'] != '') { ?>
                                                         <option value="<?= $product_details[0]['brand'] ?>" <?= (isset($product_details[0]['brand']) &&  $product_details[0]['brand'] == $brands[0]['name']) ? 'selected' : ''; ?>><?= $product_details[0]['brand'] ?></option>
                                                     <?php } ?>
                                                     <!-- brands display here  -->
@@ -141,20 +164,21 @@
                                                         <option value=<?= EXCLUDED ?> <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == EXCLUDED) ? 'selected' : ''; ?>>Excluded</option>
                                                     </select>
                                                 </div>
-                                                <?php
-                                                $zipcodes = (isset($product_details[0]['deliverable_zipcodes']) &&  $product_details[0]['deliverable_zipcodes'] != NULL) ? explode(",", $product_details[0]['deliverable_zipcodes']) : "";
-                                                ?>
+                                                <?php $zipcodes = (isset($product_details[0]['deliverable_zipcodes']) &&  $product_details[0]['deliverable_zipcodes'] != NULL) ? explode(",", $product_details[0]['deliverable_zipcodes']) : ""; ?>
                                                 <div class="col-md-6 col-sm-12">
                                                     <label for="zipcodes" class="col-form-label">Deliverable Zipcodes</label>
                                                     <div class="col-md-12">
                                                         <select name="deliverable_zipcodes[]" class="search_zipcode w-100" multiple onload="multiselect()" id="deliverable_zipcodes" <?= (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED))  ? "" : "disabled" ?>>
-                                                            <?php if (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED)) {
-                                                                $zipcodes_name =  fetch_details('zipcodes', "",  'zipcode,id', "", "", "", "", "id", $zipcodes);
-                                                                foreach ($zipcodes_name as $row) {
+                                                            <?php
+                                                                if (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED)) {
+                                                                    $zipcodes_name =  fetch_details('zipcodes', "",  'zipcode,id', "", "", "", "", "id", $zipcodes);
+                                                                    foreach ($zipcodes_name as $row) {
                                                             ?>
-                                                                    <option value=<?= $row['id'] ?> <?= (in_array($row['id'], $zipcodes)) ? 'selected' : ''; ?>> <?= $row['zipcode'] ?></option>
-                                                            <?php }
-                                                            } ?>
+                                                                <option value=<?= $row['id'] ?> <?= (in_array($row['id'], $zipcodes)) ? 'selected' : ''; ?>> <?= $row['zipcode'] ?></option>
+                                                            <?php
+                                                                    }
+                                                                }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -190,10 +214,10 @@
                                             <div class="form-group">
                                                 <label for="image">Main Image <span class='text-danger text-sm'>*</span></label>
                                                 <div class="col-sm-10">
-                                                    <div class='col-md-3'><a class="uploadFile img btn btn-primary text-white btn-sm" data-input='pro_input_image' data-isremovable='0' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a></div>
-                                                    <?php
-                                                    if (isset($product_details[0]['id']) && !empty($product_details[0]['id'])) {
-                                                    ?>
+                                                    <div class='col-md-3'>
+                                                        <a class="uploadFile img btn btn-primary text-white btn-sm" data-input='pro_input_image' data-isremovable='0' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a>
+                                                    </div>
+                                                    <?php if (isset($product_details[0]['id']) && !empty($product_details[0]['id'])) { ?>
                                                         <label class="text-danger mt-3">*Only Choose When Update is necessary</label>
                                                         <div class="container-fluid row image-upload-section ">
                                                             <div class="col-md-3 col-sm-12 shadow p-3 mb-5 bg-white rounded m-4 text-center grow image">
@@ -201,42 +225,40 @@
                                                                 <input type="hidden" name="pro_input_image" value='<?= $product_details[0]['image'] ?>'>
                                                             </div>
                                                         </div>
-                                                    <?php
-                                                    } else { ?>
+                                                    <?php } else { ?>
                                                         <div class="container-fluid row image-upload-section">
                                                             <div class="col-md-3 col-sm-12 shadow p-3 mb-5 bg-white rounded m-4 text-center grow image d-none">
                                                             </div>
                                                         </div>
                                                     <?php } ?>
                                                 </div>
-
                                             </div>
                                             <div class="form-group">
                                                 <label for="other_images">Other Images </label>
                                                 <div class="col-sm-12">
-                                                    <div class='col-md-3'><a class="uploadFile img btn btn-primary text-white btn-sm" data-input='other_images[]' data-isremovable='1' data-is-multiple-uploads-allowed='1' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a></div>
-                                                    <?php
-                                                    if (isset($product_details[0]['id']) && !empty($product_details[0]['id'])) {
-                                                    ?>
+                                                    <div class='col-md-3'>
+                                                        <a class="uploadFile img btn btn-primary text-white btn-sm" data-input='other_images[]' data-isremovable='1' data-is-multiple-uploads-allowed='1' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a>
+                                                    </div>
+                                                    <?php if (isset($product_details[0]['id']) && !empty($product_details[0]['id'])) { ?>
                                                         <div class="container-fluid row image-upload-section">
                                                             <?php
-                                                            $other_images = json_decode($product_details[0]['other_images']);
-                                                            if (!empty($other_images)) {
-                                                                foreach ($other_images as $row) {
+                                                                $other_images = json_decode($product_details[0]['other_images']);
+                                                                if (!empty($other_images)) {
+                                                                    foreach ($other_images as $row) {
                                                             ?>
-                                                                    <div class="col-md-3 col-sm-12 shadow bg-white rounded m-3 p-3 text-center grow">
-                                                                        <div class='image-upload-div'><img src="<?= BASE_URL()  . $row ?>" alt="Image Not Found"></div>
-                                                                        <a href="javascript:void(0)" class="delete-img m-3" data-id="<?= $product_details[0]['id'] ?>" data-field="other_images" data-img="<?= $row ?>" data-table="products" data-path="<?= $row ?>" data-isjson="true">
-                                                                            <span class="btn btn-block bg-gradient-danger btn-xs"><i class="far fa-trash-alt "></i> Delete</span></a>
-                                                                        <input type="hidden" name="other_images[]" value='<?= $row ?>'>
-                                                                    </div>
+                                                                <div class="col-md-3 col-sm-12 shadow bg-white rounded m-3 p-3 text-center grow">
+                                                                    <div class='image-upload-div'><img src="<?= BASE_URL()  . $row ?>" alt="Image Not Found"></div>
+                                                                    <a href="javascript:void(0)" class="delete-img m-3" data-id="<?= $product_details[0]['id'] ?>" data-field="other_images" data-img="<?= $row ?>" data-table="products" data-path="<?= $row ?>" data-isjson="true">
+                                                                        <span class="btn btn-block bg-gradient-danger btn-xs"><i class="far fa-trash-alt "></i> Delete</span>
+                                                                    </a>
+                                                                    <input type="hidden" name="other_images[]" value='<?= $row ?>'>
+                                                                </div>
                                                             <?php
+                                                                    }
                                                                 }
-                                                            }
                                                             ?>
                                                         </div>
-                                                    <?php
-                                                    } else { ?>
+                                                    <?php } else { ?>
                                                         <div class="container-fluid row image-upload-section">
                                                         </div>
                                                     <?php } ?>
@@ -258,7 +280,9 @@
                                                 </div>
                                                 <div class="col-md-6 <?= (isset($product_details[0]['video_type']) && ($product_details[0]['video_type'] == 'self_hosted')) ? '' : 'd-none'; ?>" id="video_media_container">
                                                     <label for="image">Video <span class='text-danger text-sm'>*</span></label>
-                                                    <div class='col-md-3'><a class="uploadFile img btn btn-primary text-white btn-sm" data-input='pro_input_video' data-isremovable='1' data-media_type='video' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a></div>
+                                                    <div class='col-md-3'>
+                                                        <a class="uploadFile img btn btn-primary text-white btn-sm" data-input='pro_input_video' data-isremovable='1' data-media_type='video' data-is-multiple-uploads-allowed='0' data-toggle="modal" data-target="#media-upload-modal" value="Upload Photo"><i class='fa fa-upload'></i> Upload</a>
+                                                    </div>
                                                     <?php if (isset($product_details[0]['id']) && !empty($product_details[0]['id']) && isset($product_details[0]['video_type']) &&  $product_details[0]['video_type'] == 'self_hosted') { ?>
                                                         <label class="text-danger mt-3">*Only Choose When Update is necessary</label>
                                                         <div class="container-fluid row image-upload-section ">
@@ -273,7 +297,6 @@
                                                             </div>
                                                         </div>
                                                     <?php } ?>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -286,25 +309,20 @@
                                     <div id="attributes_values_json_data" class="d-none">
                                         <select class="select_single" data-placeholder=" Type to search and select attributes">
                                             <option value=""></option>
-                                            <?php
-                                            foreach ($attributes_refind as $key => $value) {
-                                            ?>
+                                            <?php foreach ($attributes_refind as $key => $value) { ?>
                                                 <optgroup label="<?= $key ?>"><?= $key ?>
                                                     <?php foreach ($value as $key => $value) {  ?>
                                                         <option name='<?= $key ?>' value='<?= $key ?>' data-values='<?= json_encode($value, 1) ?>'><?= $key ?></option>
                                                     <?php } ?>
                                                 </optgroup>
-                                            <?php
-                                            }
-                                            ?>
+                                            <?php } ?>
                                         </select>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <h3 class="card-title">Additional Info</h3>
-
                                         <?php
-                                        if (isset($product_details)) {
-                                            $HideStatus = (isset($product_details[0]['id']) && $product_details[0]['stock_type'] == NULL) ? 'collapse' : '';
+                                            if (isset($product_details)) {
+                                                $HideStatus = (isset($product_details[0]['id']) && $product_details[0]['stock_type'] == NULL) ? 'collapse' : '';
                                         ?>
                                             <div class="col-12 row additional-info existing-additional-settings">
                                                 <div class="row mt-4 col-md-12 ">
@@ -316,7 +334,6 @@
                                                         </div>
                                                     </nav>
                                                 </div>
-
                                                 <div class="tab-content p-3 col-md-12" id="nav-tabContent">
                                                     <div class="tab-pane fade active show" id="general-settings" role="tabpanel" aria-labelledby="general-settings-tab">
                                                         <div class="form-group">
@@ -335,9 +352,7 @@
                                                             </div>
                                                         </div>
                                                         <div id='product-general-settings'>
-                                                            <?php
-                                                            if ($product_details[0]['type'] == "simple_product") {
-                                                            ?>
+                                                            <?php if ($product_details[0]['type'] == "simple_product") { ?>
                                                                 <div id="general_price_section">
                                                                     <div class="form-group">
                                                                         <label for="type" class="col-md-2">Price:</label>
@@ -369,10 +384,8 @@
                                                                     <div class="col col-xs-12">
                                                                         <label class="control-label">Stock Status :</label>
                                                                         <select type="text" class="col form-control stock-simple-mustfill-field" id="simple_product_stock_status">
-                                                                            <option value="1" <?= (isset($product_details[0]['stock_type']) &&
-                                                                                                    $product_details[0]['stock_type'] != NULL && $product_details[0]['availability'] == "1") ? 'selected' : '' ?>>In Stock</option>
-                                                                            <option value="0" <?= (isset($product_details[0]['stock_type']) &&
-                                                                                                    $product_details[0]['stock_type'] != NULL && $product_details[0]['availability'] == "0") ? 'selected' : '' ?>>Out Of Stock</option>
+                                                                            <option value="1" <?= (isset($product_details[0]['stock_type']) && $product_details[0]['stock_type'] != NULL && $product_details[0]['availability'] == "1") ? 'selected' : '' ?>>In Stock</option>
+                                                                            <option value="0" <?= (isset($product_details[0]['stock_type']) && $product_details[0]['stock_type'] != NULL && $product_details[0]['availability'] == "0") ? 'selected' : '' ?>>Out Of Stock</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -423,7 +436,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -440,13 +452,11 @@
                                                             <a href="javascript:void(0);" id="save_attributes" class="btn btn-block btn-outline-primary col-md-2 float-right m-2 btn-sm d-none">Save Attributes</a>
                                                         </div>
                                                         <div class="clearfix"></div>
-
                                                         <div id="attributes_process">
                                                             <div class="form-group text-center row my-auto p-2 border rounded bg-gray-light col-md-12 no-attributes-added">
                                                                 <div class="col-md-12 text-center">No Product Attribures Are Added ! </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <div class="tab-pane fade" id="product-variants" role="tabpanel" aria-labelledby="product-variants-tab">
                                                         <div class="col-md-12">
@@ -457,7 +467,6 @@
                                                             <div class="col-md-12 text-center"> No Product Variations Are Added ! </div>
                                                         </div>
                                                         <div id="variants_process" class="ui-sortable">
-
                                                             <div class="form-group move row my-auto p-2 border rounded bg-gray-light product-variant-selectbox">
                                                                 <div class="col-1 text-center my-auto">
                                                                     <i class="fas fa-sort"></i>
@@ -465,14 +474,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <?php
-                                            } else {
-
-                                                ?>
+                                                </div>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="col-12 row additional-info existing-additional-settings">
+                                                <div class="tab-content p-3 col-md-12" id="nav-tabContent">
                                                     <div class="col-12 row additional-info existing-additional-settings">
                                                         <div class="row mt-4 col-md-12 ">
                                                             <nav class="w-100">
-                                                                <div class="nav nav-tabs" id="product-tab" role="tablist"> <a class="nav-item nav-link active" id="tab-for-general-price" data-toggle="tab" href="#general-settings" role="tab" aria-controls="general-price" aria-selected="true">General</a> <a class="nav-item nav-link disabled product-attributes" id="tab-for-attributes" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="product-attributes" aria-selected="false">Attributes</a> <a class="nav-item nav-link disabled product-variants d-none" id="tab-for-variations" data-toggle="tab" href="#product-variants" role="tab" aria-controls="product-variants" aria-selected="false">Variations</a>
+                                                                <div class="nav nav-tabs" id="product-tab" role="tablist">
+                                                                    <a class="nav-item nav-link active" id="tab-for-general-price" data-toggle="tab" href="#general-settings" role="tab" aria-controls="general-price" aria-selected="true">General</a>
+                                                                    <a class="nav-item nav-link disabled product-attributes" id="tab-for-attributes" data-toggle="tab" href="#product-attributes" role="tab" aria-controls="product-attributes" aria-selected="false">Attributes</a>
+                                                                    <a class="nav-item nav-link disabled product-variants d-none" id="tab-for-variations" data-toggle="tab" href="#product-variants" role="tab" aria-controls="product-variants" aria-selected="false">Variations</a>
                                                                 </div>
                                                             </nav>
                                                             <div class="tab-content p-3 col-md-12" id="nav-tabContent">
@@ -529,7 +542,8 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group collapse simple-product-save">
-                                                                            <div class="col"> <a href="javascript:void(0);" class="btn btn-primary save-settings">Save Settings</a>
+                                                                            <div class="col">
+                                                                                <a href="javascript:void(0);" class="btn btn-primary save-settings">Save Settings</a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -567,18 +581,23 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <div class="col"> <a href="javascript:void(0);" class="btn btn-primary save-variant-general-settings">Save Settings</a>
+                                                                            <div class="col">
+                                                                                <a href="javascript:void(0);" class="btn btn-primary save-variant-general-settings">Save Settings</a>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="tab-pane fade" id="product-attributes" role="tabpanel" aria-labelledby="product-attributes-tab">
                                                                     <div class="info col-12 p-3 d-none" id="note">
-                                                                        <div class=" col-12 d-flex align-center"> <strong>Note : </strong>
-                                                                            <input type="checkbox" checked="checked" class="ml-3 my-auto custom-checkbox" disabled> <span class="ml-3">check if the attribute is to be used for variation </span>
+                                                                        <div class=" col-12 d-flex align-center">
+                                                                            <strong>Note : </strong>
+                                                                            <input type="checkbox" checked="checked" class="ml-3 my-auto custom-checkbox" disabled>
+                                                                            <span class="ml-3">check if the attribute is to be used for variation </span>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-12"> <a href="javascript:void(0);" id="add_attributes" class="btn btn-block btn-outline-primary col-md-2 float-right m-2 btn-sm">Add Attributes</a> <a href="javascript:void(0);" id="save_attributes" class="btn btn-block btn-outline-primary col-md-2 float-right m-2 btn-sm d-none">Save Attributes</a>
+                                                                    <div class="col-md-12">
+                                                                        <a href="javascript:void(0);" id="add_attributes" class="btn btn-block btn-outline-primary col-md-2 float-right m-2 btn-sm">Add Attributes</a>
+                                                                        <a href="javascript:void(0);" id="save_attributes" class="btn btn-block btn-outline-primary col-md-2 float-right m-2 btn-sm d-none">Save Attributes</a>
                                                                     </div>
                                                                     <div class="clearfix"></div>
                                                                     <div id="attributes_process">
@@ -597,16 +616,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <?php
-                                            }
-                                                ?>
                                                 </div>
                                             </div>
+                                        <?php } ?>
                                     </div>
                                     <div class="card-body pad">
                                         <label for="pro_input_description">Description </label>
                                         <div class="mb-3">
-
                                             <textarea name="pro_input_description" class="textarea addr_editor" placeholder="Place some text here"><?= (isset($product_details[0]['id'])) ? output_escaping(str_replace('\r\n', '&#13;&#10;', $product_details[0]['description'])) : ''; ?></textarea>
                                         </div>
                                         <div class="d-flex justify-content-center">
@@ -627,7 +643,8 @@
                 <!--/.col-md-12-->
             </div>
             <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
 </div>

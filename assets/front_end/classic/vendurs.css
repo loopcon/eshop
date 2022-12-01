@@ -447,3 +447,5 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .product-gallery-thumbs img { height: 100px!important; }
 #quick-view.product-page-content .product-title { font-size: 22px!important; line-height: 22px; }
 .product-page-content .product-image-swiper { width: 100%!important; }
+
+#register_as_seller_div select.form-input { margin-bottom: 26px; }

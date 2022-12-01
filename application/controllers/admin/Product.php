@@ -286,6 +286,11 @@ class Product extends CI_Controller
             $this->form_validation->set_rules('video', 'Video', 'trim|xss_clean');
             $this->form_validation->set_rules('video_type', 'Video Type', 'trim|xss_clean');
             $this->form_validation->set_rules('deliverable_type', 'Deliverable Type', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('length', 'Length', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('width', 'Width', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('height', 'Height', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('weight', 'Weight', 'required|trim|xss_clean');
+            $this->form_validation->set_rules('weight_unit', 'Weight unit', 'required|trim|xss_clean');
 
             if (isset($_POST['video_type']) && $_POST['video_type'] != '') {
                 if ($_POST['video_type'] == 'youtube' || $_POST['video_type'] == 'vimeo') {

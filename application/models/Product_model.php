@@ -35,6 +35,11 @@ class Product_model extends CI_Model
         $brand = (isset($data['brand'])) ? $data['brand'] : null;
         $indicator = $data['indicator'];
         $description = $data['pro_input_description'];
+        $length = $data['length'];
+        $width = $data['width'];
+        $height = $data['height'];
+        $weight = $data['weight'];
+        $mass_unit = $data['weight_unit'];
         $tags = (!empty($data['tags'])) ? $data['tags'] : "";
         $slug   = create_unique_slug($data['pro_input_name'], 'products');
         $main_image_name = $data['pro_input_image'];
@@ -71,6 +76,11 @@ class Product_model extends CI_Model
             'tags' => $tags,
             'status' => $require_products_approval,
             'description' => $description,
+            'length' => $length,
+            'width' => $width,
+            'height' => $height,
+            'weight' => $weight,
+            'mass_unit' => $mass_unit,
             'deliverable_type' => $data['deliverable_type'],
             'deliverable_zipcodes' => ($data['deliverable_type'] == ALL || $data['deliverable_type'] == NONE) ? NULL : $data['zipcodes'],
         ];

@@ -24,3 +24,12 @@ ALTER TABLE `attributes` ADD `added_by` INT(11) NOT NULL AFTER `status`;
 ALTER TABLE `attributes` ADD `added_user_is` ENUM('Seller','Admin') NULL DEFAULT NULL AFTER `status`;
 ALTER TABLE `attribute_values` ADD `added_by` INT(11) NOT NULL AFTER `status`;
 ALTER TABLE `attribute_values` ADD `added_user_is` ENUM('Seller','Admin') NULL DEFAULT NULL AFTER `status`;
+
+-- 24-11-2022
+ALTER TABLE `products` ADD `length` VARCHAR(100) NULL AFTER `description`, ADD `width` VARCHAR(100) NULL AFTER `length`, ADD `height` VARCHAR(100) NULL AFTER `width`, ADD `weight` VARCHAR(100) NULL AFTER `height`, ADD `mass_unit` ENUM('Gram', 'Ounce', 'Pound', 'Kilogram') NULL DEFAULT NULL AFTER `weight`;
+-- 25-11-2022
+ALTER TABLE `users` ADD `country` INT(11) NULL AFTER `country_code`, ADD `state` INT(11) NULL AFTER `country`;
+
+-- 28-11-2022
+ALTER TABLE `areas` ADD `country_id` INT(11) NULL AFTER `name`, ADD `state_id` INT(11) NULL AFTER `country_id`;
+
