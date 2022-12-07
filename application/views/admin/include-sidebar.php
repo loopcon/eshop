@@ -349,7 +349,7 @@
                         </a>
                     </li>
                 <?php } ?>
-                <?php if (has_permissions('read', 'delivery_boy') || has_permissions('read', 'fund_transfer')) { ?>
+                <?php /* if (has_permissions('read', 'delivery_boy') || has_permissions('read', 'fund_transfer')) { ?>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-id-card-alt text-info"></i>
@@ -382,7 +382,7 @@
                             <?php } ?>
                         </ul>
                     </li>
-                <?php } ?>
+                <?php } */ ?>
 
                 <!-- I will permission for this module later. -->
                 <?php if (has_permissions('read', 'return_request')) { ?>

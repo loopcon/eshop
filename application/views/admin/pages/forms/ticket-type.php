@@ -29,7 +29,7 @@
                                 <div class="form-group row">
                                     <label for="title" class="col-sm-2 col-form-label">Title <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="title" placeholder="Title" name="title" value="<?= @$fetched_data[0]['title'] ?>">
+                                        <input type="text" class="form-control" id="title" placeholder="Title" name="title" maxlength="40" value="<?= @$fetched_data[0]['title'] ?>">
                                     </div>
                                 </div>
 

@@ -3687,7 +3687,7 @@ $(document).on('click', '.compare', function (e) {
         if (compare.find((item) => item.product_id === product_id)) {
             Toast.fire({
                 icon: 'error',
-                title: "This item is already present in your compare list"
+                title: "This item is already present in your compare list."
             });
             return;
         }

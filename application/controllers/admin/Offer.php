@@ -73,7 +73,7 @@ class Offer extends CI_Controller
             $this->response['error'] = false;
             $this->response['csrfName'] = $this->security->get_csrf_token_name();
             $this->response['csrfHash'] = $this->security->get_csrf_hash();
-            $message = (isset($_POST['edit_offer'])) ? 'Offer Update Successfully!' : 'Offer Images Added Successfully!';
+            $message = (isset($_POST['edit_offer'])) ? 'Offer Updated Successfully!' : 'Offer Images Added Successfully!';
             $this->response['message'] = $message;
             print_r(json_encode($this->response));
         }

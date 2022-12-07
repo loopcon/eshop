@@ -337,7 +337,7 @@
             </div>
             <footer>
                 <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
-                <button type="submit" id="register_seller_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Submit' ?></button>
+                <button type="submit" id="register_seller_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Register' ?></button>
             </footer>
         </form>
     </section>

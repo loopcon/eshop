@@ -32,7 +32,7 @@
                                 <div class="form-group row">
                                     <label for="area_name" class="control-label col-md-12">Area Name <span class='text-danger text-xs'>*</span></label>
                                     <div class="col-md-6">
-                                        <input type="text" class="form-control" name="area_name" id="area_name" value="<?= (isset($fetched_data[0]['name']) ? $fetched_data[0]['name'] : '') ?>">
+                                        <input type="text" class="form-control" name="area_name" id="area_name" maxlength="40" value="<?= (isset($fetched_data[0]['name']) ? $fetched_data[0]['name'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="reset" class="btn btn-warning">Reset</button>
+                                    <button type="reset"  class="btn btn-warning">Reset</button>
                                     <button type="submit" class="btn btn-success" id="submit_btn"><?= (isset($fetched_data[0]['id'])) ? 'Update Area' : 'Add Area' ?></button>
                                 </div>
                             </div>

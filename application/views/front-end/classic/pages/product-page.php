@@ -328,7 +328,7 @@
                 <div class="form-row">
                     <div class=" col-md-6">
                         <input type="hidden" name="product_id" value="<?= $product['product'][0]['id'] ?>">
-                        <input type="text" class="form-control my-1" id="zipcode" placeholder="Zipcode" name="zipcode" autocomplete="off" required value="<?= $product['product'][0]['zipcode']; ?>">
+                        <input type="text" class="form-control my-1" id="zipcode" placeholder="Zipcode" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="zipcode" autocomplete="off" required value="<?= $product['product'][0]['zipcode']; ?>">
                     </div>
                     <button type="submit" class="button button-primary-outline check-availability" id="validate_zipcode"><?= !empty($this->lang->line('check_availability')) ? $this->lang->line('check_availability') : 'Check Availability' ?></button>
                 </div>
@@ -655,7 +655,7 @@
         </div>
     </div>
     <!-- /.card -->
-    <h3 class="h3"><?= !empty($this->lang->line('related_products')) ? $this->lang->line('related_products') : 'Related Products' ?> </h3>
+    <h3 class="h3"><?= !empty($this->lang->line('related_products')) ? $this->lang->line('related_products') : 'Related Products' ?> </h3><br>
     <!-- Default Style Design-->
     <div class="col-12 product-style-default pb-4 mt-2 mb-2">
         <div class="swiper-container product-image-swiper">

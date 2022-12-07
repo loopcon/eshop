@@ -34,7 +34,7 @@
               <div class="card-body">
                 <div class="form-group">
                   <label for="city_name">City Name <span class='text-danger text-sm'>*</span></label>
-                  <input type="text" class="form-control" name="city_name" id="city_name" value="<?= (isset($fetched_data[0]['name']) ? $fetched_data[0]['name'] : '') ?>">
+                  <input type="text" class="form-control" maxlength="40" name="city_name" id="city_name" value="<?= (isset($fetched_data[0]['name']) ? $fetched_data[0]['name'] : '') ?>">
                 </div>
                 <div class="form-group">
                   <button type="reset" class="btn btn-warning">Reset</button>
