@@ -89,6 +89,7 @@ class Login extends CI_Controller
             $this->form_validation->set_rules('state', 'State', 'trim|required|xss_clean');
             $this->form_validation->set_rules('city', 'City', 'trim|required|xss_clean');
             $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('pincode', 'Zipcode', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
@@ -341,6 +342,7 @@ class Login extends CI_Controller
                         'state' => $this->input->post('state', true),
                         'city' => $this->input->post('city', true),
                         'area' => $this->input->post('area', true),
+                        'pincode' => $this->input->post('pincode', true),
                         'latitude' => $this->input->post('latitude', true),
                         'longitude' => $this->input->post('longitude', true)
                     );

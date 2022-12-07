@@ -54,6 +54,7 @@ class Seller_model extends CI_Model
                 'state' => $profile['state'],
                 'city' => $profile['city'],
                 'area' => $profile['area'],
+                'pincode' => $profile['pincode'],
                 'latitude' => $profile['latitude'],
                 'longitude' => $profile['longitude'],
             ];

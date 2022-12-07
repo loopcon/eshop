@@ -80,7 +80,7 @@
                                     <label for="country" class="col-sm-2 col-form-label">Country <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
                                         <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
-                                        <select class='form-input select_multiple' name="country" id="country">
+                                        <select class='form-control select_multiple' name="country" id="country">
                                             <option value="">Select country</option>
                                             <?php foreach($countries as $country) { ?>
                                                 <option value="<?php echo $country['id']; ?>" <?php echo @$fetched_data[0]['country']==$country['id'] ? "selected" : "" ?>><?php echo $country['name']; ?></option>
@@ -89,7 +89,7 @@
                                     </div>
                                     <label for="state" class="col-sm-2 col-form-label">State <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
-                                        <select class='form-input select_multiple' name="state" id="state">
+                                        <select class='form-control select_multiple' name="state" id="state">
                                             <option value="">Select state</option>
                                             <?php if(@$fetched_data[0]['state'] > 0) { ?>
                                                 <?php $states = fetch_details("states", "country_id='".$fetched_data[0]['country']."'", 'id, name'); ?>
@@ -103,7 +103,7 @@
                                 <div class="form-group row">
                                     <label for="city" class="col-sm-2 col-form-label">City <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
-                                        <select class='form-input select_multiple' name="city" id="s-city">
+                                        <select class='form-control select_multiple' name="city" id="s-city">
                                             <option value="">Select city</option>
                                             <?php if(@$fetched_data[0]['city'] > 0) { ?>
                                                 <?php $cities = fetch_details("cities", "country_id='".$fetched_data[0]['country']."' AND state_id='".$fetched_data[0]['state']."'", 'id, name'); ?>
@@ -115,7 +115,7 @@
                                     </div>
                                     <label for="area" class="col-sm-2 col-form-label">Area <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
-                                        <select class='form-input select_multiple' name="area" id="area">
+                                        <select class='form-control select_multiple' name="area" id="area">
                                             <option value="">Select area</option>
                                             <?php if(@$fetched_data[0]['area'] > 0) { ?>
                                                 <?php $areas = fetch_details("areas", "city_id='".$fetched_data[0]['city']."'", 'id, name'); ?>
@@ -124,6 +124,12 @@
                                                 <?php } ?>
                                             <?php } ?>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="pincode" class="col-sm-2 col-form-label">Zipcode <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="pincode" placeholder="Enter Zipcode" name="pincode" value="<?= @$fetched_data[0]['pincode'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">

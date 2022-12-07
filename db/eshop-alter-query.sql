@@ -32,4 +32,10 @@ ALTER TABLE `users` ADD `country` INT(11) NULL AFTER `country_code`, ADD `state`
 
 -- 28-11-2022
 ALTER TABLE `areas` ADD `country_id` INT(11) NULL AFTER `name`, ADD `state_id` INT(11) NULL AFTER `country_id`;
+ALTER TABLE `states` ADD `state_code` VARCHAR(10) NOT NULL AFTER `name`;
+-- 29-11-2022
+ALTER TABLE `users` ADD `goshippo_address_object_id` VARCHAR(255) NULL AFTER `fcm_id`;
+
+-- 06-12-2022
+ALTER TABLE `orders` ADD `goshippo_order_object_id` VARCHAR(255) NULL AFTER `notes`;
 

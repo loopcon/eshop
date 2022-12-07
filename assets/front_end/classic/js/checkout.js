@@ -767,29 +767,46 @@ $('#datepicker').daterangepicker({
     }
 });
 $(document).ready(function () {
-    var address_id = $('#address_id').val();
+    // var address_id = $('#address_id').val();
     var sub_total = $('#sub_total').val();
-    var total = $('#temp_total').val();
+    // var total = $('#temp_total').val();
+    // $.ajax({
+    //     type: 'POST',
+    //     data: {
+    //         [csrfName]: csrfHash, 'address_id': address_id, 'total': total,
+    //     },
+    //     url: base_url + 'cart/get-delivery-charge',
+    //     dataType: 'json',
+    //     success: function (result) {
+    //         csrfName = result.csrfName;
+    //         csrfHash = result.csrfHash;
+    //         $('.delivery-charge').html(result.delivery_charge);
+    //         var delivery_charge = result.delivery_charge.replace(',', '');
+    //         var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
+    //         $("#amount").val(final_total);
+    //         final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    //         $('#final_total').html(final_total);
+    //     }
+    // })
+    $("#place_order_btn").attr("disabled", true);
     $.ajax({
         type: 'POST',
-        data: {
-            [csrfName]: csrfHash, 'address_id': address_id, 'total': total,
-        },
-        url: base_url + 'cart/get-delivery-charge',
+        data: {},
+        url: base_url + 'cart/get-shippo-delivery-charge',
         dataType: 'json',
         success: function (result) {
             csrfName = result.csrfName;
             csrfHash = result.csrfHash;
             $('.delivery-charge').html(result.delivery_charge);
-            var delivery_charge = result.delivery_charge.replace(',', '');
+            $("input#delivery_charge").val(result.delivery_charge);
+            var delivery_charge = result.delivery_charge.toString().replace(',', '');
             var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
             $("#amount").val(final_total);
             final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
             $('#final_total').html(final_total);
-
+            $("#place_order_btn").removeAttr("disabled");
         }
-
-    })
+    });
 });
 $(document).on('click', '#wallet_balance', function () {
     var current_wallet_balance = $('#current_wallet_balance').val();

@@ -491,13 +491,18 @@ class Cart extends CI_Controller
                     redirect(base_url('cart'), 'refresh');
                 }
             }
-            foreach ($cart_total_data as $row) {
+            $delivery_charge = 0;
+            foreach ($cart_total_data as $key=>$row) {
                 if (isset($row['availability'])  && empty($row['availability']) && $row['availability'] != "") {
                     $this->session->set_flashdata('message', 'Some of the product(s) are OUt of Stock. Please remove it from cart or save to later.');
                     $this->session->set_flashdata('message_type', 'error');
                     redirect(base_url('cart'), 'refresh');
                 }
+                // if(is_numeric($key) && is_array($row)) {
+                //     $delivery_charge += calculate_shipping_charge($row, $this->data['user']->id);
+                // }
             }
+            $this->data['cart']['delivery_charge'] = $delivery_charge;
             $this->data['currency'] = $currency;
             $this->data['guest_user_id'] = $this->session->userdata['guest_user_id'];
             $this->load->view('front-end/' . THEME . '/template', $this->data);
@@ -606,9 +611,11 @@ class Cart extends CI_Controller
                     }
                 } */
                 $product_variant_id = explode(',', $_POST['product_variant_id']);
+                $shippo_line_items = array();
+                $total_weight = 0;
                 for ($i = 0; $i < count($product_variant_id); $i++) {
                     $product_id = fetch_details("product_variants", ['id' => $product_variant_id[$i]], 'product_id');
-                    $is_allowed = fetch_details("products", ['id' => $product_id[0]['product_id']], 'cod_allowed,name');
+                    $is_allowed = fetch_details("products", ['id' => $product_id[0]['product_id']], 'cod_allowed,name,weight,mass_unit');
                     if ($is_allowed[0]['cod_allowed'] == 0) {
                         $this->response['error'] = true;
                         $this->response['message'] = "Cash On Delivery is not allow on the product " . $is_allowed[0]['name'];
@@ -616,6 +623,20 @@ class Cart extends CI_Controller
                         print_r(json_encode($this->response));
                         return false;
                     }
+
+                    $qty = explode(',', $_POST['quantity']);
+                    $product_price = explode(',', $_POST['product_price']);
+                    $shippo_line_items[] = array(
+                        "quantity" => $qty[$i],
+                        "sku" => "",
+                        "title" => $is_allowed[0]['name'],
+                        "total_price" => $product_price[$i] * $qty[$i],
+                        "currency" => "USD",
+                        "weight" => $is_allowed[0]['weight'],
+                        "weight_unit" => (($is_allowed[0]['mass_unit']=="Gram") ? "g" : (($is_allowed[0]['mass_unit']=="Ounce") ? "oz" : (($is_allowed[0]['mass_unit']=="Pound") ? "lb" : "kg")))
+                    );
+                    $total_weight += $is_allowed[0]['weight'];
+                    $weight_unit = (($is_allowed[0]['mass_unit']=="Gram") ? "g" : (($is_allowed[0]['mass_unit']=="Ounce") ? "oz" : (($is_allowed[0]['mass_unit']=="Pound") ? "lb" : "kg")));
                 }
                 $quantity = explode(',', $_POST['quantity']);
                 $check_current_stock_status = validate_stock($product_variant_id, $quantity);
@@ -636,7 +657,7 @@ class Cart extends CI_Controller
                     return false;
                 }
 
-                $_POST['delivery_charge'] = get_delivery_charge($_POST['address_id'], $cart['total_arr']);
+                $_POST['delivery_charge'] = $_POST['delivery_charge'];//get_delivery_charge($_POST['address_id'], $cart['total_arr']);
                 $_POST['delivery_charge'] = str_replace(',', '', $_POST['delivery_charge']);
                 $_POST['is_delivery_charge_returnable'] = intval($_POST['delivery_charge']) != 0 ? 1 : 0;
                 $wallet_balance = fetch_details('users', 'id=' . $_POST['user_id'], 'balance');
@@ -770,6 +791,60 @@ class Cart extends CI_Controller
                         $this->transaction_model->add_transaction($data);
                     }
                 }
+
+                $curl = curl_init();
+                $address = fetch_details("addresses", "id='".$_POST['address_id']."'");
+                $city = fetch_details("cities", "id='".$address[0]['city_id']."'");
+                $country = fetch_details("countries", "id='".$address[0]['country']."'");
+                $state = fetch_details("states", "id='".$address[0]['state']."'");
+
+                $postfields = array(
+                    "to_address" => array(
+                        "city" => $city[0]['name'],
+                        "company" => "Shippo",
+                        "country" => $country[0]['iso2'],
+                        "email" => $_POST['customer_email'],
+                        "name" => $this->data['user']->username,
+                        "phone" => $this->data['user']->mobile,
+                        "state" => $state[0]['state_code'],
+                        "street1" => $address[0]['address'],
+                        "zip" => $address[0]['pincode']
+                    ),
+                    "line_items" => $shippo_line_items,
+                    "placed_at" => date("Y-m-d H:i:s"),
+                    "order_number" => $res['order_id'],
+                    "order_status" => "PAID",
+                    "shipping_cost" => $_POST['delivery_charge'],
+                    "shipping_cost_currency" => "USD",
+                    "shipping_method" => "UPS",
+                    "subtotal_price" => $_POST['total'],
+                    "total_price" => $_POST['order_amount'],
+                    "total_tax" => "0.00",
+                    "currency" => "USD",
+                    "weight" => $total_weight,
+                    "weight_unit" => $weight_unit
+                );
+                $postfields = json_encode($postfields);
+                $headers = array(
+                    'Authorization: ShippoToken '.GOSHIPPO_TEST_API_KEY,
+                    'Content-Type: application/json'
+                );
+                curl_setopt($curl, CURLOPT_URL, 'https://api.goshippo.com/orders/');
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_ENCODING, '');
+                curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+                curl_setopt($curl, CURLOPT_TIMEOUT, 0);
+                curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $postfields);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                $result = curl_exec($curl);
+                curl_close($curl);
+                $curl_res = json_decode($result);
+                $goshippo_order_object_id = $curl_res->object_id;
+                update_details(array("goshippo_order_object_id" => $goshippo_order_object_id), array("id"=>$res['order_id']), "orders");
+
                 $this->response['error'] = false;
                 $this->response['message'] = "Order Placed Successfully.";
                 $this->response['data'] = $res;
@@ -1054,5 +1129,24 @@ class Cart extends CI_Controller
         $this->response['csrfHash'] = $this->security->get_csrf_hash();
         echo json_encode($this->response);
         return false;
+    }
+
+    public function get_shippo_delivery_charge()
+    {
+        if($this->data['is_logged_in']==0) {
+            $cart_total_data = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
+        } else {
+            $cart_total_data = get_cart_total($this->data['user']->id);
+        }
+        $this->data['cart'] = $cart_total_data;
+        $delivery_charge = 0;
+        foreach ($cart_total_data as $key=>$row) {
+            if(is_numeric($key) && is_array($row)) {
+                $delivery_charge += calculate_shipping_charge($row, $this->data['user']->id);
+            }
+        }
+        $this->response['delivery_charge'] = $delivery_charge;
+        print_r(json_encode($this->response));
+        exit;
     }
 }

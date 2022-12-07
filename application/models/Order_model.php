@@ -336,6 +336,9 @@ class Order_model extends CI_Model
 
             $order_data['is_guest'] = 0;
             $order_data['guest_user_id'] = 0;
+            $username = explode(" ", $user[0]['username']);
+            $order_data['firstname'] = $username[0];
+            $order_data['lastname'] = (count($username) > 1) ? $username[1] : $username[0];
             if($data['is_logged_in']==0) {
                 $order_data['is_guest'] = 1;
                 $order_data['guest_user_id'] = $data['guest_user_id'];

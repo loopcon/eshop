@@ -76,10 +76,10 @@
                                         <label for="weight_unit">Weight Unit <span class='text-danger text-sm'>*</span></label>
                                         <select class="col-md-12 form-control" name="weight_unit">
                                             <option value="">Select Weight Unit</option>
-                                            <option value="Gram">Gram</option>
-                                            <option value="Ounce">Ounce</option>
-                                            <option value="Pound">Pound</option>
-                                            <option value="Kilogram">Kilogram</option>
+                                            <option value="Gram" <?php echo ($product_details[0]['mass_unit']=="Gram") ? "selected": ""?>>Gram</option>
+                                            <option value="Ounce" <?php echo ($product_details[0]['mass_unit']=="Ounce") ? "selected": ""?>>Ounce</option>
+                                            <option value="Pound" <?php echo ($product_details[0]['mass_unit']=="Pound") ? "selected": ""?>>Pound</option>
+                                            <option value="Kilogram" <?php echo ($product_details[0]['mass_unit']=="Kilogram") ? "selected": ""?>>Kilogram</option>
                                         </select>
                                     </div>
                                 </div>

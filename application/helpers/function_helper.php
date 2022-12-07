@@ -4446,3 +4446,85 @@ function search_product($search)
     $result = $t->db->get()->result_array();
     return $result;
 }
+
+function calculate_shipping_charge($cart_product, $user_id)
+{
+    $t = &get_instance();
+    $t->db->select('products.seller_id, products.length, products.width, products.height, products.weight, products.mass_unit, users.username, users.email, users.address, countries.name as country_name, countries.iso2 as country_iso2_code, states.name as state_name, cities.name as city_name, areas.name as area_name, users.pincode');
+    $t->db->from('products');
+    $t->db->join('users', 'users.id=products.seller_id');
+    $t->db->join('countries', 'countries.id=users.country', 'left');
+    $t->db->join('states', 'states.id=users.state', 'left');
+    $t->db->join('cities', 'cities.id=users.city', 'left');
+    $t->db->join('areas', 'areas.id=users.area', 'left');
+    $t->db->where('products.id', $cart_product['id']);
+    $product_details = $t->db->get()->row_array();
+    // $fromAddress = $product_details['goshippo_address_object_id'];
+    $fromAddress = array(
+        "name" => $product_details['username'],
+        "street1" => $product_details['address'],
+        "city" => $product_details['city_name'],
+        "state" => $product_details['state_name'],
+        "zip" => $product_details['pincode'],
+        "country" => $product_details['country_iso2_code'],
+        "phone" => $product_details['mobile'],
+        "email" => $product_details['email'],
+    );
+    // print_r($product_details);
+    // print_r($fromAddress);
+    
+    $t->db->select('u.username, u.email, u.mobile, a.address, countries.name as country_name, countries.iso2 as country_iso2_code, states.name as state_name, cities.name as city_name, areas.name as area_name, a.pincode');
+    $t->db->from('addresses a');
+    $t->db->join('users u', 'u.id=a.user_id');
+    $t->db->join('countries', 'countries.id=a.country', 'left');
+    $t->db->join('states', 'states.id=a.state', 'left');
+    $t->db->join('cities', 'cities.id=a.city_id', 'left');
+    $t->db->join('areas', 'areas.id=a.area_id', 'left');
+    $user_details = $t->db->where('a.is_default', 1)->where('u.id="'.$user_id.'"')->get()->row_array();
+    $toAddress = array(
+        "name" => $user_details['username'],
+        "street1" => $user_details['address'],
+        "city" => $user_details['city_name'],
+        "state" => $user_details['state_name'],
+        "zip" => $user_details['pincode'],
+        "country" => $user_details['country_iso2_code'],
+        "phone" => $user_details['mobile'],
+        "email" => $user_details['email'],
+    );
+    // print_r($user_details);
+    // print_r($toAddress);
+
+    if($product_details['mass_unit']=="Gram") {
+        $mass_unit = "g";
+    } else if($product_details['mass_unit']=="Ounce") {
+        $mass_unit = "oz";
+    } else if($product_details['mass_unit']=="Pound") {
+        $mass_unit = "lb";
+    } else {
+        $mass_unit = "kg";
+    } 
+    $parcel = array(
+        "length"=> $product_details['length'],
+        "width"=> $product_details['width'],
+        "height"=> $product_details['height'],
+        "distance_unit"=> "in",
+        "weight"=> $product_details['weight'],
+        "mass_unit"=> $mass_unit,
+    );
+    require_once('goshippo-client/lib/Shippo.php');
+    Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
+    $shipment_array = array(
+        "address_from" => $fromAddress,
+        "address_to" => $toAddress,
+        "parcels" => $parcel,
+        "async" => false
+    );
+    $shipment = Shippo_Shipment::create($shipment_array);
+    // print_r($shipment);
+    if(!empty($shipment)) {
+        $delivery_charge = $cart_product['qty'] * $shipment->rates[0]->amount;
+    } else {
+        $delivery_charge = 0;
+    }
+    return number_format($delivery_charge, 2);
+}

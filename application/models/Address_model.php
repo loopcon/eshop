@@ -51,12 +51,12 @@ class Address_model extends CI_Model
             $address_data['pincode'] = $data['pincode'];
         }
 
-        if (isset($data['state'])) {
-            $address_data['state'] = $data['state'];
+        if (isset($data['state_id'])) {
+            $address_data['state'] = $data['state_id'];
         }
 
-        if (isset($data['country'])) {
-            $address_data['country'] = $data['country'];
+        if (isset($data['country_id'])) {
+            $address_data['country'] = $data['country_id'];
         }
         if (isset($data['latitude'])) {
             $address_data['latitude'] = $data['latitude'];
@@ -172,7 +172,7 @@ class Address_model extends CI_Model
             $total = $row['total'];
         }
 
-        $search_res = $this->db->select('addr.*,a.name as area,c.name as city')->join('cities c', 'addr.city_id=c.id', 'left')->join('areas a', 'addr.area_id=a.id', 'left');
+        $search_res = $this->db->select('addr.*, countries.name as country, states.name as state, addr.country as country_id, addr.state as state_id, a.name as area, c.name as city')->join('cities c', 'addr.city_id=c.id', 'left')->join('areas a', 'addr.area_id=a.id', 'left')->join('countries', 'countries.id=addr.country', 'left')->join('states', 'states.id=addr.state', 'left');
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->group_start();
@@ -208,8 +208,10 @@ class Address_model extends CI_Model
             $tempRow['city'] = $row['city'];
             $tempRow['city_id'] = $row['city_id'];
             $tempRow['state'] = $row['state'];
+            $tempRow['state_id'] = $row['state_id'];
             $tempRow['pincode'] = $row['pincode'];
             $tempRow['country'] = $row['country'];
+            $tempRow['country_id'] = $row['country_id'];
             $tempRow['action'] = $operate;
             $rows[] = $tempRow;
         }

@@ -9,7 +9,6 @@
             </ol>
         </nav>
     </div>
-
 </section>
 <!-- end breadcrumb -->
 <!-- checkout -->
@@ -71,25 +70,27 @@
                         <!-- checking product deliverable or not  -->
                         <div id="deliverable_status">
                             <?php
-                            $product_not_delivarable = array();
-                            if (isset($default_address) && !empty($default_address)) {
-                                $product_delivarable = check_cart_products_delivarable($default_address[0]['area_id'], $cart[0]['user_id']);
-                                if (!empty($product_delivarable)) {
-                                    $product_not_delivarable = array_filter($product_delivarable, function ($var) {
-                                        return ($var['is_deliverable'] == false);
-                                    });
-                                    $product_not_delivarable = array_values($product_not_delivarable);
-                                    $deliverable_error_msg = "";
-                                    foreach ($product_not_delivarable as $p_id) {
-                                        if (!empty($p_id['product_id'])) {
-                                            $deliverable_error_msg = (!empty($this->lang->line('product_not_delivarable_msg'))) ? $this->lang->line('product_not_delivarable_msg') : "Some of the item(s) are not delivarable on selected address. Try changing address or modify your cart items.";
-                                            continue;
+                                $product_not_delivarable = array();
+                                if (isset($default_address) && !empty($default_address)) {
+                                    $product_delivarable = check_cart_products_delivarable($default_address[0]['area_id'], $cart[0]['user_id']);
+                                    if (!empty($product_delivarable)) {
+                                        $product_not_delivarable = array_filter($product_delivarable, function ($var) {
+                                            return ($var['is_deliverable'] == false);
+                                        });
+                                        $product_not_delivarable = array_values($product_not_delivarable);
+                                        $deliverable_error_msg = "";
+                                        foreach ($product_not_delivarable as $p_id) {
+                                            if (!empty($p_id['product_id'])) {
+                                                $deliverable_error_msg = (!empty($this->lang->line('product_not_delivarable_msg'))) ? $this->lang->line('product_not_delivarable_msg') : "Some of the item(s) are not delivarable on selected address. Try changing address or modify your cart items.";
+                                                continue;
+                                            }
                                         }
-                                    }
                             ?>
-                                    <b class="text-danger"><?= $deliverable_error_msg ?></b>
-                            <?php }
-                            } ?>
+                                <b class="text-danger"><?= $deliverable_error_msg ?></b>
+                            <?php
+                                    }
+                                }
+                            ?>
                         </div>
                         <?php if($is_logged_in==1) { ?>
                             <input type="hidden" name="address_id" id="address_id" value="<?= isset($default_address) && !empty($default_address) ? $default_address[0]['id'] : '' ?>" />
@@ -101,12 +102,11 @@
                     <input type="hidden" id="temp_total" name="temp_total" value="<?= $cart['total_arr'] ?>">
                     <input type="hidden" name="product_variant_id" value="<?= implode(',', array_column($cart, 'id')) ?>">
                     <input type="hidden" name="quantity" value="<?= implode(',', array_column($cart, 'qty')) ?>">
+                    <input type="hidden" name="product_price" value="<?= implode(',', array_column($cart, 'special_price')) ?>">
                     <input type="hidden" id="current_wallet_balance" value="<?= number_format($wallet_balance[0]['balance'], 2) ?>">
                     <input type="hidden" id="wallet_used" name="wallet_used">
                     <input type="hidden" name="is_time_slots_enabled" id="is_time_slots_enabled" value="<?= (isset($time_slot_config['is_time_slots_enabled']) && $time_slot_config['is_time_slots_enabled'] == 1) ? 1 : 0 ?>">
-                    <?php if (isset($time_slot_config['is_time_slots_enabled']) && $time_slot_config['is_time_slots_enabled'] == 1) {
-                        //If Time Slot is Enabled
-                    ?>
+                    <?php if (isset($time_slot_config['is_time_slots_enabled']) && $time_slot_config['is_time_slots_enabled'] == 1) { //If Time Slot is Enabled ?>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Special Note for Order" name="order_note" id="order_note">
                         </div>
@@ -150,22 +150,19 @@
                                 <tbody>
                                     <?php if (isset($payment_methods['cod_method']) && $payment_methods['cod_method'] == 1) { ?>
                                         <tr>
-                                            <label for="cod">
-                                                <td>
-                                                    <label for="cod">
-                                                        <input id="cod" title="<?= isset($cart[0]['is_cod_allowed']) && $cart[0]['is_cod_allowed'] == 0 ? 'Cash on delivery is not allowed for one of the item in your cart' : 'Please select one of this options.' ?>" name="payment_method" type="radio" value="COD" <?= isset($cart[0]['is_cod_allowed']) && $cart[0]['is_cod_allowed'] == 0 ? 'disabled' : '' ?>>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label for="cod">
-                                                        <img src="<?= THEME_ASSETS_URL . 'images/cod.png' ?>" class="payment-gateway-images" alt="COD">
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label for="cod">
-                                                        <?= !empty($this->lang->line('cash_on_delivery')) ? $this->lang->line('cash_on_delivery') : 'Cash On Delivery' ?>
-                                                    </label>
-                                                </td>
+                                            <td>
+                                                <label for="cod">
+                                                    <input id="cod" title="<?= isset($cart[0]['is_cod_allowed']) && $cart[0]['is_cod_allowed'] == 0 ? 'Cash on delivery is not allowed for one of the item in your cart' : 'Please select one of this options.' ?>" name="payment_method" type="radio" value="COD" <?= isset($cart[0]['is_cod_allowed']) && $cart[0]['is_cod_allowed'] == 0 ? 'disabled' : '' ?>>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label for="cod">
+                                                    <img src="<?= THEME_ASSETS_URL . 'images/cod.png' ?>" class="payment-gateway-images" alt="COD">
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label for="cod"><?= !empty($this->lang->line('cash_on_delivery')) ? $this->lang->line('cash_on_delivery') : 'Cash On Delivery' ?></label>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                     <?php if (isset($payment_methods['paypal_payment_method']) && $payment_methods['paypal_payment_method'] == 1) { ?>
@@ -181,9 +178,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="paypal">
-                                                    Paypal
-                                                </label>
+                                                <label for="paypal">Paypal</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -200,9 +195,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="razorpay">
-                                                    RazorPay
-                                                </label>
+                                                <label for="razorpay">RazorPay</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -219,9 +212,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="paystack">
-                                                    Paystack
-                                                </label>
+                                                <label for="paystack">Paystack</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -238,9 +229,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="payumoney">
-                                                    Payumoney
-                                                </label>
+                                                <label for="payumoney">Payumoney</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -257,9 +246,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="flutterwave">
-                                                    Flutterwave
-                                                </label>
+                                                <label for="flutterwave">Flutterwave</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -276,9 +263,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="paytm">
-                                                    Paytm
-                                                </label>
+                                                <label for="paytm">Paytm</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -295,9 +280,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="stripe">
-                                                    Stripe
-                                                </label>
+                                                <label for="stripe">Stripe</label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -314,9 +297,7 @@
                                                 </label>
                                             </td>
                                             <td>
-                                                <label for="bank_transfer">
-                                                    <?= !empty($this->lang->line('direct_bank_transfers')) ? $this->lang->line('direct_bank_transfers') : 'Direct Bank Transfers' ?>
-                                                </label>
+                                                <label for="bank_transfer"><?= !empty($this->lang->line('direct_bank_transfers')) ? $this->lang->line('direct_bank_transfers') : 'Direct Bank Transfers' ?></label>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -364,14 +345,13 @@
                     <input type="hidden" name="user_contact" id="user_contact" value="<?= $user->mobile ?>" />
                     <input type="hidden" name="logo" id="logo" value="<?= base_url(get_settings('web_logo')) ?>" />
                     <input type="hidden" name="order_amount" id="amount" value="" />
+                    <input type="hidden" name="delivery_charge" id="delivery_charge" value="" />
                     <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="" />
                     <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="" />
                     <input type="hidden" name="razorpay_signature" id="razorpay_signature" value="" />
                     <input type="hidden" id="paytm_transaction_token" name="paytm_transaction_token" value="" />
                     <input type="hidden" id="paytm_order_id" name="paytm_order_id" value="" />
-
                     <input type="hidden" name="paystack_reference" id="paystack_reference" value="" />
-
                     <input type="hidden" name="stripe_client_secret" id="stripe_client_secret" value="" />
                     <input type="hidden" name="stripe_payment_id" id="stripe_payment_id" value="" />
                     <input type="hidden" name="flutterwave_public_key" id="flutterwave_public_key" value="<?= $payment_methods['flutterwave_public_key'] ?>" />
@@ -394,49 +374,50 @@
                                 </div>
                                 <div>
                                     <div class="product-checkout mt-4">
-                                        <?php if (isset($cart) && !empty($cart)) {
-                                            $product_not_delivarable = array_column($product_not_delivarable, "product_id");
-
-                                            foreach ($cart as $row) {
-                                                if (isset($row['qty']) && $row['qty'] != 0) {
-                                                    $price = $row['special_price'] != '' && $row['special_price'] != null && $row['special_price'] > 0 && $row['special_price'] < $row['price'] ? $row['special_price'] : $row['price'];
-                                                    $amount = $row['qty'] * $price;
+                                        <?php
+                                            if (isset($cart) && !empty($cart)) {
+                                                $product_not_delivarable = array_column($product_not_delivarable, "product_id");
+                                                foreach ($cart as $row) {
+                                                    if (isset($row['qty']) && $row['qty'] != 0) {
+                                                        $price = $row['special_price'] != '' && $row['special_price'] != null && $row['special_price'] > 0 && $row['special_price'] < $row['price'] ? $row['special_price'] : $row['price'];
+                                                        $amount = $row['qty'] * $price;
                                         ?>
-                                                    <div class="border-line">
-                                                        <span class="product-wrap">
-                                                            <div class="widget-image">
-                                                                <a href="<?= base_url("products/details/" . $row['slug']) ?>">
-                                                                    <img src="<?= $row['image_sm'] ?>" alt="">
-                                                                </a>
-                                                            </div>
-                                                            <!-- checking product deliverable or not  -->
-                                                            <span class="product-info text-left">
-                                                                <a href="<?= base_url("products/details/" . $row['slug']) ?>" class="product-title text-muted"><?= output_escaping(str_replace('\r\n', '&#13;&#10;', $row['name'])) ?></a>
-                                                                <div id="p_<?= $row['product_id'] ?>" class="text-danger deliverable_status"><?= (isset($default_address) && !empty($default_address) && in_array($row['product_id'], $product_not_delivarable)) ? "Not deliverable" : "" ?></div>
-                                                                <?php if (!empty($row['product_variants'])) { ?>
-                                                                    <?= str_replace(',', ' | ', $row['product_variants'][0]['variant_values']) ?>
-                                                                <?php } ?>
-                                                                <div class="qty">
-                                                                    <span class="text-muted"><?= !empty($this->lang->line('qty')) ? $this->lang->line('qty') : 'Qty' ?> :</span>
-                                                                    <span class="text-muted"><?= $row['qty'] ?></span>
-                                                                </div>
-                                                                <?php if (isset($row['item_tax_percentage']) && !empty($row['item_tax_percentage'])) { ?>
-                                                                    <div>
-                                                                        <span class="text-muted"><?= !empty($this->lang->line('net_amountD')) ? $this->lang->line('net_amount') : 'Net Amount' ?> :<?= $settings['currency'] ?><?= number_format((($amount) - (calculate_tax_inclusive(($amount), $row['item_tax_percentage']))), 2) ?></i></span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <span class="text-muted"><?= !empty($row['tax_title']) ? $row['tax_title'] : 'Tax' ?> :</span>
-                                                                        <span class="text-muted"><?= $settings['currency'] ?><?= number_format(calculate_tax_inclusive(($amount), $row['item_tax_percentage']), 2) ?></span>
-
-                                                                    </div>
-                                                                <?php } ?>
-                                                            </span>
-                                                            <span class="item-price text-muted"><?= $settings['currency'] ?></i> <?= number_format($row['qty'] * $price, 2) ?></span>
-                                                        </span>
+                                            <div class="border-line">
+                                                <span class="product-wrap">
+                                                    <div class="widget-image">
+                                                        <a href="<?= base_url("products/details/" . $row['slug']) ?>">
+                                                            <img src="<?= $row['image_sm'] ?>" alt="">
+                                                        </a>
                                                     </div>
-                                        <?php }
+                                                    <!-- checking product deliverable or not  -->
+                                                    <span class="product-info text-left">
+                                                        <a href="<?= base_url("products/details/" . $row['slug']) ?>" class="product-title text-muted"><?= output_escaping(str_replace('\r\n', '&#13;&#10;', $row['name'])) ?></a>
+                                                        <div id="p_<?= $row['product_id'] ?>" class="text-danger deliverable_status"><?= (isset($default_address) && !empty($default_address) && in_array($row['product_id'], $product_not_delivarable)) ? "Not deliverable" : "" ?></div>
+                                                        <?php if (!empty($row['product_variants'])) { ?>
+                                                            <?= str_replace(',', ' | ', $row['product_variants'][0]['variant_values']) ?>
+                                                        <?php } ?>
+                                                        <div class="qty">
+                                                            <span class="text-muted"><?= !empty($this->lang->line('qty')) ? $this->lang->line('qty') : 'Qty' ?> :</span>
+                                                            <span class="text-muted"><?= $row['qty'] ?></span>
+                                                        </div>
+                                                        <?php if(isset($row['item_tax_percentage']) && !empty($row['item_tax_percentage'])) { ?>
+                                                            <div>
+                                                                <span class="text-muted"><?= !empty($this->lang->line('net_amountD')) ? $this->lang->line('net_amount') : 'Net Amount' ?> :<?= $settings['currency'] ?><?= number_format((($amount) - (calculate_tax_inclusive(($amount), $row['item_tax_percentage']))), 2) ?></i></span>
+                                                            </div>
+                                                            <div>
+                                                                <span class="text-muted"><?= !empty($row['tax_title']) ? $row['tax_title'] : 'Tax' ?> :</span>
+                                                                <span class="text-muted"><?= $settings['currency'] ?><?= number_format(calculate_tax_inclusive(($amount), $row['item_tax_percentage']), 2) ?></span>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </span>
+                                                    <span class="item-price text-muted"><?= $settings['currency'] ?></i> <?= number_format($row['qty'] * $price, 2) ?></span>
+                                                </span>
+                                            </div>
+                                        <?php
+                                                    }
+                                                }
                                             }
-                                        } ?>
+                                        ?>
                                     </div>
                                 </div>
                                 <input type="hidden" id="sub_total" value="<?= $cart['sub_total'] ?>">
@@ -447,8 +428,6 @@
                                                 <td class="text-muted"><?= !empty($this->lang->line('subtotal')) ? $this->lang->line('subtotal') : 'Subtotal' ?></td>
                                                 <td class="text-muted"><?= $settings['currency'] . ' <span class="sub_total">' . number_format($cart['sub_total'], 2) . '</span>' ?></td>
                                             </tr>
-                                         
-
                                             <?php if (!empty($cart['tax_percentage'])) { ?>
                                                 <tr class="cart-product-tax d-none">
                                                     <td class="text-muted"><?= !empty($this->lang->line('tax')) ? $this->lang->line('tax') : 'Tax' ?> (<?= $cart['tax_percentage'] ?>%)</td>
@@ -470,11 +449,9 @@
                                             </tr>
                                         </tbody>
                                         <tfoot>
-                                            <tr>
                                             <tr class="total-price">
                                                 <td><?= !empty($this->lang->line('total')) ? $this->lang->line('total') : 'Total' ?></td>
                                                 <td><?= $settings['currency'] ?> <span id="final_total"></span></td>
-                                            </tr>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -489,21 +466,23 @@
                                         <button class="button button-danger d-none" id="clear_promo_btn"><?= !empty($this->lang->line('clear')) ? $this->lang->line('clear') : 'Clear' ?></button>
                                     </div>
                                 </div>
-                                <?php $is_disabled = false;
-                                foreach ($product_not_delivarable as $p_id) {
-                                    if (!empty($p_id['product_id'])) {
-                                        $is_disabled = true;
-                                        continue;
+                                <?php
+                                    $is_disabled = false;
+                                    foreach ($product_not_delivarable as $p_id) {
+                                        if (!empty($p_id['product_id'])) {
+                                            $is_disabled = true;
+                                            continue;
+                                        }
                                     }
-                                } ?>
+                                ?>
                                 <button class="block" id="place_order_btn" type="submit" <?= ($is_disabled) ? "disabled" : ""; ?>><?= !empty($this->lang->line('place_order')) ? $this->lang->line('place_order') : 'Place Order' ?></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </form>
     </div>
-    </form>
 </section>
 
 <form action="<?= base_url('payment/paypal') ?>" id="paypal_form" method="POST">
@@ -536,8 +515,9 @@
         <ul id="promocode-list"></ul>
     </section>
 </div>
-<?php if (isset($payment_methods['paytm_payment_method']) && $payment_methods['paytm_payment_method'] == 1) {
-    $url = ($payment_methods['paytm_payment_mode'] == "production") ? "https://securegw.paytm.in/" : "https://securegw-stage.paytm.in/";
+<?php
+    if (isset($payment_methods['paytm_payment_method']) && $payment_methods['paytm_payment_method'] == 1) {
+        $url = ($payment_methods['paytm_payment_mode'] == "production") ? "https://securegw.paytm.in/" : "https://securegw-stage.paytm.in/";
 ?>
     <script type="application/javascript" src="<?= $url ?>merchantpgpui/checkoutjs/merchants/<?= $payment_methods['paytm_merchant_id'] ?>.js"></script>
 <?php } ?>

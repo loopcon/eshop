@@ -1012,8 +1012,6 @@ class Auth extends CI_Controller
                 'pincode' => $this->input->post('zipcode'),
                 'active' => 0
             ];
-            require_once('goshippo-client/lib/Shippo.php');
-            exit;
             $res = $this->ion_auth->register($identity, $password, $email, $additional_data, ['4']);
             update_details(['active' => 0], [$identity_column => $identity], 'users');
             $data = $this->db->select('u.id, u.username, u.email, u.mobile, u.city as city_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->group_by('email')->get('users u')->result_array();
@@ -1025,6 +1023,26 @@ class Auth extends CI_Controller
                 'status' => 0,
             ];
             $this->db->insert('seller_data', $seller_data);
+
+            require_once('goshippo-client/lib/Shippo.php');
+            Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
+            $city = fetch_details("cities", "id='".$_POST['city']."'", "name");
+            $state = fetch_details("states", "id='".$_POST['state']."'", "state_code");
+            $country = fetch_details("countries", "id='".$_POST['country']."'", "iso2");
+            $address = array(
+                "name" => $_POST['first_name']." ".$_POST['last_name'],
+                "company" => $_POST['store_name'],
+                "street1" => $_POST['address'],
+                "city" => $city[0]['name'],
+                "state" => $state[0]['state_code'],
+                "zip" => $_POST['zipcode'],
+                "country" => $country[0]['iso2'],
+                "phone" => $_POST['mobile'],
+                "email" => $_POST['email']
+            );
+            $fromAddress = Shippo_Address::create($address);
+            $goshippo_address_object_id = $fromAddress->object_id;
+            update_details(['goshippo_address_object_id' => $goshippo_address_object_id], ['id' => $data[0]['id']], 'users');
 
             $this->response['error'] = false;
             $this->response['message'] = 'Registered Successfully';

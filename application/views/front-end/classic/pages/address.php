@@ -160,35 +160,36 @@
                             <label for="address" class="control-label"><?= !empty($this->lang->line('address')) ? $this->lang->line('address') : 'Address' ?></label>
                             <input type="text" class="form-control" name="address" id="edit_address" placeholder="Address" />
                         </div>
-
-                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                            <label for="city" class="control-label"><?= !empty($this->lang->line('city')) ? $this->lang->line('city') : 'City' ?></label>
-                            <select name="city_id" id="edit_city" class="form-control">
-                                <option value=""><?= !empty($this->lang->line('select_city')) ? $this->lang->line('select_city') : '--Select City--' ?></option>
-                                <?php foreach ($cities as $row) { ?>
-                                    <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            <label for="country" class="control-label"><?= !empty($this->lang->line('country')) ? $this->lang->line('country') : 'Country' ?></label>
+                            <select name="country_id" id="edit_country" class="form-control">
+                                <option value=""><?= !empty($this->lang->line('select_country')) ? $this->lang->line('select_country') : 'Select Country' ?></option>
+                                <?php foreach($countries as $country) { ?>
+                                    <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            <label for="state" class="control-label"><?= !empty($this->lang->line('state')) ? $this->lang->line('state') : 'State' ?></label>
+                            <select name="state_id" id="edit_state" class="form-control">
+                                <option value=""><?= !empty($this->lang->line('select_state')) ? $this->lang->line('select_state') : 'Select State' ?></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            <label for="city" class="control-label"><?= !empty($this->lang->line('city')) ? $this->lang->line('city') : 'City' ?></label>
+                            <select name="city_id" id="edit_city" class="form-control">
+                                <option value=""><?= !empty($this->lang->line('select_city')) ? $this->lang->line('select_city') : 'Select City' ?></option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
                             <label for="area" class="control-label"><?= !empty($this->lang->line('area')) ? $this->lang->line('area') : 'Area' ?></label>
                             <select name="area_id" id="edit_area" class="form-control">
                                 <option value=""><?= !empty($this->lang->line('select_area')) ? $this->lang->line('select_area') : '--Select Area--' ?></option>
-
                             </select>
                         </div>
-
                         <div class="col-md-4 col-sm-12 col-xs-12 form-group">
                             <label for="pincode" class="control-label"><?= !empty($this->lang->line('pincode')) ? $this->lang->line('pincode') : 'Zipcode' ?></label>
-                            <input type="text" class="form-control" id="edit_pincode" name="pincode" placeholder="Name" readonly />
-                        </div>
-                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                            <label for="state" class="control-label"><?= !empty($this->lang->line('state')) ? $this->lang->line('state') : 'State' ?></label>
-                            <input type="text" class="form-control" id="edit_state" name="state" placeholder="State" />
-                        </div>
-                        <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                            <label for="country" class="control-label"><?= !empty($this->lang->line('country')) ? $this->lang->line('country') : 'Country' ?></label>
-                            <input type="text" class="form-control" name="country" id="edit_country" placeholder="Country" />
+                            <input type="text" class="form-control" id="edit_pincode" name="pincode" placeholder="Name" />
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                             <label for="country" class="control-label"><?= !empty($this->lang->line('type')) ? $this->lang->line('type') : 'Type : ' ?></label>

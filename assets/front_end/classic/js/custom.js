@@ -3647,14 +3647,14 @@ function usercartTotal() {
 // });
 
 window.editAddress = {
-    'click .edit-address': function (e, value, row, index) {
+    'click .edit-address': function (e, value, row, index) {console.log(row);
         $("#address_id").val(row.id);
         $("#edit_name").val(row.name);
         $("#edit_mobile").val(row.mobile);
         $("#edit_address").val(row.address);
-        $("#edit_state").val(row.state);
-        $("#edit_country").val(row.country);
-        $("#edit_city").val(row.city_id).trigger('change', [row.area_id]);
+        $("#edit_country").val(row.country_id).trigger('change', [row.country_id]);
+        $("#edit_state").val(row.state_id).trigger('change', [row.state_id]);
+        $("#edit_city").val(row.city_id).trigger('change', [row.city_id]);
         $("#edit_area").val(row.area_id).trigger('change', [row.area_id]);
         $('input[type=radio][value=' + row.type.toLowerCase() + ']').attr('checked', true);
     }
@@ -4242,6 +4242,56 @@ $(document).on('change', '#add-address-form #u-city', function() {
                 html += '<option value="'+areas[i]['id']+'">'+areas[i]['name']+'</option>';
             });
             $('#add-address-form #area').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#address-modal #edit_country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#address-modal #edit_state').html(html);
+        }
+    })
+});
+
+$(document).on('change', '#address-modal #edit_state', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $('#address-modal #edit_country').val();
+    var state_id = $(this).val();
+    formdata.append('country_id', country_id);
+    formdata.append('state_id', state_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_cities_by_state',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var cities = response.data;
+            var html = '<option value="">Select city</option>';
+            $.each(cities, function(i) {
+                html += '<option value="'+cities[i]['id']+'">'+cities[i]['name']+'</option>';
+            });
+            $('#address-modal #edit_city').html(html);
         }
     })
 });
