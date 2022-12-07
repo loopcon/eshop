@@ -290,18 +290,6 @@
                     </select>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-<<<<<<< HEAD
-                    <input type="text" class='form-input' maxlength="30" placeholder="City" id="city" name="city">
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' placeholder="State" maxlength="30" id="state" name="state">
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' maxlength="6"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" placeholder="Postal / Zip code" id="zipcode" name="zipcode">
-                </div>
-                <div class="col-6 d-flex justify-content-center">
-                    <input type="text" class='form-input' maxlength="30" placeholder="Country" id="country" name="country">
-=======
                     <select class='form-input w-100' name="state" id="state">
                         <option value="">Select state</option>
                     </select>
@@ -318,7 +306,6 @@
                 </div>
                 <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
->>>>>>> 3c305cb074cf4066206b969cea3b2bf27c24f177
                 </div>
                 <div class="col-12 d-flex justify-content-center">
                     <input type="password" class='form-input' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
