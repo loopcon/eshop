@@ -135,5 +135,5 @@ define('INCLUDED', '2');
 define('EXCLUDED', '3');
 defined("WORD_LIMIT") || define("WORD_LIMIT", 25);
 
-define('GOSHIPPO_TEST_API_KEY', 'shippo_test_8a4657d301ac3a859070d8e029c5bd8afcb0a7ca');
-define('GOSHIPPO_LIVE_API_KEY', 'shippo_live_7dc68b4ebc1dc14845bc5ca48c6b47d12724c29e');
+define('GOSHIPPO_TEST_API_KEY', '');
+define('GOSHIPPO_LIVE_API_KEY', '');
