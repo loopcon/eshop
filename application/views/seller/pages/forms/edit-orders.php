@@ -98,12 +98,10 @@
                                     <th class="w-10px">Items</th>
                                     <td>
                                         <form id="update_form">
-
                                             <div class="row mb-5">
                                                 <div class="col-md-12 mb-2">
-                                                    <lable class="badge badge-info">Select status, delivery boy and square box of order item which you want to update</lable>
+                                                    <lable class="badge badge-info">Select status and square box of order item which you want to update</lable>
                                                 </div>
-
                                                 <div class="col-md-4">
                                                     <select name="status" class="form-control status">
                                                         <option value=''>Select Status</option>
@@ -117,8 +115,7 @@
                                                         <option value="returned">Returned</option>
                                                     </select>
                                                 </div>
-                                                <?php if (get_seller_permission($seller_id, 'assign_delivery_boy')) {
-                                                ?>
+                                                <?php /* if (get_seller_permission($seller_id, 'assign_delivery_boy')) { ?>
                                                     <div class="col-md-4">
                                                         <select id='deliver_by' name='deliver_by' class='form-control'>
                                                             <option value=''>Select Delivery Boy</option>
@@ -127,24 +124,25 @@
                                                             <?php  } ?>
                                                         </select>
                                                     </div>
-                                                <?php } ?>
+                                                <?php } */ ?>
                                                 <div class="col-md-4">
                                                     <a href="javascript:void(0);" title="Bulk Update" class="btn btn-primary col-sm-12 col-md-12 update_status_admin_bulk mr-1">
                                                         Bulk Update
                                                     </a>
                                                 </div>
                                             </div>
-                                            <?php $total = 0;
-                                            $tax_amount = 0;
-                                            echo '<div class="container-fluid row">';
-                                            foreach ($items as $item) {
-                                                $selected = "";
-                                                $item['discounted_price'] = ($item['discounted_price'] == '') ? 0 : $item['discounted_price'];
-                                                $total += $subtotal = ($item['quantity'] != 0 && ($item['discounted_price'] != '' && $item['discounted_price'] > 0) && $item['price'] > $item['discounted_price']) ? ($item['price'] - $item['discounted_price']) : ($item['price'] * $item['quantity']);
-                                                $tax_amount += $item['tax_amount'];
-                                                $total += $subtotal = $tax_amount;
+                                            <?php
+                                                $total = 0;
+                                                $tax_amount = 0;
+                                                echo '<div class="container-fluid row">';
+                                                foreach ($items as $item) {
+                                                    $selected = "";
+                                                    $item['discounted_price'] = ($item['discounted_price'] == '') ? 0 : $item['discounted_price'];
+                                                    $total += $subtotal = ($item['quantity'] != 0 && ($item['discounted_price'] != '' && $item['discounted_price'] > 0) && $item['price'] > $item['discounted_price']) ? ($item['price'] - $item['discounted_price']) : ($item['price'] * $item['quantity']);
+                                                    $tax_amount += $item['tax_amount'];
+                                                    $total += $subtotal = $tax_amount;
                                             ?>
-                                                <div class="  card col-md-3 col-sm-12 p-3 mb-2 bg-white rounded m-1 grow">
+                                                <div class="  card col-md-4 col-sm-12 p-3 mb-2 bg-white rounded grow">
                                                     <div class="mb-2">
                                                         <input type="checkbox" name="order_item_id[]" value=' <?= $item['id'] ?> '>
                                                     </div>
@@ -165,11 +163,11 @@
                                                     <div><span class="text-bold">Discounted Price : </span> <?= $item['discounted_price'] ?> </div>
                                                     <div><span class="text-bold">Subtotal : </span><?= $item['price'] * $item['quantity'] ?> </div>
                                                     <?php
-                                                    $badges = ["awaiting" => "secondary", "received" => "primary", "processed" => "info", "shipped" => "warning", "delivered" => "success", "returned" => "danger", "cancelled" => "danger"]
+                                                        $badges = ["awaiting" => "secondary", "received" => "primary", "processed" => "info", "shipped" => "warning", "delivered" => "success", "returned" => "danger", "cancelled" => "danger"]
                                                     ?>
                                                     <div><span class="text-bold">Active Status : </span> <span class="badge badge-<?= $badges[$item['active_status']] ?>"> <small><?= $item['active_status'] ?></small></span></div>
                                                     <?php if (isset($item['updated_by'])) { ?>
-                                                    <div><span class="text-bold">Updated By : </span><?= $item['updated_by'] ?> </div>
+                                                        <div><span class="text-bold">Updated By : </span><?= $item['updated_by'] ?> </div>
                                                     <?php } ?>
                                                     <div class="row mb-1 mt-1 order_item_status">
                                                         <div class="col-md-7 text-center"><select class="form-control-sm w-100">
@@ -214,11 +212,7 @@
                                                         </div>
                                                     <?php } ?>
                                                 </div>
-                                            <?php
-
-                                            }
-                                            echo '</div>';
-                                            ?>
+                                            <?php } ?>
                                             <div>
                                             </div>
                                         </form>
@@ -228,7 +222,6 @@
                                     <th class="w-10px">Total(<?= $settings['currency'] ?>)</th>
                                     <td id=' amount'><?php echo $total; ?></td>
                                 </tr>
-
                                 <tr class="d-none">
                                     <th class="w-10px">Tax(<?= $settings['currency'] ?>)</th>
                                     <td id='amount'><?php echo $tax_amount; ?></td>
@@ -249,15 +242,18 @@
                                 <input type="hidden" name="final_amount" id="final_amount" value="<?php echo $order_detls[0]['final_total']; ?>">
                                 <tr>
                                     <th class="w-10px">Promo Code Discount (<?= $settings['currency'] ?>)</th>
-                                    <td><?php echo $order_detls[0]['promo_discount'];
-                                        $total = floatval($total -
-                                            $order_detls[0]['promo_discount']); ?></td>
+                                    <td>
+                                        <?php
+                                            echo $order_detls[0]['promo_discount'];
+                                            $total = floatval($total - $order_detls[0]['promo_discount']);
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
-                                if (isset($order_detls[0]['discount']) && $order_detls[0]['discount'] > 0) {
-                                    $discount = $order_detls[0]['total_payable']  *  ($order_detls[0]['discount'] / 100);
-                                    $total = round($order_detls[0]['total_payable'] - $discount, 2);
-                                }
+                                    if (isset($order_detls[0]['discount']) && $order_detls[0]['discount'] > 0) {
+                                        $discount = $order_detls[0]['total_payable']  *  ($order_detls[0]['discount'] / 100);
+                                        $total = round($order_detls[0]['total_payable'] - $discount, 2);
+                                    }
                                 ?>
                                 <tr>
                                     <th class="w-10px">Payable Total(<?= $settings['currency'] ?>)</th>
@@ -267,8 +263,7 @@
                                     <th class="w-10px">Payment Method</th>
                                     <td><?php echo $order_detls[0]['payment_method']; ?></td>
                                 </tr>
-                                <?php
-                                if (!empty($bank_transfer)) { ?>
+                                <?php if (!empty($bank_transfer)) { ?>
                                     <tr>
                                         <th class="w-10px">Bank Transfers</th>
                                         <td>

@@ -1145,6 +1145,7 @@ class Cart extends CI_Controller
                 $delivery_charge += calculate_shipping_charge($row, $this->data['user']->id);
             }
         }
+        $delivery_charge = number_format($delivery_charge, 2);
         $this->response['delivery_charge'] = $delivery_charge;
         print_r(json_encode($this->response));
         exit;

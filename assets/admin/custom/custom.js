@@ -6477,3 +6477,33 @@ $(document).on('change', '#add_product_form #s-city', function() {
         }
     })
 });
+
+$(document).on("click", ".edit_order_status_transaction", function() {
+    var order_id = $(this).data('order_id');
+    var order_item_id = $(this).data('order_item_id');
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    formdata.append('order_id', order_id);
+    formdata.append('order_item_id', order_item_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + from + '/orders/get-order-status-transaction',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var rows = response.data;
+            var html = "";
+            if(response.error==false) {
+                $.each(rows, function(i) {
+                    html += "<tr><td>"+rows[i].id+"</td><td>"+rows[i].order_id+"</td><td>"+rows[i].order_item_id+"</td><td>"+rows[i].order_item_status+"</td><td>"+rows[i].added_date+"</td></tr>";
+                });
+            } else {
+                html += "<tr class='no-records-found'><td colspan='5'>No matching records found</td></tr>";
+            }
+            $("#order_status_transaction_table tbody").html(html);
+        }
+    });
+});

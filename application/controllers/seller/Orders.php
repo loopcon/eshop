@@ -162,7 +162,7 @@ class Orders extends CI_Controller
             // delivery boy update here
             $message = '';
             $delivery_boy_updated = 0;
-            $delivery_boy_id = (isset($_POST['deliver_by']) && !empty(trim($_POST['deliver_by']))) ? $this->input->post('deliver_by', true) : 0;
+            /* $delivery_boy_id = (isset($_POST['deliver_by']) && !empty(trim($_POST['deliver_by']))) ? $this->input->post('deliver_by', true) : 0;
             if (!empty($delivery_boy_id)) {
                 $delivery_boy = fetch_details('users', ['id' => trim($delivery_boy_id)], '*');
                 if (empty($delivery_boy)) {
@@ -255,7 +255,7 @@ class Orders extends CI_Controller
                         $delivery_error = false;
                     }
                 }
-            }
+            } */
 
             $item_ids = implode(",", $_POST['order_item_id']);
             $res = validate_order_status($item_ids, $_POST['status']);
@@ -271,10 +271,12 @@ class Orders extends CI_Controller
             }
 
             if (!empty($order_items)) {
+                require_once('goshippo-client/lib/Shippo.php');
+                Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
                 for ($j = 0; $j < count($order_items); $j++) {
                     $order_item_id = $order_items[$j]['id'];
                     /* velidate bank transfer method status */
-                    $order_method = fetch_details('orders', ['id' => $order_items[$j]['order_id']], 'payment_method');
+                    $order_method = fetch_details('orders', ['id' => $order_items[$j]['order_id']], 'payment_method, address_id, user_id');
                     if ($order_method[0]['payment_method'] == 'bank_transfer') {
                         $bank_receipt = fetch_details('order_bank_transfer', ['order_id' => $order_items[$j]['order_id']]);
                         $transaction_status = fetch_details('transactions', ['order_id' => $order_items[$j]['order_id']], 'status');
@@ -310,7 +312,75 @@ class Orders extends CI_Controller
                     }
                     //Update login id in order_item table
                     update_details(['updated_by' => $order_items[0]['seller_id']], ['id' => $order_item_res[0]['id']], 'order_items');
+
+                    $order_status = [
+                        'order_id' => $order_item_res[0]['order_id'],
+                        'order_status' => $_POST['status'],
+                        'order_item_id' => $order_item_res[0]['id'],
+                        'order_item_status' => $_POST['status'],
+                    ];
+                    $this->db->insert('order_status', $order_status);
+                    
+                    // $product = fetch_details("products", "id='".$order_items[$j]['product_variant_id']."'", "length, width, height, weight, mass_unit");
+                    // $user = fetch_details("users", "id='".$order_method[0]['user_id']."'");
+                    // $seller = fetch_details("users", "id='".$order_items[$j]['seller_id']."'");
+                    // $seller_city = fetch_details("cities", "id='".$seller[0]['city']."'");
+                    // $seller_state = fetch_details("states", "id='".$seller[0]['state']."'");
+                    // $seller_country = fetch_details("countries", "id='".$seller[0]['country']."'");
+                    // $address = fetch_details("addresses", "id='".$order_method[0]['address_id']."'");
+                    // $city = fetch_details("cities", "id='".$address[0]['city_id']."'");
+                    // $state = fetch_details("states", "id='".$address[0]['state']."'");
+                    // $country = fetch_details("countries", "id='".$address[0]['country']."'");
+                    // $fromAddress = array(
+                    //     "city" => $seller_city[0]['name'],
+                    //     "company" => "Shippo",
+                    //     "country" => $seller_country[0]['iso2'],
+                    //     "email" => $seller['email'],
+                    //     "name" => $seller[0]['username'],
+                    //     "phone" => $seller[0]['mobile'],
+                    //     "state" => $seller_state[0]['state_code'],
+                    //     "street1" => $seller[0]['address'],
+                    //     "zip" => $seller[0]['pincode']
+                    // );
+                    // $toAddress = array(
+                    //     "city" => $city[0]['name'],
+                    //     "company" => "Shippo",
+                    //     "country" => $country[0]['iso2'],
+                    //     "email" => $_POST['customer_email'],
+                    //     "name" => $user[0]['username'],
+                    //     "phone" => $user[0]['mobile'],
+                    //     "state" => $state[0]['state_code'],
+                    //     "street1" => $address[0]['address'],
+                    //     "zip" => $address[0]['pincode']
+                    // );
+                    // if($product['mass_unit']=="Gram") {
+                    //     $mass_unit = "g";
+                    // } else if($product['mass_unit']=="Ounce") {
+                    //     $mass_unit = "oz";
+                    // } else if($product['mass_unit']=="Pound") {
+                    //     $mass_unit = "lb";
+                    // } else {
+                    //     $mass_unit = "kg";
+                    // }
+                    // $parcel = array(
+                    //     "length"=> $product[0]['length'],
+                    //     "width"=> $product[0]['width'],
+                    //     "height"=> $product[0]['height'],
+                    //     "distance_unit"=> "in",
+                    //     "weight"=> $product[0]['weight'],
+                    //     "mass_unit"=> $mass_unit,
+                    // );
+                    // $shipment = Shippo_Shipment::create(
+                    //     array(
+                    //         "address_from" => $fromAddress,
+                    //         "address_to" => $toAddress,
+                    //         "parcels" => $parcel,
+                    //         "async" => false
+                    //     )
+                    // );
+                    // print_r($shipment);
                 }
+                // exit;
                 $settings = get_settings('system_settings', true);
                 $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';
                 $user_res = fetch_details('users', ['id' => $user_id], 'username,fcm_id');
@@ -444,6 +514,33 @@ class Orders extends CI_Controller
             $this->data['title'] = 'Order Tracking | ' . $settings['app_name'];
             $this->data['meta_description'] = 'Order Tracking | ' . $settings['app_name'];
             $this->load->view('seller/template', $this->data);
+        } else {
+            redirect('seller/login', 'refresh');
+        }
+    }
+
+    function get_order_status_transaction()
+    {
+        if($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+            $order_id = $_POST['order_id'];
+            $order_item_id = $_POST['order_item_id'];
+            $status_transaction = $this->Order_model->get_order_status_transaction($order_id, $order_item_id);
+            if(count($status_transaction) > 0) {
+                $this->response['error'] = false;
+                $this->response['csrfName'] = $this->security->get_csrf_token_name();
+                $this->response['csrfHash'] = $this->security->get_csrf_hash();
+                $this->response['message'] = "";
+                $this->response['data'] = $status_transaction;
+                print_r(json_encode($this->response));
+                exit; 
+            }
+            $this->response['error'] = true;
+            $this->response['csrfName'] = $this->security->get_csrf_token_name();
+            $this->response['csrfHash'] = $this->security->get_csrf_hash();
+            $this->response['message'] = "Order item status not found";
+            $this->response['data'] = '';
+            print_r(json_encode($this->response));
+            exit;
         } else {
             redirect('seller/login', 'refresh');
         }

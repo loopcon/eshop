@@ -150,7 +150,7 @@
                                                 <label for="guarantee_period" class="col-form-label">Guarantee Period</label>
                                                 <input type="text" class="col-md-12 form-control" name="guarantee_period" value="<?= (isset($product_details[0]['guarantee_period'])) ? $product_details[0]['guarantee_period'] : "" ?>" placeholder='Guarantee Period if any'>
                                             </div>
-                                            <div class="row col mt-3">
+                                            <div class="row col">
                                                 <div class="col-md-6">
                                                     <label for="zipcode" class="col-form-label">Deliverable Type</label>
                                                     <select class='form-control' name='deliverable_type' id="deliverable_type">

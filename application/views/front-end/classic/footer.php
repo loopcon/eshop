@@ -234,7 +234,7 @@
             </div> */ ?>
             <footer>
                 <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
-                <button type="submit" id="forgot_password_submit_btn" class="submit_btn  btn btn-primary btn-block"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Submit' ?></button>
+                <button type="submit" id="forgot_password_submit_btn" class="submit_btn  btn btn-primary btn-block">Submit</button>
             </footer>
             <br>
             <div class="d-flex justify-content-center">

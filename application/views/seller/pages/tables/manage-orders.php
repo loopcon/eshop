@@ -158,6 +158,34 @@
                         </div><!-- .card-innr -->
                     </div><!-- .card -->
                 </div>
+                <div class="modal fade" id="status_transaction_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">View Order Stauts Transaction</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="tab-pane " role="tabpanel" aria-labelledby="product-rating-tab">
+                                    <input type="hidden" name="order_id" id="order_id">
+                                    <table class='table-striped' id="order_status_transaction_table" data-toggle="table">
+                                        <thead>
+                                            <tr>
+                                                <th data-field="id" data-sortable="true">ID</th>
+                                                <th data-field="order_id" data-sortable="true">Order ID</th>
+                                                <th data-field="order_item_id" data-sortable="false">Order Item ID</th>
+                                                <th data-field="status" data-sortable="false">Status</th>
+                                                <th data-field="date" data-sortable="false">Date</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->

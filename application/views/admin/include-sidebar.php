@@ -56,14 +56,14 @@
                                     </a>
                                 </li>
                             <?php } ?>
-                            <?php if (has_permissions('read', 'orders')) { ?>
+                            <?php /* if (has_permissions('read', 'orders')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/orders/order-tracking') ?>" class="nav-link">
                                         <i class="fa fa-map-marker-alt nav-icon"></i>
                                         <p>Order Tracking</p>
                                     </a>
                                 </li>
-                            <?php } ?>
+                            <?php } */ ?>
                             <?php if (has_permissions('read', 'orders')) { ?>
                                 <li class="nav-item">
                                     <a href="<?= base_url('admin/notification_settings/manage_system_notifications') ?>" class="nav-link">

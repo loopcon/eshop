@@ -38,12 +38,12 @@
                                     <p>Orders</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a href="<?= base_url('seller/orders/order-tracking') ?>" class="nav-link">
                                     <i class="fa fa-map-marker-alt nav-icon"></i>
                                     <p>Order Tracking</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                         </ul>
                     </li>
                     <li class="nav-item">

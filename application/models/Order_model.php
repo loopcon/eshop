@@ -381,6 +381,15 @@ class Order_model extends CI_Model
                 }
 
                 $this->db->insert('order_items', $product_variant_data[$i]);
+                $last_order_item_id = $this->db->insert_id();
+
+                $order_status_data[$i] = [
+                    'order_id' => $last_order_id,
+                    'order_status' => 'received',
+                    'order_item_id' => $last_order_item_id,
+                    'order_item_status' => 'received',
+                ];
+                $this->db->insert('order_status', $order_status_data[$i]);
             }
             $product_variant_ids = explode(',', $data['product_variant_id']);
             $qtns = explode(',', $data['quantity'] ?? '');
@@ -921,12 +930,14 @@ class Order_model extends CI_Model
             } else if ($this->ion_auth->is_seller()) {
                 $operate = '<a href=' . base_url('seller/orders/edit_orders') . '?edit_id=' . $row['order_id'] . ' class="btn btn-primary btn-xs mr-1 mb-1" title="View"><i class="fa fa-eye"></i></a>';
                 $operate .= '<a href="' . base_url() . 'seller/invoice?edit_id=' . $row['order_id'] . '" class="btn btn-info btn-xs mr-1 mb-1" title="Invoice" ><i class="fa fa-file"></i></a>';
-                $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-courier_agency="' . $row['courier_agency'] . '"  data-tracking_id="' . $row['tracking_id'] . '" data-url="' . $row['url'] . '" data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
+                // $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-courier_agency="' . $row['courier_agency'] . '"  data-tracking_id="' . $row['tracking_id'] . '" data-url="' . $row['url'] . '" data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
+                $operate .= ' <a href="javascript:void(0)" class="edit_order_status_transaction btn btn-success btn-xs mr-1 mb-1" title="Order Status Transaction" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-url="' . $row['url'] . '" data-target="#status_transaction_modal" data-toggle="modal"><i class="fas fa-thermometer-quarter"></i></a>';
             } else if ($this->ion_auth->is_admin()) {
                 $operate = '<a href=' . base_url('admin/orders/edit_orders') . '?edit_id=' . $row['order_id'] . ' class="btn btn-primary btn-xs mr-1 mb-1" title="View" ><i class="fa fa-eye"></i></a>';
                 $operate .= '<a href="javascript:void(0)" class="delete-order-items btn btn-danger btn-xs mr-1 mb-1" data-id=' . $row['order_item_id'] . ' title="Delete" ><i class="fa fa-trash"></i></a>';
                 $operate .= '<a href="' . base_url() . 'admin/invoice?edit_id=' . $row['order_id'] . '" class="btn btn-info btn-xs mr-1 mb-1" title="Invoice" ><i class="fa fa-file"></i></a>';
-                $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-courier_agency="' . $row['courier_agency'] . '"  data-tracking_id="' . $row['tracking_id'] . '" data-url="' . $row['url'] . '" data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
+                // $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-courier_agency="' . $row['courier_agency'] . '"  data-tracking_id="' . $row['tracking_id'] . '" data-url="' . $row['url'] . '" data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
+                $operate .= ' <a href="javascript:void(0)" class="edit_order_status_transaction btn btn-success btn-xs mr-1 mb-1" title="Order Status Transaction" data-order_id="' . $row['order_id'] . '" data-order_item_id="' . $row['order_item_id'] . '" data-url="' . $row['url'] . '" data-target="#status_transaction_modal" data-toggle="modal"><i class="fa fa-thermometer-quarter"></i></a>';
             } else {
                 $operate = "";
             }
@@ -1220,5 +1231,15 @@ class Order_model extends CI_Model
             $response['data'] = array();
             return $response;
         }
+    }
+
+    public function get_order_status_transaction($order_id, $order_item_id)
+    {
+        $this->db->select('*');
+        $this->db->where('order_id', $order_id);
+        $this->db->where('order_item_id', $order_item_id);
+        $this->db->order_by('added_date', 'DESC');
+        $res = $this->db->get('order_status')->result_array();
+        return $res;
     }
 }
