@@ -1014,7 +1014,8 @@ class Auth extends CI_Controller
             ];
             $res = $this->ion_auth->register($identity, $password, $email, $additional_data, ['4']);
             update_details(['active' => 0], [$identity_column => $identity], 'users');
-            $data = $this->db->select('u.id, u.username, u.email, u.mobile, u.city as city_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->group_by('email')->get('users u')->result_array();
+            // $data = $this->db->select('u.id, u.username, u.email, u.mobile, u.city as city_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->group_by('email')->get('users u')->result_array();
+            $data = $this->db->select('u.id, u.username, u.email, u.mobile, u.city as city_name')->where([$identity_column => $identity])->join('cities c', 'c.id=u.city', 'left')->get('users u')->result_array();
 
             $seller_data = [
                 'user_id' => $data[0]['id'],

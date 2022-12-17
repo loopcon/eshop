@@ -16,7 +16,7 @@
 
 <section class="my-account-section">
     <div class="main-content">
-        <div class="col-md-12 mt-5 mb-3">
+        <div class="col-md-12 pt-3 mb-3">
             <div class="user-detail align-items-center">
                 <div class="ml-3">
                     <h6 class="text-muted mb-0"><?= !empty($this->lang->line('hello')) ? $this->lang->line('hello') : 'Hello' ?></h6>
@@ -34,18 +34,16 @@
                     <h1 class="h4"><?= !empty($this->lang->line('orders')) ? $this->lang->line('orders') : 'Orders' ?></h1>
                 </div>
                 <div class="card-body orders-section p-2">
-                    <?php
-                    foreach ($orders['order_data'] as $row) {
-                    ?>
+                    <?php foreach ($orders['order_data'] as $row) { ?>
                         <div class=" border-0">
                             <div class="card-header bg-white p-2">
                                 <div class="row justify-content-between">
                                     <div class="col">
                                         <p class="text-muted"> <?= !empty($this->lang->line('order_id')) ? $this->lang->line('order_id') : 'Order ID' ?> <span class="font-weight-bold text-dark"> : <?= $row['id'] ?></span></p>
                                         <p class="text-muted"> <?= !empty($this->lang->line('place_on')) ? $this->lang->line('place_on') : 'Place On' ?> <span class="font-weight-bold text-dark"> : <?= $row['date_added'] ?></span> </p>
-                                        <?php if ($row['otp'] != 0) { ?>
+                                        <?php /* if ($row['otp'] != 0) { ?>
                                             <p class="text-muted"> <?= !empty($this->lang->line('otp')) ? $this->lang->line('otp') : 'OTP' ?> <span class="font-weight-bold text-dark"> : <?= $row['otp'] ?></span> </p>
-                                        <?php } ?>
+                                        <?php } */ ?>
                                     </div>
                                     <div class="flex-col my-auto">
                                         <h6 class="ml-auto mr-3"> <a href="<?= base_url('my-account/order-details/' . $row['id']) ?>" class='button button-primary-outline'><?= !empty($this->lang->line('view_details')) ? $this->lang->line('view_details') : 'View Details' ?></a> </h6>
@@ -62,9 +60,9 @@
                                                 <input type="text" class="kv-fa rating-loading" value="<?= $item['product_rating'] ?>" data-size="xs" title="" readonly>
                                             </div>
                                         <?php } ?>
-                                        <?php if ($item['otp'] != 0) { ?>
+                                        <?php /* if ($item['otp'] != 0) { ?>
                                             <p class="text-muted"> <?= !empty($this->lang->line('otp')) ? $this->lang->line('otp') : 'OTP' ?> <span class="font-weight-bold text-dark"> : <?= $item['otp'] ?></span> </p>
-                                        <?php } ?>
+                                        <?php } */ ?>
                                         <h4 class="mt-3 mb-4 bold"> <span class="mt-5"><i><?= $settings['currency'] ?></i></span> <?= number_format($row['final_total'], 2) ?> <span class="small text-muted"> <?= !empty($this->lang->line('via')) ? $this->lang->line('via') : 'via' ?> (<?= $row['payment_method'] ?>) </span></h4>
                                     </div>
                                     <?php if (count($row['order_items']) == 1) { ?>
@@ -75,12 +73,13 @@
                             <div class="card-footer bg-white px-sm-3 pt-sm-4 px-0">
                                     <div class="row text-center ">
                                         <?php
-                                        $status = ["awaiting", "received", "processed", "shipped", "delivered", "cancelled", "returned"];
-                                        $cancelable_till = $item['cancelable_till'];
-                                        $active_status = $item['active_status'];
-                                        $cancellable_index = array_search($cancelable_till, $status);
-                                        $active_index = array_search($active_status, $status);
-                                        if (!$item['is_already_cancelled'] && $item['is_cancelable'] && $active_index <= $cancellable_index) { ?>
+                                            $status = ["awaiting", "received", "processed", "shipped", "delivered", "cancelled", "returned"];
+                                            $cancelable_till = $item['cancelable_till'];
+                                            $active_status = $item['active_status'];
+                                            $cancellable_index = array_search($cancelable_till, $status);
+                                            $active_index = array_search($active_status, $status);
+                                            if (!$item['is_already_cancelled'] && $item['is_cancelable'] && $active_index <= $cancellable_index) {
+                                        ?>
                                             <div class="col my-auto">
                                                 <h5>
                                                     <a class="update-order block button-sm buttons btn-6-1 mt-3 m-0" data-status="cancelled" data-order-id="<?= $row['id'] ?>"><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></a>

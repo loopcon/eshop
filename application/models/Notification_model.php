@@ -172,6 +172,21 @@ class Notification_model extends CI_Model
         }
 
         $city_search_res = $search_res->order_by($sort, $order)->limit($limit, $offset)->get('notifications')->result_array();
+        if(!$this->ion_auth->is_admin()) {
+            $res = array();
+            foreach($city_search_res as $row) {
+                if($row['users_id']!=0) {
+                    if(!in_array($this->session->userdata('user_id'), json_decode($row['users_id']))) {
+                        // No code come here
+                    } else {
+                        $res[] = $row;
+                    }
+                } else {
+                    $res[] = $row;
+                }
+            }
+            $city_search_res = $res;
+        }
         $bulkData = array();
         $bulkData['total'] = $total;
         $rows = array();

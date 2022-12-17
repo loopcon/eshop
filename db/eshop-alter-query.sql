@@ -39,3 +39,12 @@ ALTER TABLE `users` ADD `goshippo_address_object_id` VARCHAR(255) NULL AFTER `fc
 -- 06-12-2022
 ALTER TABLE `orders` ADD `goshippo_order_object_id` VARCHAR(255) NULL AFTER `notes`;
 
+-- 14-12-2022
+ALTER TABLE `states` ADD `flag` TINYINT(1) NOT NULL DEFAULT '0' AFTER `state_code`;
+ALTER TABLE `cities` ADD `country_id` int(11) NOT NULL AFTER `id`, ADD `state_id` int(11) NOT NULL AFTER `country_id`;
+
+-- 15-12-2022
+ALTER TABLE `cart` ADD `goshippo_parcel_object_id` VARCHAR(255) NULL AFTER `is_guest`;
+
+
+

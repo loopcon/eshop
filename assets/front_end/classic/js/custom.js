@@ -4321,6 +4321,30 @@ $(document).on('submit', '#register-as-seller-form', function (e) {
         }
     });
 });
+
+$(document).on('change', '#checkout_form #country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#checkout_form #state').html(html);
+        }
+    })
+});
 function check_user_email(email) {
     var response;
     $.ajax({

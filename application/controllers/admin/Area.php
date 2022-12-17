@@ -37,7 +37,7 @@ class Area extends CI_Controller
                 $this->data['fetched_data'] = fetch_details('areas', ['id' => $_GET['edit_id']]);
             }
             // $this->data['city'] = fetch_details('cities', '');
-            $this->data['country'] = fetch_details('countries', '');
+            $this->data['country'] = fetch_details('countries', 'flag=1');
             $this->data['zipcodes'] = fetch_details('zipcodes', '');
             $this->load->view('admin/template', $this->data);
         } else {
@@ -59,7 +59,7 @@ class Area extends CI_Controller
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'Countries Management | ' . $settings['app_name'];
             $this->data['meta_description'] = ' Countries Management  | ' . $settings['app_name'];
-            $this->data['countries'] = fetch_details('countries', '');
+            $this->data['countries'] = fetch_details('countries', 'flag=1');
             $this->load->view('admin/template', $this->data);
         } else {
             redirect('admin/login', 'refresh');
@@ -80,7 +80,7 @@ class Area extends CI_Controller
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'States Management | ' . $settings['app_name'];
             $this->data['meta_description'] = ' States Management  | ' . $settings['app_name'];
-            $this->data['states'] = fetch_details('states', '');
+            $this->data['states'] = fetch_details('states', 'flag=1');
             $this->load->view('admin/template', $this->data);
         } else {
             redirect('admin/login', 'refresh');

@@ -44,10 +44,8 @@
 
                         <div class="form-group col-md-6">
                             <label for="email" class="col-sm-12 col-form-label"><?= !empty($this->lang->line('email')) ? $this->lang->line('email') : 'Email' ?>*</label>
-                            <input type="text" class="form-control" id="email" placeholder="Type Email here" name="email" value="<?= $users->email ?>">
+                            <input type="text" class="form-control" id="email" placeholder="Type Email here" name="email" value="<?= $users->email ?>" readonly>
                         </div>
-
-
                     </div>
                     <div class="form-group">
                         <label for="old" class="col-sm-12 col-form-label"><small><?= !empty($this->lang->line('old_password')) ? $this->lang->line('old_password') : 'Old Password' ?></small></label>

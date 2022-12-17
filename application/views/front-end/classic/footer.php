@@ -281,7 +281,7 @@
                     <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
                 </div>
                 <div class="col-6 justify-content-center">
-                    <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
+                    <?php $countries = fetch_details("countries", "flag=1", 'id, name, iso3, iso2'); ?>
                     <select class='form-input w-100' name="country" id="country">
                         <option value="">Select country</option>
                         <?php foreach($countries as $country) { ?>

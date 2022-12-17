@@ -63,9 +63,9 @@ class Login extends CI_Controller
 
     public function update_user()
     {
-        if (print_msg(!has_permissions('update', 'profile'), PERMISSION_ERROR_MSG, 'payment_settings')) {
-            return false;
-        }
+        // if (print_msg(!has_permissions('update', 'profile'), PERMISSION_ERROR_MSG, 'payment_settings')) {
+        //     return false;
+        // }
 
         if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {
             $this->response['error'] = true;
@@ -78,16 +78,14 @@ class Login extends CI_Controller
         $identity_column = $this->config->item('identity', 'ion_auth');
         $identity = $this->session->userdata('identity');
         $user = $this->ion_auth->user()->row();
-        if ($identity_column == 'email') {
-            $this->form_validation->set_rules('email', 'Email', 'required|xss_clean|trim|valid_email|edit_unique[users.email.' . $user->id . ']');
-        } else {
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required|xss_clean|trim|numeric|edit_unique[users.mobile.' . $user->id . ']');
-        }
+        $this->form_validation->set_rules('email', 'Email', 'required|xss_clean|trim|valid_email|edit_unique[users.email.' . $user->id . ']');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|xss_clean|trim|numeric|edit_unique[users.mobile.' . $user->id . ']');
         $this->form_validation->set_rules('username', 'Username', 'required|xss_clean|trim');
 
         if (!empty($_POST['old']) || !empty($_POST['new']) || !empty($_POST['new_confirm'])) {
             $this->form_validation->set_rules('old', $this->lang->line('change_password_validation_old_password_label'), 'required');
-            $this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[new_confirm]');
+            // $this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|matches[new_confirm]');
+            $this->form_validation->set_rules('new', $this->lang->line('change_password_validation_new_password_label'), 'required|matches[new_confirm]');
             $this->form_validation->set_rules('new_confirm', $this->lang->line('change_password_validation_new_password_confirm_label'), 'required');
         }
 
@@ -119,7 +117,7 @@ class Login extends CI_Controller
                     return false;
                 }
             }
-            $user_details = ['username' => $this->input->post('username'), 'email' => $this->input->post('email')];
+            $user_details = ['username' => $this->input->post('username'), 'email' => $this->input->post('email'), 'mobile' => $this->input->post('mobile')];
             $user_details = escape_array($user_details);
             $this->db->set($user_details)->where($identity_column, $identity)->update($tables['login_users']);
             $this->response['error'] = false;

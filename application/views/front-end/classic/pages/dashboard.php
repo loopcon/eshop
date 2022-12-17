@@ -105,7 +105,7 @@
                         </a>
                     </div>
                 <?php } ?>
-                <div class='col-md-3 card text-center border-0 mr-3 mb-3'>
+                <?php /* <div class='col-md-3 card text-center border-0 mr-3 mb-3'>
                     <a href='<?= base_url('my-account/wallet') ?>' class="link-color">
                         <div class='card-header bg-transparent'>
                             <?= !empty($this->lang->line('wallet')) ? $this->lang->line('wallet') : 'WALLET' ?>
@@ -114,7 +114,7 @@
                             <i class="fa fa-wallet dashboard-icon link-color fa-lg"></i>
                         </div>
                     </a>
-                </div>
+                </div> */ ?>
                 <div class='col-md-3 card text-center border-0 mr-3 mb-3'>
                     <a href='<?= base_url('my-account/transactions') ?>' class="link-color">
                         <div class='card-header bg-transparent'>

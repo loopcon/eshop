@@ -449,3 +449,6 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 .product-page-content .product-image-swiper { width: 100%!important; }
 
 #register_as_seller_div select.form-input { margin-bottom: 26px; }
+#checkout_form input.form-control.error::placeholder { color: #FF0000; }
+#checkout_form input.form-control.error { border: 2px solid #FF0000!important; }
+#checkout_form select.form-input.error { border: 2px solid #FF0000!important; }

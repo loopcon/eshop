@@ -24,34 +24,44 @@
                             <input type="hidden" name="guest_user_id" value="<?=$guest_user_id?>" />
                             <div class="row mt-3">
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="" required>
+                                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Firstname" value="" required>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Lastname" value="" required>
+                                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Lastname" value="" required>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" value="" required>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="" required>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="mobile" placeholder="Mobile" value="" required>
+                                    <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" value="" required>
                                 </div>
                                 <div class="col-12 input-group pb-3">
-                                    <input type="text" class="form-control" name="address_line_1" placeholder="Address Line 1" value="" required>
+                                    <input type="text" class="form-control" name="address_line_1" id="address_line_1" placeholder="Address Line 1" value="" required>
                                 </div>
                                 <div class="col-12 input-group pb-3">
-                                    <input type="text" class="form-control" name="address_line_2" placeholder="Address Line 2" value="" required>
+                                    <input type="text" class="form-control" name="address_line_2" id="address_line_2" placeholder="Address Line 2" value="">
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="city" placeholder="City" value="" required>
+                                    <select class='form-input w-100' name="country" id="country" required>
+                                        <option value="">Select country</option>
+                                        <?php foreach($countries as $country) { ?>
+                                            <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="state" placeholder="State" value="" required>
+                                    <select class='form-input w-100' name="state" id="state" required>
+                                        <option value="">Select state</option>
+                                    </select>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="country" placeholder="Country" value="" required>
+                                    <input type="text" class="form-control" name="city" id="gu-city" placeholder="City" value="" required>
                                 </div>
                                 <div class="col-6 input-group pb-3">
-                                    <input type="text" class="form-control" name="zipcode" placeholder="Zipcode" value="" required>
+                                    <input type="text" class="form-control" name="zipcode" id="zipcode" placeholder="Zipcode" value="" required>
+                                </div>
+                                <div class="col-6 input-group pb-3">
+                                    <button type="button" class="btn btn-primary" id="check-availability">Check shipping availability</button>
                                 </div>
                             </div>
                         <?php } else { ?>
@@ -62,7 +72,7 @@
                             <div class="shipped-details mt-3">
                                 <p class="text-muted" id="address-name-type"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['name'] . ' - ' . ucfirst($default_address[0]['type']) : '' ?></p>
                                 <p class="text-muted" id="address-full"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['area'] . ' , ' . $default_address[0]['city'] : '' ?></p>
-                                <p class="text-muted" id="address-country"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['state'] . ' , ' . $default_address[0]['country'] . ' - ' . $default_address[0]['pincode'] : '' ?></p>
+                                <p class="text-muted" id="address-country"><?= isset($default_address) && !empty($default_address) ? $default_address_state[0]['name'] . ' , ' . $default_address_country[0]['name'] . ' - ' . $default_address[0]['pincode'] : '' ?></p>
                                 <p class="text-muted" id="address-mobile"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : '' ?></p>
                             </div>
                         <?php } ?>
