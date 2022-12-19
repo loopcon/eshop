@@ -134,13 +134,220 @@
 
 <div id="modal-custom" class="auth-modal" data-iziModal-group="group1">
     <button data-iziModal-close class="icon-close">x</button>
+    <div id="for-user">
+        <header>
+            <a href="" id="login">User Login</a>
+            <a href="" id="register">User Register</a>
+        </header>
+        <section class="hide" id="login_div">
+            <form action="<?= base_url('home/login') ?>" class='form-submit-event' id="login_form" method="post">
+                <div class="input-group">
+                    <input type="email" class="form-control" name="identity" placeholder="Email" value="" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" value="" required>
+                </div>
+                <div class="mb-4 text-right">
+                    <a href="<?= base_url() ?>" id="forgot_password_link"><?= !empty($this->lang->line('forgot_password')) ? $this->lang->line('forgot_password') : 'Forgot Password' ?> ?</a>
+                </div>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type="submit" class="submit_btn  btn btn-primary btn-block"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></button>
+                </footer>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <div class="form-group" id="error_box"></div>
+                </div>
+            </form>
+        </section>
+        <section class="hide pt-0" id="forgot_password_div">
+            <div class="text-center h5"><?= !empty($this->lang->line('forgot_password')) ? $this->lang->line('forgot_password') : 'Forgot Password' ?></div>
+            <hr class="mt-0">
+            <form id="forgot_password_form" method="POST" action="#">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="email" id="forgot_password_email" placeholder="Email" value="">
+                </div>
+                <?php /* <div class="col-12 d-flex justify-content-center pb-4 mt-3">
+                    <div id="recaptcha-container-2"></div>
+                </div> */ ?>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type="submit" id="forgot_password_submit_btn" class="submit_btn  btn btn-primary btn-block">Submit</button>
+                </footer>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <div class="form-group" id="forgot_pass_error_box"></div>
+                </div>
+            </form>
+            <form id="forgot_password_new_password_form" class="d-none" method="post" action="#">
+                <?php /* <div class="input-group">
+                    <input type="text" id="forgot_password_otp" class="form-control" name="otp" placeholder="OTP" value="" autocomplete="off" required>
+                </div> */ ?>
+                <div class="input-group">
+                    <input type="password" class="form-control" name="new_password" placeholder="New Password" value="" required>
+                </div>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type="submit" class="submit_btn  btn btn-primary btn-block" id="reset_password_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Submit' ?></button>
+                </footer>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <div class="form-group" id="set_password_error_box"></div>
+                </div>
+            </form>
+        </section>
+        <section class="hide" id="register_div">
+            <?php /* <form id='send-otp-form' class='send-otp-form' action='#'>
+                <div class="row sign-up-verify-number">
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <input type="text" class='form-input' placeholder="Enter Mobile Number" id="phone-number" required>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <div id="error-msg" class="hide text-danger"><?= !empty($this->lang->line('enter_valid_number')) ? $this->lang->line('enter_valid_number') : 'Enter a valid number' ?></div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <div id="recaptcha-container"></div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <div id='is-user-exist-error' class='text-center p-3 text-danger'></div>
+                    </div>
+                </div>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button id='send-otp-button'><?= !empty($this->lang->line('send_otp')) ? $this->lang->line('send_otp') : 'Send OTP' ?></button>
+                </footer>
+            </form> */ ?>
+            <form id='register-form' class='verify-otp-form' action='<?= base_url('auth/register-user') ?>' method="POST">
+                <div class="row sign-up-verify-number">
+                    <?php /* <div class="col-12 d-flex justify-content-center pb-4">
+                        <input type="text" class='form-input' placeholder="Enter Mobile Number" id="phone-number" required>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <input type="text" class='form-input' placeholder="OTP" id="otp" name="otp" autocomplete="off">
+                    </div> */ ?>
+                    <div class="input-group">
+                        <input type="text" class='form-control' placeholder="Username" id="name" name="name" maxlength="40">
+                    </div>
+                    <div class="input-group">
+                        <input type="email" class='form-control' placeholder="Email" id="email" name="email">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" class='form-control' placeholder="Password" id="password" name="password">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" class='form-control' placeholder="Confirm Password" id="confirm password" name="confirm password">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center pb-4">
+                        <div id='registration-error' class='text-center p-3 text-danger'></div>
+                    </div>
+                </div>
+                <footer>
+                    <button data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type="submit" id='register_submit_btn'><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Submit' ?></button>
+                </footer>
+            </form>
+            <form id='sign-up-form' class='sign-up-form collapse' action='#'>
+                <input type="text" placeholder="Username" name='username' class='form-input' required>
+                <input type="text" placeholder="email" name='email' class='form-input' required>
+                <input type="password" placeholder="Password" name='password' class='form-input' required>
+                <div id='sign-up-error' class='text-center p-3'></div>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type='submit'><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></button>
+                </footer>
+            </form>
+        </section>
+    </div>
+    <div id="for-seller">
+        <button data-iziModal-close class="icon-close">x</button>
+        <header>
+            <a href="" id="seller-login">Seller Login</a>
+            <a href="" id="seller-register">Seller Register</a>
+        </header>
+        <section class="hide" id="seller_login_div">
+            <a href="<?= base_url('seller/login') ?>">Click here</a> to navigate to seller login page
+        </section>
+        <section class="hide" id="register_as_seller_div">
+            <form id='register-as-seller-form' class='register-seller-form' action='<?= base_url('auth/register-seller') ?>' method="POST">
+                <div class="row seller-signup">
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="text" class='form-input' maxlength="40" placeholder="Business Name" id="store_name" name="store_name">
+                        <?php echo form_error('store_name', '<div class="error">', '</div>'); ?>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <input type="text" class='form-input' maxlength="40" placeholder="First Name" id="first_name" name="first_name">
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <input type="text" class='form-input' maxlength="40" placeholder="Last Name" id="last_name" name="last_name">
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <input type="email" class='form-input' placeholder="Email" id="seller_email" name="email">
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <input type="text" class='form-input' placeholder="Mobile" id="seller_mobile" maxlength="12"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="mobile">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
+                    </div>
+                    <div class="col-6 justify-content-center">
+                        <?php $countries = fetch_details("countries", "flag=1", 'id, name, iso3, iso2'); ?>
+                        <select class='form-input w-100' name="country" id="country">
+                            <option value="">Select country</option>
+                            <?php foreach($countries as $country) { ?>
+                                <option value="<?php echo $country['id']; ?>"><?php echo $country['name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <select class='form-input w-100' name="state" id="state">
+                            <option value="">Select state</option>
+                        </select>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center">
+                        <?php /* <select class='form-input w-100' name="city" id="city">
+                            <option value="">Select city</option>
+                        </select> */ ?>
+                        <input type="text" class='form-input' placeholder="City" id="city" name="city">
+                    </div>
+                    <?php /* <div class="col-6 d-flex justify-content-center">
+                        <select class='form-input w-100' name="area" id="area">
+                            <option value="">Select area</option>
+                        </select>
+                    </div> */ ?>
+                    <div class="col-6 d-flex justify-content-center">
+                        <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="password" class='form-input' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="password" class='form-input' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms">&nbsp;<span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center">
+                        <div id='seller-registration-error' class='text-center p-3 text-danger'></div>
+                    </div>
+                </div>
+                <footer>
+                    <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
+                    <button type="submit" id="register_seller_submit_btn"><?= !empty($this->lang->line('submit')) ? $this->lang->line('submit') : 'Register' ?></button>
+                </footer>
+            </form>
+        </section>
+    </div>
+</div>
+
+<div id="modal-custom" class="auth-modal" data-iziModal-group="group1">
+    <button data-iziModal-close class="icon-close">x</button>
     <header>
         <a href="" id="login"><?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?></a>
         <a href="" id="register"><?= !empty($this->lang->line('register')) ? $this->lang->line('register') : 'Register' ?></a>
         <?php /* <a href="" id="login-as-seller"><?= !empty($this->lang->line('login_as_seller')) ? $this->lang->line('login_as_seller') : 'Login as seller' ?></a> */ ?>
         <a href="" id="register-as-seller"><?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?></a>
     </header>
-    <section class="hide" id="login_div">
+    <?php /* <section class="hide" id="login_div">
         <form action="<?= base_url('home/login') ?>" class='form-submit-event' id="login_form" method="post">
             <div class="input-group">
                 <input type="email" class="form-control" name="identity" placeholder="Email" value="" required>
@@ -160,7 +367,7 @@
                 <div class="form-group" id="error_box"></div>
             </div>
         </form>
-    </section>
+    </section> */ ?>
     <section class="hide" id="register_div">
         <?php /* <form id='send-otp-form' class='send-otp-form' action='#'>
             <div class="row sign-up-verify-number">
@@ -222,7 +429,7 @@
             </footer>
         </form>
     </section>
-    <section class="hide pt-0" id="forgot_password_div">
+    <?php /* <section class="hide pt-0" id="forgot_password_div">
         <div class="text-center h5"><?= !empty($this->lang->line('forgot_password')) ? $this->lang->line('forgot_password') : 'Forgot Password' ?></div>
         <hr class="mt-0">
         <form id="forgot_password_form" method="POST" action="#">
@@ -231,7 +438,7 @@
             </div>
             <?php /* <div class="col-12 d-flex justify-content-center pb-4 mt-3">
                 <div id="recaptcha-container-2"></div>
-            </div> */ ?>
+            </div> * / ?>
             <footer>
                 <button type="button" data-iziModal-close><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
                 <button type="submit" id="forgot_password_submit_btn" class="submit_btn  btn btn-primary btn-block">Submit</button>
@@ -244,7 +451,7 @@
         <form id="forgot_password_new_password_form" class="d-none" method="post" action="#">
             <?php /* <div class="input-group">
                 <input type="text" id="forgot_password_otp" class="form-control" name="otp" placeholder="OTP" value="" autocomplete="off" required>
-            </div> */ ?>
+            </div> * / ?>
             <div class="input-group">
                 <input type="password" class="form-control" name="new_password" placeholder="New Password" value="" required>
             </div>
@@ -257,7 +464,7 @@
                 <div class="form-group" id="set_password_error_box"></div>
             </div>
         </form>
-    </section>
+    </section> */ ?>
     <section class="hide" id="register_as_seller_div">
         <form id='register-as-seller-form' class='register-seller-form' action='<?= base_url('auth/register-seller') ?>' method="POST">
             <div class="row seller-signup">
@@ -295,15 +502,16 @@
                     </select>
                 </div>
                 <div class="col-6 d-flex justify-content-center">
-                    <select class='form-input w-100' name="city" id="city">
+                    <?php /* <select class='form-input w-100' name="city" id="city">
                         <option value="">Select city</option>
-                    </select>
+                    </select> */ ?>
+                    <input type="text" class='form-input' placeholder="City" id="city" name="city">
                 </div>
-                <div class="col-6 d-flex justify-content-center">
+                <?php /* <div class="col-6 d-flex justify-content-center">
                     <select class='form-input w-100' name="area" id="area">
                         <option value="">Select area</option>
                     </select>
-                </div>
+                </div> */ ?>
                 <div class="col-6 d-flex justify-content-center">
                     <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
                 </div>

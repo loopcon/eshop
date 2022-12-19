@@ -248,6 +248,12 @@ $web_settings = get_settings('web_settings', true);
                                 </li>
                             <?php } else { ?>
                                 <li class="nav-item">
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="user" href="javascript:void(0);"><?= !empty($this->lang->line('user')) ? $this->lang->line('user') : 'User' ?> <img src="<?= THEME_ASSETS_URL. 'img/user.png' ?>"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="seller" href="javascript:void(0);"><?= !empty($this->lang->line('seller')) ? $this->lang->line('seller') : 'Seller' ?> <img src="<?= THEME_ASSETS_URL. 'img/seller.png' ?>"></a>
+                                </li>
+                                <?php /* <li class="nav-item">
                                     <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="login" href="javascript:void(0);"> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?> <img src="<?= THEME_ASSETS_URL. 'img/login.png' ?>"> </a>
                                 </li>
                                 <li class="nav-item">
@@ -255,7 +261,7 @@ $web_settings = get_settings('web_settings', true);
                                 </li>
                                 <li class="nav-item active">
                                     <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller" href="javascript:void(0);"> <?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
-                                </li>
+                                </li> */ ?>
                             <?php } ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>" class="m-2 "> </a>

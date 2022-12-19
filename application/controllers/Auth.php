@@ -1009,6 +1009,8 @@ class Auth extends CI_Controller
                 'mobile' => $this->input->post('mobile'),
                 'address' => $this->input->post('address'),
                 'city' => $this->input->post('city'),
+                'state' => $this->input->post('state'),
+                'country' => $this->input->post('country'),
                 'pincode' => $this->input->post('zipcode'),
                 'active' => 0
             ];

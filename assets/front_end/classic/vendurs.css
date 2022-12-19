@@ -424,7 +424,8 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 }
 
 .footer-saperator { border-top: 1px solid #D5D5D5; }
-#modal-custom .iziModal-content header a { width: 33.33%; }
+.iziModal-navigate { display: none;}
+#modal-custom .iziModal-content header a { width: 50%; }
 #cart-count { bottom: 10px; right: 10px; }
 
 /* Category/Product Listing page - Start */
