@@ -479,6 +479,8 @@ class Cart extends CI_Controller
             $this->data['time_slots'] = fetch_details('time_slots', 'status=1', '*');
             $this->data['wallet_balance'] = fetch_details('users', 'id=' . $this->data['user']->id, 'balance,mobile');
             $this->data['default_address'] = $this->address_model->get_address($this->data['user']->id, NULL, NULL, TRUE);
+            $this->data['default_address_state'] = fetch_details('states', 'id="'.$this->data['default_address'][0]['state'].'"');
+            $this->data['default_address_country'] = fetch_details('countries', 'id="'.$this->data['default_address'][0]['country'].'"');
             $this->data['payment_methods'] = $payment_methods;
             $settings = get_settings('system_settings', true);
             $this->data['support_email'] = (isset($settings['support_email']) && !empty($settings['support_email'])) ? $settings['support_email'] : 'abc@gmail.com';
@@ -505,6 +507,7 @@ class Cart extends CI_Controller
             $this->data['cart']['delivery_charge'] = $delivery_charge;
             $this->data['currency'] = $currency;
             $this->data['guest_user_id'] = $this->session->userdata['guest_user_id'];
+            $this->data['countries'] = fetch_details("countries", "flag='1'");
             $this->load->view('front-end/' . THEME . '/template', $this->data);
         // } else {
         //     redirect(base_url());
@@ -616,7 +619,7 @@ class Cart extends CI_Controller
                 for ($i = 0; $i < count($product_variant_id); $i++) {
                     $product_id = fetch_details("product_variants", ['id' => $product_variant_id[$i]], 'product_id');
                     $is_allowed = fetch_details("products", ['id' => $product_id[0]['product_id']], 'cod_allowed,name,weight,mass_unit');
-                    if ($is_allowed[0]['cod_allowed'] == 0) {
+                    if ($is_allowed[0]['cod_allowed'] == 0 && $_POST['payment_method'] == "COD") {
                         $this->response['error'] = true;
                         $this->response['message'] = "Cash On Delivery is not allow on the product " . $is_allowed[0]['name'];
                         $this->response['data'] = array();
@@ -787,28 +790,48 @@ class Cart extends CI_Controller
                     $data['type'] = $_POST['payment_method'];
                     $data['amount'] = $order_item_id[$i]['sub_total'];
                     $data['order_item_id'] = $order_item_id[$i]['id'];
-                    if (($_POST['payment_method'] != "COD" && $_POST['payment_method'] != "Paypal") ||  $_POST['payment_method'] == "bank_transfer") {
+                    if(($_POST['payment_method']!="COD" && $_POST['payment_method']!="Paypal") || $_POST['payment_method']=="bank_transfer") {
                         $this->transaction_model->add_transaction($data);
                     }
                 }
 
-                $curl = curl_init();
-                $address = fetch_details("addresses", "id='".$_POST['address_id']."'");
-                $city = fetch_details("cities", "id='".$address[0]['city_id']."'");
-                $country = fetch_details("countries", "id='".$address[0]['country']."'");
-                $state = fetch_details("states", "id='".$address[0]['state']."'");
+                if($_POST['is_logged_in']==1) {
+                    $address_data = fetch_details("addresses", "id='".$_POST['address_id']."'");
+                    $city_data = fetch_details("cities", "id='".$address[0]['city_id']."'");
+                    $country_data = fetch_details("countries", "id='".$address[0]['country']."'");
+                    $state_data = fetch_details("states", "id='".$address[0]['state']."'");
+
+                    $city = $city_data[0]['name'];
+                    $country = $country_data[0]['iso2'];
+                    $name = $this->data['user']->username;
+                    $phone = $this->data['user']->mobile;
+                    $state = $state_data[0]['state_code'];
+                    $street1 = $address_data[0]['address'];
+                    $zip = $address_data[0]['pincode'];
+                } else {
+                    $country_data = fetch_details("countries", "id='".$_POST['country']."'");
+                    $state_data = fetch_details("states", "id='".$_POST['state']."'");
+
+                    $city = $_POST['city'];
+                    $country = $country_data[0]['iso2'];
+                    $name = $_POST['firstname'].$_POST['lastname'];
+                    $phone = $_POST['mobile'];
+                    $state = $state_data[0]['state_code'];
+                    $street1 = $_POST['address_line_1'];
+                    $zip = $_POST['zipcode'];
+                }
 
                 $postfields = array(
                     "to_address" => array(
-                        "city" => $city[0]['name'],
+                        "city" => $city,
                         "company" => "Shippo",
-                        "country" => $country[0]['iso2'],
+                        "country" => $country,
                         "email" => $_POST['customer_email'],
-                        "name" => $this->data['user']->username,
-                        "phone" => $this->data['user']->mobile,
-                        "state" => $state[0]['state_code'],
-                        "street1" => $address[0]['address'],
-                        "zip" => $address[0]['pincode']
+                        "name" => $name,
+                        "phone" => $phone,
+                        "state" => $state,
+                        "street1" => $street1,
+                        "zip" => $zip
                     ),
                     "line_items" => $shippo_line_items,
                     "placed_at" => date("Y-m-d H:i:s"),
@@ -829,6 +852,7 @@ class Cart extends CI_Controller
                     'Authorization: ShippoToken '.GOSHIPPO_TEST_API_KEY,
                     'Content-Type: application/json'
                 );
+                $curl = curl_init();
                 curl_setopt($curl, CURLOPT_URL, 'https://api.goshippo.com/orders/');
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($curl, CURLOPT_ENCODING, '');
@@ -888,11 +912,19 @@ class Cart extends CI_Controller
 
     public function pre_payment_setup()
     {
-        if ($this->data['is_logged_in']) {
-            $_POST['user_id'] = $this->data['user']->id;
-            $cart = get_cart_total($this->data['user']->id, false, '0', $_POST['address_id']);
-            $wallet_balance = fetch_details('users', 'id=' . $this->data['user']->id, 'balance');
-            $wallet_balance = $wallet_balance[0]['balance'];
+        // if ($this->data['is_logged_in']) {
+            if($this->data['is_logged_in']==0) {
+                $cart = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
+            } else {
+                $_POST['user_id'] = $this->data['user']->id;
+                $cart = get_cart_total($this->data['user']->id, false, '0', $_POST['address_id']);
+                $wallet_balance = fetch_details('users', 'id=' . $this->data['user']->id, 'balance');
+                $wallet_balance = $wallet_balance[0]['balance'];
+            }
+            $cart['delivery_charge'] = $_POST['delivery_charge'];
+            $cart['overall_amount'] = $cart['sub_total'] + $_POST['delivery_charge'];
+            $cart['amount_inclusive_tax'] = $cart['sub_total'] + $_POST['delivery_charge'];
+            
             $overall_amount = $cart['overall_amount'];
             if ($_POST['wallet_used'] == 1 && $wallet_balance > 0) {
                 $overall_amount = $overall_amount - $wallet_balance;
@@ -935,12 +967,12 @@ class Cart extends CI_Controller
             $this->response['message'] = "Client Secret Get Successfully.";
             print_r(json_encode($this->response));
             return false;
-        } else {
-            $this->response['error'] = true;
-            $this->response['message'] = "Unauthorised access is not allowed.";
-            print_r(json_encode($this->response));
-            return false;
-        }
+        // } else {
+        //     $this->response['error'] = true;
+        //     $this->response['message'] = "Unauthorised access is not allowed.";
+        //     print_r(json_encode($this->response));
+        //     return false;
+        // }
     }
     public function get_delivery_charge()
     {
@@ -1131,22 +1163,79 @@ class Cart extends CI_Controller
         return false;
     }
 
-    public function get_shippo_delivery_charge()
+    public function get_shipping_charges_for_registereduser()
     {
-        if($this->data['is_logged_in']==0) {
-            $cart_total_data = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
-        } else {
-            $cart_total_data = get_cart_total($this->data['user']->id);
-        }
-        $this->data['cart'] = $cart_total_data;
-        $delivery_charge = 0;
+        $cart_total_data = get_cart_total($this->data['user']->id);
+        $parcels = array();
         foreach ($cart_total_data as $key=>$row) {
             if(is_numeric($key) && is_array($row)) {
-                $delivery_charge += calculate_shipping_charge($row, $this->data['user']->id);
+                // $delivery_charge += calculate_shipping_charge($row, $this->data['user']->id);
+                $seller_id = $row['seller_id'];
+                $parcel_object = create_goshippo_parcel($row);
+                $parcels[] = $parcel_object->object_id;
+                update_details(array('goshippo_parcel_object_id'=>$parcel_object->object_id), array('id'=>$row['cart_id']), 'cart');
             }
         }
-        $delivery_charge = number_format($delivery_charge, 2);
+
+        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'goshippo_address_object_id');
+        $address_from = $seller_detail[0]['goshippo_address_object_id'];
+
+        $user_detail = fetch_details('addresses', ['id'=>$_POST['address_id']], 'mobile, address, city_id, state, country, pincode');
+        $city = fetch_details('cities', ['id'=>$user_detail[0]['city_id']]);
+        $state = fetch_details('states', ['id'=>$user_detail[0]['state']], 'state_code');
+        $country = fetch_details('countries', ['id'=>$user_detail[0]['country']], 'iso2, phonecode');
+        $address = array(
+            "name" => $this->data['user']->username,
+            "company" => "Shippo",
+            "street1" => $user_detail[0]['address'],
+            "city" => $city[0]['name'],
+            "state" => $state[0]['state_code'],
+            "zip" => $user_detail[0]['pincode'],
+            "country" => $country[0]['iso2'],
+            "phone" => "+".$country[0]['phonecode']." ".$user_detail[0]['mobile'],
+            "email" => $this->data['user']->email 
+        );
+        $toAddress = create_goshippo_address($address);
+        $address_to = $toAddress->object_id;
+        $shipment = create_goshippo_shipment($address_from, $address_to, $parcels);
+        $delivery_charge = number_format($shipment->rates[0]->amount, 2);
         $this->response['delivery_charge'] = $delivery_charge;
+        print_r(json_encode($this->response));
+        exit;
+    }
+
+    public function get_shipping_charges_for_guestuser()
+    {
+        $cart_total_data = get_guestuser_cart_total($this->session->userdata['guest_user_id']);
+        $parcels = array();
+        foreach ($cart_total_data as $key=>$row) {
+            if(is_numeric($key) && is_array($row)) {
+                $seller_id = $row['seller_id'];
+                $parcel_object = create_goshippo_parcel($row);
+                $parcels[] = $parcel_object->object_id;
+                update_details(array('goshippo_parcel_object_id'=>$parcel_object->object_id), array('id'=>$row['cart_id']), 'cart');
+            }
+        }
+
+        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'goshippo_address_object_id');
+        $address_from = $seller_detail[0]['goshippo_address_object_id'];
+        $state = fetch_details('states', ['id'=>$_POST['state']], 'state_code');
+        $country = fetch_details('countries', ['id'=>$_POST['country']], 'iso2, phonecode');
+        $address = array(
+            "name" => $_POST['firstname']." ".$_POST['lastname'],
+            "company" => "Shippo",
+            "street1" => $_POST['address_line_1'],
+            "city" => $_POST['city'],
+            "state" => $state[0]['state_code'],
+            "zip" => $_POST['zipcode'],
+            "country" => $country[0]['iso2'],
+            "phone" => "+".$country[0]['phonecode']." ".$_POST['mobile'],
+            "email" => $_POST['email'] 
+        );
+        $toAddress = create_goshippo_address($address);
+        $address_to = $toAddress->object_id;
+        $shipment = create_goshippo_shipment($address_from, $address_to, $parcels);
+        $this->response['delivery_charge'] = $shipment->rates[0]->amount;
         print_r(json_encode($this->response));
         exit;
     }

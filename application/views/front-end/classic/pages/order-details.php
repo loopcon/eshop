@@ -38,12 +38,16 @@
                         <div class="row">
                             <?php if (!empty($bank_transfer)) { ?>
                                 <div class="col-md-6">
-                                    <?php $i = 1;
-                                    foreach ($bank_transfer as $row1) { ?>
+                                    <?php
+                                        $i = 1;
+                                        foreach ($bank_transfer as $row1) {
+                                    ?>
                                         <small>[<a href="<?= base_url() . $row1['attachments'] ?>" target="_blank"><?= !empty($this->lang->line('attachment')) ? $this->lang->line('attachment') : 'Attachment' ?> <?= $i ?> </a>]</small>
-                                    <?php $i++;
-                                    }
-                                    if ($bank_transfer[0]['status'] == 0) { ?>
+                                    <?php
+                                            $i++;
+                                        }
+                                        if ($bank_transfer[0]['status'] == 0) {
+                                    ?>
                                         <label class="badge badge-warning"><?= !empty($this->lang->line('pending')) ? $this->lang->line('pending') : 'Pending' ?></label>
                                     <?php } else if ($bank_transfer[0]['status'] == 1) { ?>
                                         <label class="badge badge-danger"><?= !empty($this->lang->line('rejected')) ? $this->lang->line('rejected') : 'Rejected' ?></label>
@@ -62,21 +66,22 @@
                                 <div class="media-body ">
                                     <h5 class="bold"><?= ($key + 1) . '. ' . $item['name'] ?></h5>
                                     <p class="text-muted"> <?= !empty($this->lang->line('quantity')) ? $this->lang->line('quantity') : 'Quantity' ?> : <?= $item['quantity'] ?></p>
-                                    <?php if ($item['otp'] != 0) { ?>
+                                    <?php /* if ($item['otp'] != 0) { ?>
                                         <p class="text-muted"> <?= !empty($this->lang->line('otp')) ? $this->lang->line('otp') : 'OTP' ?> <span class="font-weight-bold text-dark"> : <?= $item['otp'] ?></span> </p>
-                                    <?php } ?>
+                                    <?php } */ ?>
                                     <?php if (isset($item['courier_agency']) && !empty($item['courier_agency'])) { ?>
                                         <p> <span class="text-muted"> <?= !empty($this->lang->line('courier_agency')) ? $this->lang->line('courier_agency') : 'Courier Agency' ?> : </span><a href="<?= $item['url'] ?>" title="click here to trace the order"><?= $item['courier_agency'] ?></a> </p>
                                         <p class="text-muted" data-toggle="tooltip" data-placement="top" title="Copy this Tracking ID and trace your order with Courier Agency."> <?= !empty($this->lang->line('tracking_id')) ? $this->lang->line('tracking_id') : 'Tracking ID' ?> <span class="font-weight-bold text-dark"> : <?= $item['tracking_id'] ?></span> </p>
                                     <?php } ?>
                                     <h4 class="mt-3 mb-2 bold"> <span class="mt-5"><i><?= $settings['currency'] ?></i></span> <?= number_format(($item['price'] * $item['quantity']), 2) ?> <span class="small text-muted"></span></h4>
                                     <?php
-                                    $status = ["awaiting", "received", "processed", "shipped", "delivered", "cancelled", "returned"];
-                                    $cancelable_till = $item['cancelable_till'];
-                                    $active_status = $item['active_status'];
-                                    $cancellable_index = array_search($cancelable_till, $status);
-                                    $active_index = array_search($active_status, $status);
-                                    if (!$item['is_already_cancelled'] && $item['is_cancelable'] && $active_index <= $cancellable_index) { ?>
+                                        $status = ["awaiting", "received", "processed", "shipped", "delivered", "cancelled", "returned"];
+                                        $cancelable_till = $item['cancelable_till'];
+                                        $active_status = $item['active_status'];
+                                        $cancellable_index = array_search($cancelable_till, $status);
+                                        $active_index = array_search($active_status, $status);
+                                        if (!$item['is_already_cancelled'] && $item['is_cancelable'] && $active_index <= $cancellable_index) {
+                                    ?>
                                         <button class="button button-danger button-sm update-order-item" data-status="cancelled" data-item-id="<?= $item['id'] ?>"><?= !empty($this->lang->line('cancel')) ? $this->lang->line('cancel') : 'Cancel' ?></button>
                                     <?php } ?>
                                     <?php if (!$item['is_already_cancelled'] && !$item['is_already_returned'] && $item['is_returnable'] && $item['active_status'] == 'delivered') { ?>
@@ -90,25 +95,25 @@
                                 <div class="col">
                                     <ul id="progressbar">
                                         <?php
-                                        $status = array('received', 'processed', 'shipped', 'delivered');
-                                        $i = 1;
-                                        foreach ($item['status'] as $value) { ?>
-                                            <?php
-                                            $class = '';
-                                            if ($value[0] == "cancelled" || $value[0] == "returned") {
-                                                $class = 'cancel';
-                                                $status = array();
-                                            } elseif (($ar_key = array_search($value[0], $status)) !== false) {
-                                                unset($status[$ar_key]);
-                                            }
-                                            ?>
+                                            $status = array('received', 'processed', 'shipped', 'delivered');
+                                            $i = 1;
+                                            foreach ($item['status'] as $value) {
+                                                $class = '';
+                                                if ($value[0] == "cancelled" || $value[0] == "returned") {
+                                                    $class = 'cancel';
+                                                    $status = array();
+                                                } elseif (($ar_key = array_search($value[0], $status)) !== false) {
+                                                    unset($status[$ar_key]);
+                                                }
+                                        ?>
                                             <li class="active <?= $class ?>" id="step<?= $i ?>">
                                                 <p><?= strtoupper($value[0]) ?></p>
                                                 <p><?= $value[1] ?></p>
                                             </li>
                                         <?php
-                                            $i++;
-                                        } ?>
+                                                $i++;
+                                            }
+                                        ?>
                                         <?php foreach ($status as $value) { ?>
                                             <li id="step<?= $i ?>">
                                                 <p><?= strtoupper($value) ?></p>
@@ -194,5 +199,4 @@
             </div>
         </div>
     </div>
-
 </section>

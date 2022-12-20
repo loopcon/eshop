@@ -2314,57 +2314,106 @@ if (getUrlParameter('type') == "list") {
  */
 $('.auth_model').on('click', function (e) {
     e.preventDefault();
-    var value = $(this).data('value');
-    $('#forgot_password_div').addClass('hide');
-    if (value == "login") {
-        $('#login_div').removeClass('hide');
+    // var value = $(this).data('value');
+    // $('#forgot_password_div').addClass('hide');
+    // if (value == "login") {
+    //     $('#login_div').removeClass('hide');
+    //     $('#login').addClass('active');
+
+    //     $('#register_div').addClass('hide');
+    //     $('#register').removeClass('active');
+
+    //     $('#register_as_seller_div').addClass('hide');
+    //     $('#register-as-seller').removeClass('active');
+
+    //     $('#login_as_seller_div').addClass('hide');
+    //     $('#login-as-seller').removeClass('active');
+    // } else if (value == "register") {
+    //     $('#login_div').addClass('hide');
+    //     $('#login').removeClass('active');
+
+    //     $('#register_div').removeClass('hide');
+    //     $('#register').addClass('active');
+
+    //     $('#register_as_seller_div').addClass('hide');
+    //     $('#register-as-seller').removeClass('active');
+
+    //     $('#login_as_seller_div').addClass('hide');
+    //     $('#login-as-seller').removeClass('active');
+    // } else if (value == 'register-as-seller') {
+    //     $('#login_div').addClass('hide');
+    //     $('#login').removeClass('active');
+
+    //     $('#register_div').addClass('hide');
+    //     $('#register').removeClass('active');
+
+    //     $('#register_as_seller_div').removeClass('hide');
+    //     $('#register-as-seller').addClass('active');
+
+    //     $('#login_as_seller_div').addClass('hide');
+    //     $('#login-as-seller').removeClass('active');
+    // } else if (value == 'login-as-seller') {
+    //     $('#login_div').addClass('hide');
+    //     $('#login').removeClass('active');
+
+    //     $('#register_div').addClass('hide');
+    //     $('#register').removeClass('active');
+
+    //     $('#register_as_seller_div').addClass('hide');
+    //     $('#register-as-seller').removeClass('active');
+
+    //     $('#login_as_seller_div').removeClass('hide');
+    //     $('#login-as-seller').addClass('active');
+    // }
+
+    var user_type = $(this).data('user_type');
+    if(user_type=="user") {
+        // $('#login_form').trigger("reset");
+        // $('#register-form').trigger("reset");
+        $('#for-user').show();
+        $('#for-seller').hide();
         $('#login').addClass('active');
-
-        $('#register_div').addClass('hide');
+        $('#login_div').removeClass('hide');
         $('#register').removeClass('active');
-
-        $('#register_as_seller_div').addClass('hide');
-        $('#register-as-seller').removeClass('active');
-
-        $('#login_as_seller_div').addClass('hide');
-        $('#login-as-seller').removeClass('active');
-    } else if (value == "register") {
-        $('#login_div').addClass('hide');
-        $('#login').removeClass('active');
-
-        $('#register_div').removeClass('hide');
-        $('#register').addClass('active');
-
-        $('#register_as_seller_div').addClass('hide');
-        $('#register-as-seller').removeClass('active');
-
-        $('#login_as_seller_div').addClass('hide');
-        $('#login-as-seller').removeClass('active');
-    } else if (value == 'register-as-seller') {
-        $('#login_div').addClass('hide');
-        $('#login').removeClass('active');
-
         $('#register_div').addClass('hide');
-        $('#register').removeClass('active');
-
-        $('#register_as_seller_div').removeClass('hide');
-        $('#register-as-seller').addClass('active');
-
-        $('#login_as_seller_div').addClass('hide');
-        $('#login-as-seller').removeClass('active');
-    } else if (value == 'login-as-seller') {
-        $('#login_div').addClass('hide');
-        $('#login').removeClass('active');
-
-        $('#register_div').addClass('hide');
-        $('#register').removeClass('active');
-
+    } else if(user_type=="seller") {
+        $('#for-user').hide();
+        $('#for-seller').show();
+        $('#seller-login').addClass('active');
+        $('#seller_login_div').removeClass('hide');
+        $('#seller-register').removeClass('active');
         $('#register_as_seller_div').addClass('hide');
-        $('#register-as-seller').removeClass('active');
-
-        $('#login_as_seller_div').removeClass('hide');
-        $('#login-as-seller').addClass('active');
     }
+});
+
+$(document).on('click', '#login', function() {
+    $('#login').addClass('active');
+    $('#login_div').removeClass('hide');
+    $('#register').removeClass('active');
+    $('#register_div').addClass('hide');
+    $('#forgot_password_div').addClass('hide');
+});
+
+$(document).on('click', '#register', function() {
+    $('#login').removeClass('active');
+    $('#login_div').addClass('hide');
+    $('#register').addClass('active');
+    $('#register_div').removeClass('hide');
+    $('#forgot_password_div').addClass('hide');
+});
+
+$(document).on('click', '#seller-login', function() {
+    $('#seller-login').addClass('active');
+    $('#seller_login_div').removeClass('hide');
+    $('#seller-register').removeClass('active');
+    $('#register_as_seller_div').addClass('hide');
+});
+
+$(document).on('click', '#seller-register', function() {
+    $('#seller-login').removeClass('active');
+    $('#seller_login_div').addClass('hide');
+    $('#seller-register').addClass('active');
+    $('#register_as_seller_div').removeClass('hide');
 });
 
 // Product Details Page.
@@ -4042,54 +4091,6 @@ $(document).on('submit', '#forgot_password_new_password_form', function (e) {
     // });
 });
 
-$(document).on('click', '#login', function() {
-    $('#login').addClass('active');
-    $('#login_div').removeClass('hide');
-    $('#register').removeClass('active');
-    $('#register_div').addClass('hide');
-    $('#forgot_password_div').addClass('hide');
-    $('#register-as-seller').removeClass('active');
-    $('#register_as_seller_div').addClass('hide');
-    $('#login-as-seller').removeClass('active');
-    $('#login_as_seller_div').addClass('hide');
-});
-
-$(document).on('click', '#register', function() {
-    $('#login').removeClass('active');
-    $('#login_div').addClass('hide');
-    $('#register').addClass('active');
-    $('#register_div').removeClass('hide');
-    $('#forgot_password_div').addClass('hide');
-    $('#register-as-seller').removeClass('active');
-    $('#register_as_seller_div').addClass('hide');
-    $('#login-as-seller').removeClass('active');
-    $('#login_as_seller_div').addClass('hide');
-});
-
-$(document).on('click', '#register-as-seller', function() {
-    $('#login').removeClass('active');
-    $('#login_div').addClass('hide');
-    $('#register').removeClass('active');
-    $('#register_div').addClass('hide');
-    $('#forgot_password_div').addClass('hide');
-    $('#register-as-seller').addClass('active');
-    $('#register_as_seller_div').removeClass('hide');
-    $('#login-as-seller').removeClass('active');
-    $('#login_as_seller_div').addClass('hide');
-});
-
-$(document).on('click', '#login-as-seller', function() {
-    $('#login').removeClass('active');
-    $('#login_div').addClass('hide');
-    $('#register').removeClass('active');
-    $('#register_div').addClass('hide');
-    $('#forgot_password_div').addClass('hide');
-    $('#register-as-seller').removeClass('active');
-    $('#register_as_seller_div').addClass('hide');
-    $('#login-as-seller').addClass('active');
-    $('#login_as_seller_div').removeClass('hide');
-});
-
 $(document).on('change', '#register_as_seller_div #country', function() {
     var formdata = new FormData();
     formdata.append(csrfName, csrfHash);
@@ -4318,8 +4319,35 @@ $(document).on('submit', '#register-as-seller-form', function (e) {
             csrfHash = result.csrfHash;
             $('#register_seller_submit_btn').html('Submit').attr('disabled', false);
             $("#seller-registration-error").html(result.message).show();
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000)
         }
     });
+});
+
+$(document).on('change', '#checkout_form #country', function() {
+    var formdata = new FormData();
+    formdata.append(csrfName, csrfHash);
+    var country_id = $(this).val();
+    formdata.append('country_id', country_id);
+    $.ajax({
+        type: 'POST',
+        url: base_url + 'home/get_states_by_country',
+        data: formdata,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: 'json',
+        success: function(response) {
+            var states = response.data;
+            var html = '<option value="">Select state</option>';
+            $.each(states, function(i) {
+                html += '<option value="'+states[i]['id']+'">'+states[i]['name']+'</option>';
+            });
+            $('#checkout_form #state').html(html);
+        }
+    })
 });
 function check_user_email(email) {
     var response;

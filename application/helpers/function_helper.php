@@ -1663,7 +1663,7 @@ function get_subcategory_option_html($subcategories, $selected_vals)
 function get_cart_total($user_id, $product_variant_id = false, $is_saved_for_later = '0', $address_id = '')
 {
     $t = &get_instance();
-    $t->db->select('(select sum(c.qty)  from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id  where c.user_id="' . $user_id . '" and qty!=0  and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as total_items,(select count(c.id) from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id where c.user_id="' . $user_id . '" and qty!=0 and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as cart_count,`c`.qty,p.is_prices_inclusive_tax,p.cod_allowed,p.minimum_order_quantity,p.slug,p.quantity_step_size,p.total_allowed_quantity, p.name, p.image,p.short_description,`c`.user_id,pv.*,tax.percentage as tax_percentage,tax.title as tax_title');
+    $t->db->select('(select sum(c.qty)  from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id  where c.user_id="' . $user_id . '" and qty!=0  and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as total_items,(select count(c.id) from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id where c.user_id="' . $user_id . '" and qty!=0 and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as cart_count,c.id as cart_id,`c`.qty,p.is_prices_inclusive_tax,p.cod_allowed,p.minimum_order_quantity,p.slug,p.quantity_step_size,p.total_allowed_quantity, p.name, p.image,p.short_description,`c`.user_id,pv.*,tax.percentage as tax_percentage,tax.title as tax_title,p.seller_id');
 
     if ($product_variant_id == true) {
         $t->db->where(['c.product_variant_id' => $product_variant_id, 'c.user_id' => $user_id, 'c.qty !=' => '0']);
@@ -1759,7 +1759,7 @@ function get_cart_total($user_id, $product_variant_id = false, $is_saved_for_lat
 function get_guestuser_cart_total($guest_user_id, $product_variant_id = false, $is_saved_for_later = '0', $address_id = '')
 {
     $t = &get_instance();
-    $t->db->select('(select sum(c.qty)  from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id  where c.guest_user_id="' . $guest_user_id . '" and qty!=0  and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as total_items,(select count(c.id) from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id where c.guest_user_id="' . $guest_user_id . '" and qty!=0 and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as cart_count,`c`.qty,p.is_prices_inclusive_tax,p.cod_allowed,p.minimum_order_quantity,p.slug,p.quantity_step_size,p.total_allowed_quantity, p.name, p.image,p.short_description,`c`.user_id,pv.*,tax.percentage as tax_percentage,tax.title as tax_title');
+    $t->db->select('(select sum(c.qty)  from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id  where c.guest_user_id="' . $guest_user_id . '" and qty!=0  and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as total_items,(select count(c.id) from cart c join product_variants pv on c.product_variant_id=pv.id join products p on p.id=pv.product_id join seller_data sd on sd.user_id=p.seller_id where c.guest_user_id="' . $guest_user_id . '" and qty!=0 and  is_saved_for_later = "' . $is_saved_for_later . '" and p.status=1 AND pv.status=1 AND sd.status=1) as cart_count,c.id as cart_id,`c`.qty,p.is_prices_inclusive_tax,p.cod_allowed,p.minimum_order_quantity,p.slug,p.quantity_step_size,p.total_allowed_quantity, p.name, p.image,p.short_description,`c`.user_id,pv.*,tax.percentage as tax_percentage,tax.title as tax_title,p.seller_id');
 
     if ($product_variant_id == true) {
         $t->db->where(['c.product_variant_id' => $product_variant_id, 'c.guest_user_id' => $guest_user_id, 'c.qty !=' => '0']);
@@ -4502,7 +4502,7 @@ function calculate_shipping_charge($cart_product, $user_id)
         $mass_unit = "lb";
     } else {
         $mass_unit = "kg";
-    } 
+    }
     $parcel = array(
         "length"=> $product_details['length'],
         "width"=> $product_details['width'],
@@ -4527,4 +4527,54 @@ function calculate_shipping_charge($cart_product, $user_id)
         $delivery_charge = 0;
     }
     return number_format($delivery_charge, 2);
+}
+
+// GOSHIPPO API CALL FUNCTIONS
+function create_goshippo_address($data)
+{
+    require_once('goshippo-client/lib/Shippo.php');
+    Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
+    $address = Shippo_Address::create($data);
+    return $address;
+}
+
+function create_goshippo_parcel($cart_item)
+{
+    $t = &get_instance();
+    $t->db->select('products.length, products.width, products.height, products.weight, products.mass_unit');
+    $t->db->where('products.id', $cart_item['id']);
+    $product_details = $t->db->get('products')->row_array();
+    if($product_details['mass_unit']=="Gram") {
+        $mass_unit = "g";
+    } else if($product_details['mass_unit']=="Ounce") {
+        $mass_unit = "oz";
+    } else if($product_details['mass_unit']=="Pound") {
+        $mass_unit = "lb";
+    } else {
+        $mass_unit = "kg";
+    }
+    require_once('goshippo-client/lib/Shippo.php');
+    Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
+    $parcel = Shippo_Parcel::create(array(
+        "length"=> $product_details['length'],
+        "width"=> $product_details['width'],
+        "height"=> $product_details['height'],
+        "distance_unit"=> "in",
+        "weight"=> $product_details['weight'],
+        "mass_unit"=> $mass_unit,
+    ));
+    return $parcel;
+}
+
+function create_goshippo_shipment($fromAddress, $toAddress, $parcel)
+{
+    $shipment = Shippo_Shipment::create(
+        array(
+            "address_from" => $fromAddress,
+            "address_to" => $toAddress,
+            "parcels" => $parcel,
+            "async" => false
+        )
+    );
+    return $shipment;
 }

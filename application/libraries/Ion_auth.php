@@ -296,6 +296,19 @@ class Ion_auth
 			} else {
 				$message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_activate', 'ion_auth'), $data, true);
 
+				$email_config = array(
+					'protocol' => SMTP_PROTOCOL,
+					'smtp_host' => SMTP_HOST, 
+					'smtp_port' => SMTP_PORT,
+					'smtp_user' => SMTP_USER,
+					'smtp_pass' => SMTP_PASS,
+					'smtp_crypto' => SMTP_CRYPTO,
+					'mailtype' => MAILTYPE,
+					'newline' => NEWLINE,
+				);
+				$this->email->initialize($email_config);
+
+				// email send to seller
 				$this->email->clear();
 				$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
 				$this->email->to($email);
@@ -305,6 +318,15 @@ class Ion_auth
 				if ($this->email->send() === TRUE) {
 					$this->ion_auth_model->trigger_events(['post_account_creation', 'post_account_creation_successful', 'activation_email_successful']);
 					$this->set_message('activation_email_successful');
+					
+					/* // email send to admin
+					$this->email->clear();
+					$this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth'));
+					$this->email->to($this->config->item('admin_email', 'ion_auth'));
+					$this->email->subject($this->config->item('site_title', 'ion_auth') . ' - New seller registration');
+					$this->email->message("New seller has registered");
+					$this->email->send(); */
+
 					return $id;
 				}
 			}

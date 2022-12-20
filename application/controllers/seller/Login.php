@@ -58,7 +58,7 @@ class Login extends CI_Controller
 
     public function update_user()
     {
-        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
 
             if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {
                 $this->response['error'] = true;
@@ -88,12 +88,18 @@ class Login extends CI_Controller
             $this->form_validation->set_rules('country', 'Country', 'trim|required|xss_clean');
             $this->form_validation->set_rules('state', 'State', 'trim|required|xss_clean');
             $this->form_validation->set_rules('city', 'City', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
             $this->form_validation->set_rules('pincode', 'Zipcode', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
             // $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('store_url', 'Store URL', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('store_description', 'Store Description', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('account_number', 'Account Number', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('account_name', 'Account Name', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('bank_code', 'Bank Code', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('bank_name', 'Bank Name', 'trim|required|xss_clean');
 
             if (!isset($_POST['edit_seller'])) {
                 $this->form_validation->set_rules('store_logo', 'Store Logo', 'trim|xss_clean');

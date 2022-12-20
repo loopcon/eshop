@@ -270,7 +270,8 @@ $(document).ready(function () {
         }
         var payment_methods = $("input[name='payment_method']:checked").val();
         if (payment_methods == "Stripe") {
-            $.post(base_url + "cart/pre-payment-setup", { [csrfName]: csrfHash, 'payment_method': 'Stripe', 'wallet_used': wallet_used, 'address_id': address_id, 'promo_code': promo_code }, function (data) {
+            var delivery_charge = $('#delivery_charge').val();
+            $.post(base_url + "cart/pre-payment-setup", { [csrfName]: csrfHash, 'payment_method': 'Stripe', 'wallet_used': wallet_used, 'address_id': address_id, 'promo_code': promo_code, 'delivery_charge': delivery_charge }, function (data) {
                 $('#stripe_client_secret').val(data.client_secret);
                 $('#stripe_payment_id').val(data.id);
                 var stripe_client_secret = data.client_secret;
@@ -789,24 +790,28 @@ $(document).ready(function () {
     //     }
     // })
     $("#place_order_btn").attr("disabled", true);
-    $.ajax({
-        type: 'POST',
-        data: {},
-        url: base_url + 'cart/get-shippo-delivery-charge',
-        dataType: 'json',
-        success: function (result) {
-            csrfName = result.csrfName;
-            csrfHash = result.csrfHash;
-            $('.delivery-charge').html(result.delivery_charge);
-            $("input#delivery_charge").val(result.delivery_charge);
-            var delivery_charge = result.delivery_charge.toString().replace(',', '');
-            var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
-            $("#amount").val(final_total);
-            final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
-            $('#final_total').html(final_total);
-            $("#place_order_btn").removeAttr("disabled");
-        }
-    });
+    var is_loggedin = $('#is_loggedin').val();
+    if(is_loggedin==1) {
+        var address_id = $("#address_id").val();
+        $.ajax({
+            type: 'POST',
+            data: { address_id: address_id },
+            url: base_url + 'cart/get-shipping-charges-for-registereduser',
+            dataType: 'json',
+            success: function (result) {
+                csrfName = result.csrfName;
+                csrfHash = result.csrfHash;
+                $('.delivery-charge').html(result.delivery_charge);
+                $("input#delivery_charge").val(result.delivery_charge);
+                var delivery_charge = result.delivery_charge.toString().replace(',', '');
+                var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
+                $("#amount").val(final_total);
+                final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
+                $('#final_total').html(final_total);
+                $("#place_order_btn").removeAttr("disabled");
+            }
+        });
+    }
 });
 $(document).on('click', '#wallet_balance', function () {
     var current_wallet_balance = $('#current_wallet_balance').val();
@@ -1006,5 +1011,114 @@ $("input[name='payment_method']").on('change', function (e) {
     else {
         $('#account_data').hide();
         $('#bank_transfer_slide').slideUp();
+    }
+});
+
+$(document).on('click', '#check-availability', function() {
+    $("#check-availability").attr("disabled", true);
+    var error = 0;
+    var firstname = $("#firstname").val();
+    $("#firstname").removeClass("error");
+    if(firstname=="") {
+        $("#firstname").addClass("error");
+        error = 1;
+    }
+    
+    var lastname = $("#lastname").val();
+    $("#lastname").removeClass("error");
+    if(lastname=="") {
+        $("#lastname").addClass("error");
+        error = 1;
+    }
+    
+    var email = $("#email").val();
+    $("#email").removeClass("error");
+    if(email=="") {
+        $("#email").addClass("error");
+        error = 1;
+    }
+    
+    var mobile = $("#mobile").val();
+    $("#mobile").removeClass("error");
+    if(mobile=="") {
+        $("#mobile").addClass("error");
+        error = 1;
+    }
+    
+    var address_line_1 = $("#address_line_1").val();
+    $("#address_line_1").removeClass("error");
+    if(address_line_1=="") {
+        $("#address_line_1").addClass("error");
+        error = 1;
+    }
+    
+    var country = $("#country").val();
+    $("#country").removeClass("error");
+    if(country=="") {
+        $("#country").addClass("error");
+        error = 1;
+    }
+    
+    var state = $("#state").val();
+    $("#state").removeClass("error");
+    if(state=="") {
+        $("#state").addClass("error");
+        error = 1;
+    }
+    
+    var city = $("#gu-city").val();
+    $("#gu-city").removeClass("error");
+    if(city=="") {
+        $("#gu-city").addClass("error");
+        error = 1;
+    }
+    
+    var zipcode = $("#zipcode").val();
+    $("#zipcode").removeClass("error");
+    if(zipcode=="") {
+        $("#zipcode").addClass("error");
+        error = 1;
+    }
+    if(error==0) {
+        var formdata = new FormData();
+        formdata.append(csrfName, csrfHash);
+        formdata.append('firstname', firstname);
+        formdata.append('lastname', lastname);
+        formdata.append('email', email);
+        formdata.append('mobile', mobile);
+        formdata.append('address_line_1', address_line_1);
+        formdata.append('address_line_2', address_line_2);
+        formdata.append('country', country);
+        formdata.append('state', state);
+        formdata.append('city', city);
+        formdata.append('zipcode', zipcode);
+
+        $.ajax({
+            type: 'POST',
+            url: base_url + 'cart/get-shipping-charges-for-guestuser',
+            data: formdata,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function () {
+            },
+            success: function (result) {
+                csrfName = result.csrfName;
+                csrfHash = result.csrfHash;
+                $('.delivery-charge').html(result.delivery_charge);
+                $("input#delivery_charge").val(result.delivery_charge);
+                var delivery_charge = result.delivery_charge.toString().replace(',', '');
+                var sub_total = $('#sub_total').val();
+                var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
+                $("#amount").val(final_total);
+                final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
+                $('#final_total').html(final_total);
+                $("#place_order_btn").removeAttr("disabled");
+                $("#check-availability").removeAttr("disabled");
+            }
+        });
+    } else {
+        $("#check-availability").removeAttr("disabled");
     }
 });

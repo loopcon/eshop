@@ -404,7 +404,7 @@ class Area_model extends CI_Model
             $multipleWhere = ['numeric_code' => $search, 'name' => $search, 'currency' => $search];
         }
 
-        $count_res = $this->db->select(' COUNT(id) as `total` ');
+        $count_res = $this->db->select(' COUNT(id) as `total` ')->where('flag', 1);
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->or_like($multipleWhere);
@@ -419,7 +419,7 @@ class Area_model extends CI_Model
             $total = $row['total'];
         }
 
-        $search_res = $this->db->select('*');
+        $search_res = $this->db->select('*')->where('flag', 1);
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $search_res->or_like($multipleWhere);
         }
@@ -471,7 +471,7 @@ class Area_model extends CI_Model
             $multipleWhere = ['states.name' => $search, 'countries.name' => $search];
         }
 
-        $count_res = $this->db->select(' COUNT(states.id) as `total` ')->join('countries', 'countries.id=states.country_id');
+        $count_res = $this->db->select(' COUNT(states.id) as `total` ')->join('countries', 'countries.id=states.country_id')->where('states.flag', 1);
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->or_like($multipleWhere);
@@ -486,7 +486,7 @@ class Area_model extends CI_Model
             $total = $row['total'];
         }
 
-        $search_res = $this->db->select('states.id, states.name as state_name, countries.name as country_name');
+        $search_res = $this->db->select('states.id, states.name as state_name, countries.name as country_name')->where('states.flag', 1);
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $search_res->or_like($multipleWhere);
         }

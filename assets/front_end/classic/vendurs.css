@@ -428,7 +428,8 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 }
 
 .footer-saperator { border-top: 1px solid #D5D5D5; }
-#modal-custom .iziModal-content header a { width: 33.33%; }
+.iziModal-navigate { display: none;}
+#modal-custom .iziModal-content header a { width: 50%; }
 #cart-count { bottom: 10px; right: 10px; }
 
 /* Category/Product Listing page - Start */
@@ -466,3 +467,6 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 button.block {
     margin-bottom: 15px ;
 }
+#checkout_form input.form-control.error::placeholder { color: #FF0000; }
+#checkout_form input.form-control.error { border: 2px solid #FF0000!important; }
+#checkout_form select.form-input.error { border: 2px solid #FF0000!important; }

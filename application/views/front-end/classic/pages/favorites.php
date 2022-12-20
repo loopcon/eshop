@@ -37,7 +37,7 @@
                             <?php
                             if (isset($products) && !empty($products)) {
                                 foreach ($products as $row) { ?>
-                                    <div class="col-lg-4 col-sm-6 mt-5">
+                                    <div class="col-lg-4 col-sm-6 mt-3">
                                         <div class="product-grid">
                                             <aside class="add-favorite">
                                                 <button type="button" class="btn fa-heart add-to-fav-btn fa text-danger" data-product-id="<?= $row['id'] ?>"></button>
@@ -61,8 +61,8 @@
                                                     <li><a href="" class="quick-view-btn" data-tip="Quick View" data-product-id="<?= $row['id'] ?>" data-product-variant-id="<?= $row['variants'][0]['id'] ?>" data-izimodal-open="#quick-view"><i class="fa fa-search"></i></a></li>
                                                     <li><a href="" data-tip="Add to Cart" class="add_to_cart" data-product-id="<?= $row['id'] ?>" data-product-variant-id="<?= $variant_id ?>" data-izimodal-open="<?= $modal ?>"><i class="fa fa-shopping-cart"></i></a></li>
                                                     <li>
-                                                        <?php $variant_id = (count($product_row['variants']) <= 1) ? $product_row['variants'][0]['id'] : ""; ?>
-                                                        <a href="#" class="compare" data-tip="Compare" data-product-id="<?= $product_row['id'] ?>" data-product-variant-id="<?= $variant_id ?>">
+                                                        <?php $variant_id = (count($row['variants']) <= 1) ? $row['variants'][0]['id'] : ""; ?>
+                                                        <a href="#" class="compare" data-tip="Compare" data-product-id="<?= $row['id'] ?>" data-product-variant-id="<?= $variant_id ?>">
                                                             <i class="fa fa-random"></i>
                                                         </a>
                                                     </li>

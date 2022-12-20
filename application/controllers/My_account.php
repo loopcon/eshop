@@ -226,8 +226,8 @@ class My_account extends CI_Controller
                 print_r(json_encode($this->response));
                 return false;
             }
-            if ($this->order_model->update_order(['status' => $_POST['status']], ['id' => $_POST['order_id']], true)) {
-                $this->order_model->update_order(['active_status' => $_POST['status']], ['id' => $_POST['order_id']], false);
+            // if ($this->order_model->update_order(['status' => $_POST['status']], ['id' => $_POST['order_id']], true)) {
+            //     $this->order_model->update_order(['active_status' => $_POST['status']], ['id' => $_POST['order_id']], false);
                 if ($this->order_model->update_order(['status' => $_POST['status']], ['order_id' => $_POST['order_id']], true, 'order_items')) {
                     $this->order_model->update_order(['active_status' => $_POST['status']], ['order_id' => $_POST['order_id']], false, 'order_items');
                     process_refund($_POST['order_id'], $_POST['status'], 'orders');
@@ -248,7 +248,7 @@ class My_account extends CI_Controller
                     print_r(json_encode($this->response));
                     return false;
                 }
-            }
+            // }
         }
     }
 

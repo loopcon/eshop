@@ -71,7 +71,7 @@
             </a>
         </li>
     <?php } ?>
-    <li class="nav-item mt-2">
+    <?php /* <li class="nav-item mt-2">
         <a class="nav-link rounded <?= ($current_url == base_url('my-account/wallet')) ? 'active' : '' ?>" id="wallet-details" href="<?= base_url('my-account/wallet') ?>">
             <div class="text-left py-1 px-3 sidebar-text">
                 <h6 class="mb-0">
@@ -79,7 +79,7 @@
                 </h6>
             </div>
         </a>
-    </li>
+    </li> */ ?>
     <li class="nav-item mt-2">
         <a class="nav-link rounded <?= ($current_url == base_url('my-account/transactions')) ? 'active' : '' ?>" id="transaction-details" href="<?= base_url('my-account/transactions') ?>">
             <div class="text-left py-1 px-3 sidebar-text">

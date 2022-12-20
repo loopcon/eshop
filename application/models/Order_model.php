@@ -317,14 +317,16 @@ class Order_model extends CI_Model
             }
             $address_data = $CI->address_model->get_address('', $data['address_id'], true);
             if (!empty($address_data)) {
+                $state = fetch_details('states', ['id'=>$address_data[0]['state']]);
+                $country = fetch_details('countries', ['id'=>$address_data[0]['country']]);
                 $order_data['latitude'] = $address_data[0]['latitude'];
                 $order_data['longitude'] = $address_data[0]['longitude'];
                 $order_data['address'] = (!empty($address_data[0]['address'])) ? $address_data[0]['address'] . ', ' : '';
                 $order_data['address'] .= (!empty($address_data[0]['landmark'])) ? $address_data[0]['landmark'] . ', ' : '';
                 $order_data['address'] .= (!empty($address_data[0]['area'])) ? $address_data[0]['area'] . ', ' : '';
                 $order_data['address'] .= (!empty($address_data[0]['city'])) ? $address_data[0]['city'] . ', ' : '';
-                $order_data['address'] .= (!empty($address_data[0]['state'])) ? $address_data[0]['state'] . ', ' : '';
-                $order_data['address'] .= (!empty($address_data[0]['country'])) ? $address_data[0]['country'] . ', ' : '';
+                $order_data['address'] .= (!empty($address_data[0]['state'])) ? $state[0]['name'] . ', ' : '';
+                $order_data['address'] .= (!empty($address_data[0]['country'])) ? $country[0]['name'] . ', ' : '';
                 $order_data['address'] .= (!empty($address_data[0]['pincode'])) ? $address_data[0]['pincode'] : '';
             }
             $order_data['mobile'] = (!empty($address_data[0]['mobile'])) ? $address_data[0]['mobile'] : $data['mobile'];

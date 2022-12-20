@@ -212,12 +212,12 @@ class Notification_settings extends CI_Controller
             if (isset($send_to) && $send_to == 'specific_user') {
                 /* select user's FCM IDs */
                 $user_ids = $this->input->post("select_user_id[]", true);
-                $results = fetch_details('users', null, 'fcm_id', 10000, 0, '', '', "id", $user_ids);
+                // $results = fetch_details('users', null, 'fcm_id', 10000, 0, '', '', "id", $user_ids);
                 $result = array();
-                for ($i = 0; $i <= count($results); $i++) {
-                    if (isset($results[$i]['fcm_id']) && !empty($results[$i]['fcm_id']) && ($results[$i]['fcm_id'] != 'NULL')) {
-                        $res = array_merge($result, $results);
-                    }
+                for ($i = 0; $i <= count($user_ids); $i++) {
+                    // if (isset($results[$i]['fcm_id']) && !empty($results[$i]['fcm_id']) && ($results[$i]['fcm_id'] != 'NULL')) {
+                        $res = array_merge($result, $user_ids);
+                    // }
                 }
             } else {
                 /* To all users */
@@ -236,13 +236,13 @@ class Notification_settings extends CI_Controller
                 return;
             }
 
-            $fcm_ids = array();
-            foreach ($res as $fcm_id) {
-                if (!empty($fcm_id)) {
-                    $fcm_ids[] = $fcm_id['fcm_id'];
-                }
-            }
-            $registrationIDs = $fcm_ids;
+            // $fcm_ids = array();
+            // foreach ($res as $fcm_id) {
+            //     if (!empty($fcm_id)) {
+            //         $fcm_ids[] = $fcm_id['fcm_id'];
+            //     }
+            // }
+            // $registrationIDs = $fcm_ids;
             if (isset($_POST['send_to']) && $_POST['send_to'] == 'specific_user') {
                 $data['select_user_id'] = (isset($data['select_user_id'])) ? json_encode($data['select_user_id']) : json_encode([]);
             }
@@ -253,7 +253,7 @@ class Notification_settings extends CI_Controller
             } else {
                 $this->notification_model->add_notification($data);
             }
-            //first check if the push has an image with it
+            /*//first check if the push has an image with it
             if ($is_image_included) {
                 $fcmMsg = array(
                     'content_available' => true,
@@ -275,13 +275,13 @@ class Notification_settings extends CI_Controller
                     'type_id' => "$type_ids",
                     'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
                 );
-            }
+            }*/
 
-            $registrationIDs_chunks = array_chunk($registrationIDs, 1000);
-            $fcmFields = send_notification($fcmMsg, $registrationIDs_chunks);
+            // $registrationIDs_chunks = array_chunk($registrationIDs, 1000);
+            // $fcmFields = send_notification($fcmMsg, $registrationIDs_chunks);
 
-            $this->response['notification'] = $fcmFields['notification'];
-            $this->response['data'] = $fcmFields['data'];
+            // $this->response['notification'] = $fcmFields['notification'];
+            // $this->response['data'] = $fcmFields['data'];
             $this->response['error'] = false;
             $this->response['message'] = 'Notification Sent Successfully!';
             $this->response['csrfName'] = $this->security->get_csrf_token_name();

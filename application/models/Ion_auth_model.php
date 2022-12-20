@@ -419,6 +419,8 @@ class Ion_auth_model extends CI_Model
 			$this->trigger_events('extra_where');
 			$this->db->update($this->tables['login_users'], $data, ['id' => $id]);
 
+			update_details(array('status'=>3), array('user_id'=>$id), 'seller_data');
+
 			if ($this->db->affected_rows() === 1) {
 				$this->trigger_events(['post_activate', 'post_activate_successful']);
 				$this->set_message('activate_successful');

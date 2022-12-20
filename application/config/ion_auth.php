@@ -131,7 +131,7 @@ $config['argon2_admin_params']		= [
  | This is an arbitrary (long) value to protect against DOS attack.
  */
 $config['site_title']                 = "Vendurs";       // Site Title, example.com
-$config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
+$config['admin_email']                = "hello@vendurs.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['delivery_boy_group']         = 'delivery_boy';      // Default administrators group, use name
