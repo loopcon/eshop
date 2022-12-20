@@ -122,7 +122,7 @@
                         <div class="category-section container-fluid text-center">
                             <div class="row">
                                 <?php foreach ($sub_categories as $key => $row) { ?>
-                                    <div class="col-md-2 col-sm-6 cat-img-box">
+                                    <div class=" col-12  col-sm-6 col-md-4 col-lg-3  col-xl-2 cat-img-box">
                                         <div class="category-image"><?php //  w-75 ?>
                                             <a href="<?= base_url('products/category/' . html_escape($row->slug)) ?>">
                                                 <img class="pic-1 lazy mb-2" data-src="<?= $row->image ?>">

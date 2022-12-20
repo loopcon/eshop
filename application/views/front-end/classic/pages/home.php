@@ -8,7 +8,7 @@
     <section class="category-list-section">
         <div class="row container-fluid">
             <?php foreach ($homepage_settings['categories'] as $row) { ?>
-                <div class="col-2">
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                     <a href="<?= base_url('products/category/' . $row['slug']) ?>">
                         <img class="img-fluid  cimg" src="<?= $row['image'] ?>" alt="">
                         <p class="cname"> <?= $row['name'] ?></p>
@@ -31,7 +31,7 @@
         <section class="category-list-section">
             <div class="row container-fluid category-main-sub">
                 <?php if(!empty($homepage_settings['main_category_1'])) { ?>
-                    <div class="col-3 p-2">
+                    <div class="col-12  col-sm-4  col-md-3 p-2">
                         <div class="makeupmain text-center">
                             <a href="<?= base_url('products/category/' . $homepage_settings['main_category_1']['slug']) ?>">
                                 <img class="img-fluid mb-3" src="<?php echo base_url($homepage_settings['main_category_1']['image']); ?>" alt="">
@@ -39,14 +39,14 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-9">
+                    <div class="col-12 col-sm-8 col-md-9">
                         <div class="row">
                             <?php
                                 $i = 0;
                                 $j = 0;
                                 foreach($homepage_settings['sub_categories_1'] as $sub_categories_1) {
                             ?>
-                            <div class="col-3">
+                            <div class="col-6  col-sm-6  col-md-4 col-lg-3">
                                 <div class="makebox">
                                     <a href="<?= base_url('products/category/' . $sub_categories_1['slug']) ?>">
                                         <img src="<?php echo base_url($sub_categories_1['image']); ?>" class="img-fluid mb-2">
@@ -60,7 +60,7 @@
                                     if($i==4) {
                                         if(count($homepage_settings['sub_categories_1']) > $j) {
                                             $i = 0;
-                                            echo '</div><div class="row">';
+                                            echo '';
                                         }
                                     }
                                 }
@@ -81,14 +81,14 @@
     <section class="category-list-section">
         <div class="row container-fluid category-main-sub">
             <?php if(!empty($homepage_settings['main_category_2'])) { ?>
-                <div class="col-9">
+                <div class="col-12 col-sm-8 col-md-9">
                     <div class="row">
                         <?php
                             $i = 0;
                             $j = 0;
                             foreach($homepage_settings['sub_categories_2'] as $sub_categories_2) {
                         ?>
-                        <div class="col-3">
+                        <div class="col-6 col-sm-6  col-md-4 col-lg-3 ">
                             <div class="makebox">
                                 <a href="<?= base_url('products/category/' . $sub_categories_2['slug']) ?>">
                                     <img src="<?php echo base_url($sub_categories_2['image']); ?>" class="img-fluid mb-2">
@@ -102,14 +102,14 @@
                                 if($i==4) {
                                     if(count($homepage_settings['sub_categories_2']) > $j) {
                                         $i = 0;
-                                        echo '</div><div class="row">';
+                                        echo '';
                                     }
                                 }
                             }
                         ?>
                     </div>
                 </div>
-                <div class="col-3 p-2">
+                <div class="col-12  col-sm-4  col-md-3 p-2">
                     <div class="makeupmain text-center">
                         <a href="<?= base_url('products/category/' . $homepage_settings['main_category_2']['slug']) ?>">
                             <img class="img-fluid mb-3" src="<?php echo base_url($homepage_settings['main_category_2']['image']); ?>" alt="">
@@ -130,7 +130,7 @@
     <section class="category-list-section">
         <div class="row container-fluid category-main-sub">
             <?php if(!empty($homepage_settings['main_category_3'])) { ?>
-                <div class="col-3 p-2">
+                <div class="col-12  col-sm-4  col-md-3 p-2">
                     <div class="makeupmain text-center">
                         <a href="<?= base_url('products/category/' . $homepage_settings['main_category_3']['slug']) ?>">
                             <img class="img-fluid mb-3" src="<?php echo base_url($homepage_settings['main_category_3']['image']); ?>" alt="">
@@ -138,14 +138,14 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-9">
+                <div class="col-12 col-sm-8 col-md-9 ">
                     <div class="row">
                         <?php
                             $i = 0;
                             $j = 0;
                             foreach($homepage_settings['sub_categories_3'] as $sub_categories_3) {
                         ?>
-                        <div class="col-3">
+                        <div class="col-6 col-sm-6  col-md-4 col-lg-3">
                             <div class="makebox">
                                 <a href="<?= base_url('products/category/' . $sub_categories_3['slug']) ?>">
                                     <img src="<?php echo base_url($sub_categories_3['image']); ?>" class="img-fluid mb-2">
@@ -159,7 +159,7 @@
                                 if($i==4) {
                                     if(count($homepage_settings['sub_categories_3']) > $j) {
                                         $i = 0;
-                                        echo '</div><div class="row">';
+                                        echo '';
                                     }
                                 }
                             }
@@ -177,16 +177,16 @@
         </div>
     </section>
     <section class="category-list-section">
-        <div class="row container-fluid category-main-sub">
+        <div class="row container-fluid category-main-sub  ">
             <?php if(!empty($homepage_settings['main_category_4'])) { ?>
-                <div class="col-9">
+                <div class="col-12 col-sm-8 col-md-9">
                     <div class="row">
                         <?php
                             $i = 0;
                             $j = 0;
                             foreach($homepage_settings['sub_categories_4'] as $sub_categories_4) {
                         ?>
-                        <div class="col-3">
+                        <div class="col-6 col-sm-6  col-md-4 col-lg-3">
                             <div class="makebox">
                                 <a href="<?= base_url('products/category/' . $sub_categories_4['slug']) ?>">
                                     <img src="<?php echo base_url($sub_categories_4['image']); ?>" class="img-fluid mb-2">
@@ -200,14 +200,14 @@
                                 if($i==4) {
                                     if(count($homepage_settings['sub_categories_4']) > $j) {
                                         $i = 0;
-                                        echo '</div><div class="row">';
+                                        echo '';
                                     }
                                 }
                             }
                         ?>
                     </div>
                 </div>
-                <div class="col-3 p-2">
+                <div class="col-12  col-sm-4  col-md-3  p-2">
                     <div class="makeupmain text-center">
                         <a href="<?= base_url('products/category/' . $homepage_settings['main_category_4']['slug']) ?>">
                             <img class="img-fluid mb-3" src="<?php echo base_url($homepage_settings['main_category_4']['image']); ?>" alt="">
@@ -227,15 +227,15 @@
             <h2 class="mhead">Discount</h2>
         </div>
         <section>
-            <div class="row container-fluid">
+            <div class="row container-fluid rowcontent">
                 <?php foreach($offers as $offer) { ?>
-                    <div class="col-4 text-center">
+                    <div class="col-12 col-md-6 col-lg-4 text-center">
                         <div class="makebox">
                             <img class="img-fluid" src="<?= base_url($offer['image']); ?>">
                             <p class="distext py-2"><?= $offer['text']; ?></p>
-                            <div class="d-flex justify-content-center">
+                            <!-- <div class="d-flex justify-content-center">
                                 <button class="disbtn"> See more</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 <?php } ?>
@@ -246,9 +246,9 @@
 
 <?php /* <section class="common"> */ ?>
     <div class="container pt-5 pb-3 py-3">
-        <div class="row container-fluid">
+        <div class="row container-fluid rowcontent">
             <?php foreach($banners as $banner) { ?>
-                <div class="col-6">
+                <div class="col-12 col-md-6 p-2">
                     <img src="<?= $banner['image']; ?>" class="img-fluid">
                 </div>
             <?php } ?>
@@ -300,9 +300,9 @@
         <h2 class="mhead"> Top brands</h2>
     </div>
     <div class="top-brands">
-        <div class="row container-fluid">
+        <div class="row container-fluid rowcontent">
             <?php foreach($brands as $brand) { ?>
-                <div class="col-2">
+                <div class="col-6 col-md-2">
                     <img src="<?= base_url($brand['image']); ?>" class="img-fluid topbrandicon">
                 </div>
             <?php } ?>

@@ -203,10 +203,13 @@ $web_settings = get_settings('web_settings', true);
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
+                    <div class="responsivelogo">
                     <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
                     <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
+                    </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                        <!-- <span class="navbar-toggler-icon"></span> -->
+                        <i class="fa-solid fa-bars"></i>
                     </button>
                     <?php if($this->router->fetch_class()!="home") { ?>
                         <div class="search-box-header">
@@ -221,8 +224,8 @@ $web_settings = get_settings('web_settings', true);
                     <?php } ?>
                     <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <div class="nav-item dropdown ms-auto marketplace-menu">
-                                <a class="nav-link nava marketplace" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                            <div class="nav-item dropdown ms-auto marketplace-menu shopmenu">
+                                <a class="nav-link nava marketplace " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
                                 <div class="dropdown-menu category-menu">
                                     <div class="row">
                                     </div>
@@ -564,3 +567,14 @@ $web_settings = get_settings('web_settings', true);
     </div>
 </header> */ ?>
 <!-- header ends -->
+
+
+<!-- mobile screen navbar start  -->
+
+
+                                            
+
+
+
+
+<!-- mobile screen navbar end  -->

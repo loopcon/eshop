@@ -12,14 +12,14 @@
 <section id="content" class="pt-5 pb-5 ">
     <div class="main-content">
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6 col-lg-7">
                 <div class="sign-up-image">
                     <?php if (isset($web_settings['map_iframe']) && !empty($web_settings['map_iframe'])) {
                         echo html_entity_decode(stripcslashes($web_settings['map_iframe']));
                     } ?>
                 </div>
             </div>
-            <div class="col-md-5 login-form">
+            <div class="col-md-6 col-lg-5 login-form">
                 <h2 class="form-text-style"><?= !empty($this->lang->line('contact_us')) ? $this->lang->line('contact_us') : 'Contact Us' ?></h2>
                 <form id="contact-us-form" action="<?= base_url('home/send-contact-us-email') ?>" method="POST">
                     <div class="form-row">
