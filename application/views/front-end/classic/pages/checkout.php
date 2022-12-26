@@ -137,16 +137,16 @@
                     <?php } ?>
                     <hr>
                     <input type="hidden" name="delivery_date" id="delivery_date" class="form-control float-right">
-                    <div class="align-item-center ship-title-details justify-content-between d-flex">
-                        <h5><?= !empty($this->lang->line('wallet_balance')) ? $this->lang->line('wallet_balance') : 'Use wallet balance' ?></h5>
+                    <?php /* <div class="align-item-center ship-title-details justify-content-between d-flex">
+                        <h5><?= !empty($this->lang->line('wallet_balance')) ? $this->lang->line('wallet_balance') : 'Use wallet balance' ? ></h5>
                     </div>
-                    <?php $disabled = $wallet_balance[0]['balance'] == 0 ? 'disabled' : '' ?>
+                    <?php $disabled = $wallet_balance[0]['balance'] == 0 ? 'disabled' : '' ? >
                     <div class="form-check d-flex">
-                        <input class="form-check-input" type="checkbox" value="" id="wallet_balance" <?= $disabled ?>>
+                        <input class="form-check-input" type="checkbox" value="" id="wallet_balance" <?= $disabled ? >>
                         <label class="form-check-label d-flex" for="flexCheckDefault">
-                            <?= !empty($this->lang->line('available_balance')) ? $this->lang->line('available_balance') : 'Available balance' ?> : <?= $currency . '<span id="available_balance">' . number_format($wallet_balance[0]['balance'], 2) . '</span>' ?>
+                            <?= !empty($this->lang->line('available_balance')) ? $this->lang->line('available_balance') : 'Available balance' ? > : <?= $currency . '<span id="available_balance">' . number_format($wallet_balance[0]['balance'], 2) . '</span>' ? >
                         </label>
-                    </div>
+                    </div> */ ?>
 
                     <div class="ship-details-wrapper mt-3 payment-methods">
                         <div class="align-item-center ship-title-details justify-content-between d-flex">
@@ -446,11 +446,10 @@
                                                 <td class="text-muted"><?= !empty($this->lang->line('delivery_charge')) ? $this->lang->line('delivery_charge') : 'Delivery Charge' ?></td>
                                                 <td class="text-muted"><?= $settings['currency'] . ' ' ?><span class="delivery-charge"><?= $cart['delivery_charge'] ?></span></td>
                                             </tr>
-                                            <tr>
-                                                <td class="text-muted"><?= !empty($this->lang->line('wallet')) ? $this->lang->line('wallet') : 'Wallet' ?></td>
-                                                <td class="text-muted"><?= $settings['currency'] ?> <span class="wallet_used">0.00<span></td>
-
-                                            </tr>
+                                            <?php /* <tr>
+                                                <td class="text-muted"><?= !empty($this->lang->line('wallet')) ? $this->lang->line('wallet') : 'Wallet' ? ></td>
+                                                <td class="text-muted"><?= $settings['currency'] ? > <span class="wallet_used">0.00<span></td>
+                                            </tr> */ ?>
                                             <tr id="promocode_div" class="d-none">
                                                 <td class="text-muted"><?= !empty($this->lang->line('promocode')) ? $this->lang->line('promocode') : 'Promocode' ?> <span id="promocode"></span></td>
                                                 <td class="text-muted"> <i><?= $settings['currency'] ?></i> <span id="promocode_amount"></span></td>
@@ -459,7 +458,7 @@
                                         <tfoot>
                                             <tr class="total-price">
                                                 <td><?= !empty($this->lang->line('total')) ? $this->lang->line('total') : 'Total' ?></td>
-                                                <td><?= $settings['currency'] ?> <span id="final_total"></span></td>
+                                                <td><?= $settings['currency'] ?> <span id="final_total"><?php echo number_format($cart['sub_total'], 2); ?></span></td>
                                             </tr>
                                         </tfoot>
                                     </table>

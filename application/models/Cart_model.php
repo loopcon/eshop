@@ -96,7 +96,7 @@ class Cart_model extends CI_Model
                 ->join('`taxes` tax', 'tax.id = p.tax', 'LEFT')
                 ->join('`seller_data` sd', 'sd.user_id = p.seller_id');
             if($user_id=='') {
-                $q->where(['c.guest_user_id >' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+                $q->where(['c.guest_user_id' => 0, 'c.user_id' => 0, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
             } else {
                 $q->where(['c.guest_user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
             }

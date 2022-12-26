@@ -63,7 +63,7 @@ class Orders extends CI_Controller
                 $area_id = fetch_details('addresses', ['id' => $res[0]['address_id']], 'area_id');
                 if (!empty($area_id)) {
                     $zipcode_id = fetch_details('areas', ['id' => $area_id[0]['area_id']], 'zipcode_id');
-                    $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->where('find_in_set(' . $zipcode_id[0]['zipcode_id'] . ', u.serviceable_zipcodes)!=', 0)->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
+                    // $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->where('find_in_set(' . $zipcode_id[0]['zipcode_id'] . ', u.serviceable_zipcodes)!=', 0)->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
                 }
             } else {
                 $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
@@ -117,8 +117,8 @@ class Orders extends CI_Controller
     {
         if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
 
-            $this->form_validation->set_rules('order_item_id[]', 'Select one of the Order Items to update status ', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('deliver_by', 'Delvery Boy Id', 'trim|numeric|xss_clean');
+            $this->form_validation->set_rules('order_item_id[]', 'Select one of the Order Items to update status', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('deliver_by', 'Delvery Boy Id', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('status', 'Status', 'trim|xss_clean|in_list[received,processed,shipped,delivered,cancelled,returned]');
 
             if (!$this->form_validation->run()) {
@@ -131,16 +131,16 @@ class Orders extends CI_Controller
                 return false;
             }
             $order_itam_ids = $_POST['order_item_id'];
-            $order_items = fetch_details('order_items', "",  '*', "", "", "", "", "id", $order_itam_ids);
-            if (isset($_POST['status']) && !empty($_POST['status']) && $_POST['status'] == 'delivered') {
-                if (!get_seller_permission($order_items[0]['seller_id'], "view_order_otp")) {
-                    $this->response['error'] = true;
-                    $this->response['message'] = 'You are not allowed to update delivered status on the item.';
-                    $this->response['data'] = array();
-                    print_r(json_encode($this->response));
-                    return false;
-                }
-            }
+            $order_items = fetch_details('order_items', "", '*', "", "", "", "", "id", $order_itam_ids);
+            // if (isset($_POST['status']) && !empty($_POST['status']) && $_POST['status'] == 'delivered') {
+            //     if (!get_seller_permission($order_items[0]['seller_id'], "view_order_otp")) {
+            //         $this->response['error'] = true;
+            //         $this->response['message'] = 'You are not allowed to update delivered status on the item.';
+            //         $this->response['data'] = array();
+            //         print_r(json_encode($this->response));
+            //         return false;
+            //     }
+            // }
             if (empty($order_items)) {
                 $this->response['error'] = true;
                 $this->response['message'] = 'No Order Item Found';
@@ -161,6 +161,7 @@ class Orders extends CI_Controller
                 return false;
             }
             // delivery boy update here
+            $order_id = $order_items[0]['order_id'];
             $message = '';
             $delivery_boy_updated = 0;
             /* $delivery_boy_id = (isset($_POST['deliver_by']) && !empty(trim($_POST['deliver_by']))) ? $this->input->post('deliver_by', true) : 0;
@@ -271,11 +272,7 @@ class Orders extends CI_Controller
                 return false;
             }
 
-            print_r($_POST);
-            exit;
             if (!empty($order_items)) {
-                require_once('goshippo-client/lib/Shippo.php');
-                Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
                 for ($j = 0; $j < count($order_items); $j++) {
                     $order_item_id = $order_items[$j]['id'];
                     /* velidate bank transfer method status */
@@ -313,7 +310,7 @@ class Orders extends CI_Controller
                             $response = process_referral_bonus($user_id, $order_item_res[0]['order_id'], $_POST['status']);
                         }
                     }
-                    //Update login id in order_item table
+                    // Update login id in order_item table
                     update_details(['updated_by' => $order_items[0]['seller_id']], ['id' => $order_item_res[0]['id']], 'order_items');
 
                     $order_status = [
@@ -323,114 +320,82 @@ class Orders extends CI_Controller
                         'order_item_status' => $_POST['status'],
                     ];
                     $this->db->insert('order_status', $order_status);
-                    
-                    // $product = fetch_details("products", "id='".$order_items[$j]['product_variant_id']."'", "length, width, height, weight, mass_unit");
-                    // $user = fetch_details("users", "id='".$order_method[0]['user_id']."'");
-                    // $seller = fetch_details("users", "id='".$order_items[$j]['seller_id']."'");
-                    // $seller_city = fetch_details("cities", "id='".$seller[0]['city']."'");
-                    // $seller_state = fetch_details("states", "id='".$seller[0]['state']."'");
-                    // $seller_country = fetch_details("countries", "id='".$seller[0]['country']."'");
-                    // $address = fetch_details("addresses", "id='".$order_method[0]['address_id']."'");
-                    // $city = fetch_details("cities", "id='".$address[0]['city_id']."'");
-                    // $state = fetch_details("states", "id='".$address[0]['state']."'");
-                    // $country = fetch_details("countries", "id='".$address[0]['country']."'");
-                    // $fromAddress = array(
-                    //     "city" => $seller_city[0]['name'],
-                    //     "company" => "Shippo",
-                    //     "country" => $seller_country[0]['iso2'],
-                    //     "email" => $seller['email'],
-                    //     "name" => $seller[0]['username'],
-                    //     "phone" => $seller[0]['mobile'],
-                    //     "state" => $seller_state[0]['state_code'],
-                    //     "street1" => $seller[0]['address'],
-                    //     "zip" => $seller[0]['pincode']
-                    // );
-                    // $toAddress = array(
-                    //     "city" => $city[0]['name'],
-                    //     "company" => "Shippo",
-                    //     "country" => $country[0]['iso2'],
-                    //     "email" => $_POST['customer_email'],
-                    //     "name" => $user[0]['username'],
-                    //     "phone" => $user[0]['mobile'],
-                    //     "state" => $state[0]['state_code'],
-                    //     "street1" => $address[0]['address'],
-                    //     "zip" => $address[0]['pincode']
-                    // );
-                    // if($product['mass_unit']=="Gram") {
-                    //     $mass_unit = "g";
-                    // } else if($product['mass_unit']=="Ounce") {
-                    //     $mass_unit = "oz";
-                    // } else if($product['mass_unit']=="Pound") {
-                    //     $mass_unit = "lb";
-                    // } else {
-                    //     $mass_unit = "kg";
-                    // }
-                    // $parcel = array(
-                    //     "length"=> $product[0]['length'],
-                    //     "width"=> $product[0]['width'],
-                    //     "height"=> $product[0]['height'],
-                    //     "distance_unit"=> "in",
-                    //     "weight"=> $product[0]['weight'],
-                    //     "mass_unit"=> $mass_unit,
-                    // );
-                    // $shipment = Shippo_Shipment::create(
-                    //     array(
-                    //         "address_from" => $fromAddress,
-                    //         "address_to" => $toAddress,
-                    //         "parcels" => $parcel,
-                    //         "async" => false
-                    //     )
-                    // );
-                    // print_r($shipment);
                 }
-
-                /* $transaction_array = array(
-                    "rate_object_id" => $_POST['rate_object_id'],
-                    "label_file_type" => "PDF",
-                );
-                $transaction = create_goshippo_transction($transaction_array);
-                $goshippo_response_array['goshippo_transaction_object_id'] = $transaction->object_id;
-                $goshippo_response_array['goshippo_tracking_number'] = $transaction->tracking_number;
-                $goshippo_response_array['goshippo_tracking_url_provider'] = $transaction->tracking_url_provider;
-                $goshippo_response_array['goshippo_label_url'] = $transaction->label_url; */
-                // exit;
-                $settings = get_settings('system_settings', true);
-                $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';
-                $user_res = fetch_details('users', ['id' => $user_id], 'username,fcm_id');
-                $fcm_ids = array();
+                // $settings = get_settings('system_settings', true);
+                // $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';
+                // $user_res = fetch_details('users', ['id' => $user_id], 'username,fcm_id');
+                // $fcm_ids = array();
                 //custom message
-                if (!empty($user_res[0]['fcm_id'])) {
-                    if ($_POST['status'] == 'received') {
-                        $type = ['type' => "customer_order_received"];
-                    } elseif ($_POST['status'] == 'processed') {
-                        $type = ['type' => "customer_order_processed"];
-                    } elseif ($_POST['status'] == 'shipped') {
-                        $type = ['type' => "customer_order_shipped"];
-                    } elseif ($_POST['status'] == 'delivered') {
-                        $type = ['type' => "customer_order_delivered"];
-                    } elseif ($_POST['status'] == 'cancelled') {
-                        $type = ['type' => "customer_order_cancelled"];
-                    } elseif ($_POST['status'] == 'returned') {
-                        $type = ['type' => "customer_order_returned"];
-                    }
-                    $custom_notification = fetch_details('custom_notifications', $type, '');
-                    $hashtag_cutomer_name = '< cutomer_name >';
-                    $hashtag_order_id = '< order_item_id >';
-                    $hashtag_application_name = '< application_name >';
-                    $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
-                    $hashtag = html_entity_decode($string);
-                    $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($user_res[0]['username'], $order_items[0]['order_id'], $app_name), $hashtag);
-                    $message = output_escaping(trim($data, '"'));
-                    $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $user_res[0]['username'] . 'Order status updated to' . $_POST['val'] . ' for order ID #' . $order_items[0]['order_id'] . ' assigned to you please take note of it! Thank you. Regards ' . $app_name . '';
-                    $fcmMsg = array(
-                        'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
-                        'body' => $customer_msg,
-                        'type' => "order"
-                    );
+                // if (!empty($user_res[0]['fcm_id'])) {
+                //     if ($_POST['status'] == 'received') {
+                //         $type = ['type' => "customer_order_received"];
+                //     } elseif ($_POST['status'] == 'processed') {
+                //         $type = ['type' => "customer_order_processed"];
+                //     } elseif ($_POST['status'] == 'shipped') {
+                //         $type = ['type' => "customer_order_shipped"];
+                //     } elseif ($_POST['status'] == 'delivered') {
+                //         $type = ['type' => "customer_order_delivered"];
+                //     } elseif ($_POST['status'] == 'cancelled') {
+                //         $type = ['type' => "customer_order_cancelled"];
+                //     } elseif ($_POST['status'] == 'returned') {
+                //         $type = ['type' => "customer_order_returned"];
+                //     }
+                //     $custom_notification = fetch_details('custom_notifications', $type, '');
+                //     $hashtag_cutomer_name = '< cutomer_name >';
+                //     $hashtag_order_id = '< order_item_id >';
+                //     $hashtag_application_name = '< application_name >';
+                //     $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
+                //     $hashtag = html_entity_decode($string);
+                //     $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($user_res[0]['username'], $order_items[0]['order_id'], $app_name), $hashtag);
+                //     $message = output_escaping(trim($data, '"'));
+                //     $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $user_res[0]['username'] . 'Order status updated to' . $_POST['val'] . ' for order ID #' . $order_items[0]['order_id'] . ' assigned to you please take note of it! Thank you. Regards ' . $app_name . '';
+                //     $fcmMsg = array(
+                //         'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
+                //         'body' => $customer_msg,
+                //         'type' => "order"
+                //     );
 
-                    $fcm_ids[0][] = $user_res[0]['fcm_id'];
-                    send_notification($fcmMsg, $fcm_ids);
+                //     $fcm_ids[0][] = $user_res[0]['fcm_id'];
+                //     // send_notification($fcmMsg, $fcm_ids);
+                // }
+
+                // send email to user - start
+                $order = fetch_details('orders', ['id' => $this->input->post('order_id')]);
+                $order_number = $order[0]['id'];
+                if($order[0]['is_guest']==1) {
+                    $to = $order[0]['email'];
+                } else {
+                    $user = fetch_details('users', ['id' => $order[0]['user_id']]);
+                    $to = $user[0]['email'];
                 }
+                $site_title = $this->config->item('site_title', 'ion_auth');
+                $order_status = $this->input->post('status');
+                $subject = $site_title . ' - Order Updated';
+                $message = "Your order #'.$order_number.' status has changed to ".$order_status;
+                send_mail($to, $subject, $message);
+                // send email to user - end
+
+                // send email to admin - start
+                $admin_email = $this->config->item('admin_email', 'ion_auth');
+                $admin_subject = $site_title . ' - Order #'.$order_number.' has been '.$order_status;
+                $admin_message = 'Order #'.$order_number.' has been '.$order_status.' by seller';//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($admin_email, $admin_subject, $admin_message);
+                // send email to admin - end
+
+                // Goshippo transaction create - start
+                if($order_status=="processed") {
+                    $transaction_array = array(
+                        "rate_object_id" => $order[0]['goshippo_rate_object_id'],
+                        "label_file_type" => "PDF",
+                    );
+                    $transaction = create_goshippo_transction($transaction_array);
+                    $goshippo_response_array['goshippo_transaction_object_id'] = $transaction->object_id;
+                    $goshippo_response_array['goshippo_tracking_number'] = $transaction->tracking_number;
+                    $goshippo_response_array['goshippo_tracking_url_provider'] = $transaction->tracking_url_provider;
+                    $goshippo_response_array['goshippo_label_url'] = $transaction->label_url;
+                    update_details($goshippo_response_array, ['id' => $this->input->post('order_id')], 'orders');
+                }
+                // Goshippo transaction create - end
 
                 $this->response['error'] = false;
                 $this->response['message'] = 'Status Updated Successfully';

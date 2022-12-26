@@ -391,12 +391,13 @@ class Orders extends CI_Controller
 
             $this->data['title'] = 'View Order | ' . $settings['app_name'];
             $this->data['meta_description'] = 'View Order | ' . $settings['app_name'];
+            $admin_id = $this->session->userdata('user_id');
             $res = $this->Order_model->get_order_details(['o.id' => $_GET['edit_id']]);
             if (is_exist(['id' => $res[0]['address_id']], 'addresses')) {
                 $area_id = fetch_details('addresses', ['id' => $res[0]['address_id']], 'area_id');
                 if (!empty($area_id)) {
                     $zipcode_id = fetch_details('areas', ['id' => $area_id[0]['area_id']], 'zipcode_id');
-                    $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->where('find_in_set(' . $zipcode_id[0]['zipcode_id'] . ', u.serviceable_zipcodes)!=', 0)->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
+                    // $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->where('find_in_set(' . $zipcode_id[0]['zipcode_id'] . ', u.serviceable_zipcodes)!=', 0)->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
                 }
             } else {
                 $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
@@ -437,6 +438,7 @@ class Orders extends CI_Controller
                 $this->data['order_detls'] = $res;
                 $this->data['bank_transfer'] = $bank_transfer;
                 $this->data['items'] = $items;
+                $this->data['admin_id'] = $seller_id;
                 $this->data['settings'] = get_settings('system_settings', true);
                 $this->load->view('admin/template', $this->data);
             } else {
@@ -455,8 +457,8 @@ class Orders extends CI_Controller
                 return false;
             }
 
-            $this->form_validation->set_rules('order_item_id[]', 'Order Item ID', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('deliver_by', 'Delvery Boy Id', 'trim|numeric|xss_clean');
+            $this->form_validation->set_rules('order_item_id[]', 'Select one of the Order Items to update status', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('deliver_by', 'Delvery Boy Id', 'trim|numeric|xss_clean');
             $this->form_validation->set_rules('status', 'Status', 'trim|xss_clean|in_list[received,processed,shipped,delivered,cancelled,returned]');
 
             if (!$this->form_validation->run()) {
@@ -511,7 +513,7 @@ class Orders extends CI_Controller
 
             $message = '';
             $delivery_boy_updated = 0;
-            $delivery_boy_id = (isset($_POST['deliver_by']) && !empty(trim($_POST['deliver_by']))) ? $this->input->post('deliver_by', true) : 0;
+            /* $delivery_boy_id = (isset($_POST['deliver_by']) && !empty(trim($_POST['deliver_by']))) ? $this->input->post('deliver_by', true) : 0;
             if (!empty($delivery_boy_id)) {
                 $delivery_boy = fetch_details('users', ['id' => trim($delivery_boy_id)], 'id');
                 if (empty($delivery_boy)) {
@@ -533,8 +535,8 @@ class Orders extends CI_Controller
                     }
 
                     $fcm_ids = array();
+                    //custom message
                     if (isset($user_res[0]) && !empty($user_res[0])) {
-                        //custom message
                         $current_delivery_boy = array_column($current_delivery_boys, "delivery_boy_id");
                         if ($_POST['status'] == 'received') {
                             $type = ['type' => "customer_order_received"];
@@ -632,7 +634,7 @@ class Orders extends CI_Controller
                         $delivery_error = false;
                     }
                 }
-            }
+            } */
 
             $item_ids = implode(",", $_POST['order_item_id']);
             $res = validate_order_status($item_ids, $_POST['status']);
@@ -687,66 +689,111 @@ class Orders extends CI_Controller
                     }
                     // Update login id in order_item table
                     update_details(['updated_by' => $_SESSION['user_id']], ['id' => $order_item_res[0]['id']], 'order_items');
+
+                    $order_status = [
+                        'order_id' => $order_item_res[0]['order_id'],
+                        'order_status' => $_POST['status'],
+                        'order_item_id' => $order_item_res[0]['id'],
+                        'order_item_status' => $_POST['status'],
+                    ];
+                    $this->db->insert('order_status', $order_status);
                 }
-                // update_details(['updated_by' => $admin_id], ['id' => $order_item_res[0]['id']], 'order_items');
-                $settings = get_settings('system_settings', true);
-                $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';
-                $user_res = fetch_details('users', ['id' => $user_id], 'username,fcm_id');
+                // $settings = get_settings('system_settings', true);
+                // $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';
+                // $user_res = fetch_details('users', ['id' => $user_id], 'username,fcm_id');
                 //custom message
-                if ($_POST['status'] == 'received') {
-                    $type = ['type' => "customer_order_received"];
-                } elseif ($_POST['status'] == 'processed') {
-                    $type = ['type' => "customer_order_processed"];
-                } elseif ($_POST['status'] == 'shipped') {
-                    $type = ['type' => "customer_order_shipped"];
-                } elseif ($_POST['status'] == 'delivered') {
-                    $type = ['type' => "customer_order_delivered"];
-                } elseif ($_POST['status'] == 'cancelled') {
-                    $type = ['type' => "customer_order_cancelled"];
-                } elseif ($_POST['status'] == 'returned') {
-                    $type = ['type' => "customer_order_returned"];
+                // if ($_POST['status'] == 'received') {
+                //     $type = ['type' => "customer_order_received"];
+                // } elseif ($_POST['status'] == 'processed') {
+                //     $type = ['type' => "customer_order_processed"];
+                // } elseif ($_POST['status'] == 'shipped') {
+                //     $type = ['type' => "customer_order_shipped"];
+                // } elseif ($_POST['status'] == 'delivered') {
+                //     $type = ['type' => "customer_order_delivered"];
+                // } elseif ($_POST['status'] == 'cancelled') {
+                //     $type = ['type' => "customer_order_cancelled"];
+                // } elseif ($_POST['status'] == 'returned') {
+                //     $type = ['type' => "customer_order_returned"];
+                // }
+                // $custom_notification = fetch_details('custom_notifications', $type, '');
+                // $hashtag_cutomer_name = '< cutomer_name >';
+                // $hashtag_order_id = '< order_item_id >';
+                // $hashtag_application_name = '< application_name >';
+                // $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
+                // $hashtag = html_entity_decode($string);
+                // $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($user_res[0]['username'], $order_item_res[0]['id'], $app_name), $hashtag);
+                // $message = output_escaping(trim($data, '"'));
+                // $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $user_res[0]['username'] . 'Order status updated to' . $_POST['val'] . ' for order ID #' .  $order_item_res[0]['id'] . ' assigned to you please take note of it! Thank you. Regards ' . $app_name . '';
+                // $fcm_ids = array();
+                // if (!empty($user_res[0]['fcm_id'])) {
+                //     $fcmMsg = array(
+                //         'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
+                //         'body' => $customer_msg,
+                //         'type' => "order"
+                //     );
+
+                //     $fcm_ids[0][] = $user_res[0]['fcm_id'];
+                //     send_notification($fcmMsg, $fcm_ids);
+                // }
+
+                // $seller_res = fetch_details('users', ['id' => $order_item_res[0]['seller_id']], 'username,fcm_id');
+                // $fcm_ids = array();
+                // if (!empty($seller_res[0]['fcm_id'])) {
+                //     $hashtag_cutomer_name = '< cutomer_name >';
+                //     $hashtag_order_id = '< order_id >';
+                //     $hashtag_application_name = '< application_name >';
+                //     $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
+                //     $hashtag = html_entity_decode($string);
+                //     $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($seller_res[0]['username'], $order_item_res[0]['id'], $app_name), $hashtag);
+                //     $message = output_escaping(trim($data, '"'));
+                //     $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $seller_res[0]['username'] . 'Order status updated to' . $_POST['status'] . ' for your order ID #' . $order_item_res[0]['id'] . ' please take note of it! Regards ' . $app_name . '';
+                //     $fcmMsg = array(
+                //         'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
+                //         'body' => $customer_msg,
+                //         'type' => "order"
+                //     );
+
+                //     $fcm_ids[0][] = $seller_res[0]['fcm_id'];
+                //     send_notification($fcmMsg, $fcm_ids);
+                // }
+
+                // send email to user - start
+                $order = fetch_details('orders', ['id' => $this->input->post('order_id')]);
+                $order_number = $order[0]['id'];
+                if($order[0]['is_guest']==1) {
+                    $to = $order[0]['email'];
+                } else {
+                    $user = fetch_details('users', ['id' => $order[0]['user_id']]);
+                    $to = $user[0]['email'];
                 }
-                $custom_notification = fetch_details('custom_notifications', $type, '');
-                $hashtag_cutomer_name = '< cutomer_name >';
-                $hashtag_order_id = '< order_item_id >';
-                $hashtag_application_name = '< application_name >';
-                $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
-                $hashtag = html_entity_decode($string);
-                $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($user_res[0]['username'], $order_item_res[0]['id'], $app_name), $hashtag);
-                $message = output_escaping(trim($data, '"'));
-                $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $user_res[0]['username'] . 'Order status updated to' . $_POST['val'] . ' for order ID #' .  $order_item_res[0]['id'] . ' assigned to you please take note of it! Thank you. Regards ' . $app_name . '';
-                $fcm_ids = array();
-                if (!empty($user_res[0]['fcm_id'])) {
-                    $fcmMsg = array(
-                        'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
-                        'body' => $customer_msg,
-                        'type' => "order"
+                $site_title = $this->config->item('site_title', 'ion_auth');
+                $order_status = $this->input->post('status');
+                $subject = $site_title . ' - Order Updated';
+                $message = "Your order #'.$order_number.' status has changed to ".$order_status;
+                send_mail($to, $subject, $message);
+                // send email to user - end
+
+                // send email to admin - start
+                $admin_email = $this->config->item('admin_email', 'ion_auth');
+                $admin_subject = $site_title . ' - Order #'.$order_number.' has been '.$order_status;
+                $admin_message = 'Order #'.$order_number.' has been '.$order_status.' by seller';//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($admin_email, $admin_subject, $admin_message);
+                // send email to admin - end
+
+                // Goshippo transaction create - start
+                if($order_status=="processed") {
+                    $transaction_array = array(
+                        "rate_object_id" => $order[0]['goshippo_rate_object_id'],
+                        "label_file_type" => "PDF",
                     );
-
-                    $fcm_ids[0][] = $user_res[0]['fcm_id'];
-                    send_notification($fcmMsg, $fcm_ids);
+                    $transaction = create_goshippo_transction($transaction_array);
+                    $goshippo_response_array['goshippo_transaction_object_id'] = $transaction->object_id;
+                    $goshippo_response_array['goshippo_tracking_number'] = $transaction->tracking_number;
+                    $goshippo_response_array['goshippo_tracking_url_provider'] = $transaction->tracking_url_provider;
+                    $goshippo_response_array['goshippo_label_url'] = $transaction->label_url;
+                    update_details($goshippo_response_array, ['id' => $this->input->post('order_id')], 'orders');
                 }
-
-                $seller_res = fetch_details('users', ['id' => $order_item_res[0]['seller_id']], 'username,fcm_id');
-                $fcm_ids = array();
-                if (!empty($seller_res[0]['fcm_id'])) {
-                    $hashtag_cutomer_name = '< cutomer_name >';
-                    $hashtag_order_id = '< order_id >';
-                    $hashtag_application_name = '< application_name >';
-                    $string = json_encode($custom_notification[0]['message'], JSON_UNESCAPED_UNICODE);
-                    $hashtag = html_entity_decode($string);
-                    $data = str_replace(array($hashtag_cutomer_name, $hashtag_order_id, $hashtag_application_name), array($seller_res[0]['username'], $order_item_res[0]['id'], $app_name), $hashtag);
-                    $message = output_escaping(trim($data, '"'));
-                    $customer_msg = (!empty($custom_notification)) ? $message :  'Hello Dear ' . $seller_res[0]['username'] . 'Order status updated to' . $_POST['status'] . ' for your order ID #' . $order_item_res[0]['id'] . ' please take note of it! Regards ' . $app_name . '';
-                    $fcmMsg = array(
-                        'title' => (!empty($custom_notification)) ? $custom_notification[0]['title'] : "Order status updated",
-                        'body' => $customer_msg,
-                        'type' => "order"
-                    );
-
-                    $fcm_ids[0][] = $seller_res[0]['fcm_id'];
-                    send_notification($fcmMsg, $fcm_ids);
-                }
+                // Goshippo transaction create - end
 
                 $this->response['error'] = false;
                 $this->response['message'] = 'Status Updated Successfully';

@@ -95,6 +95,7 @@ $(document).ready(function () {
         };
 
         var card = elements.create("card", {
+            hidePostalCode: true,
             style: style
         });
         card.mount("#stripe-card-element");
