@@ -9,7 +9,7 @@ class Sellers extends CI_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(['ion_auth', 'form_validation', 'upload']);
+        $this->load->library(['ion_auth', 'form_validation', 'upload', 'email']);
         $this->load->helper(['url', 'language', 'file']);
         $this->load->model('Seller_model');
         if (!has_permissions('read', 'seller')) {
@@ -258,10 +258,10 @@ class Sellers extends CI_Controller
             $this->form_validation->set_rules('country', 'Country', 'trim|required|xss_clean');
             $this->form_validation->set_rules('state', 'State', 'trim|required|xss_clean');
             $this->form_validation->set_rules('city', 'City', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('area', 'Area', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('tax_number', 'TIN Number', 'trim|required|xss_clean');
             $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
             if (!isset($_POST['edit_seller'])) {
                 if (isset($_POST['global_commission']) && empty($_POST['global_commission'])) {
@@ -531,6 +531,7 @@ class Sellers extends CI_Controller
                         'state' => $this->input->post('state', true),
                         'city' => $this->input->post('city', true),
                         'area' => $this->input->post('area', true),
+                        'pincode' => $this->input->post('pincode', true),
                         'latitude' => $this->input->post('latitude', true),
                         'longitude' => $this->input->post('longitude', true)
                     );
@@ -569,7 +570,37 @@ class Sellers extends CI_Controller
                         }
                     }
 
+                    $sid = $this->input->post('edit_seller', true);
+                    $seller_current_status = fetch_details('seller_data', ['user_id' => $sid], 'status');
                     if ($this->Seller_model->add_seller($seller_data, $seller_profile, $com_data)) {
+                        $status = $this->input->post('status', true);
+                        if($status==0) {
+                            $account_status = "deactivated";
+                        } else if($status==1) {
+                            $account_status = "approved";
+                        } else if($status==2) {
+                            $account_status = "rejected";
+                        } else {
+                            $account_status = "pending";
+                        }
+                        if($status!=$seller_current_status) {
+                            // $message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_activate', 'ion_auth'), $data, true);
+                            $site_title = $this->config->item('site_title', 'ion_auth');
+                            $admin_email = $this->config->item('admin_email', 'ion_auth');
+                            $email = $this->input->post('email', true);
+                            $message = "Your seller account status has ".$account_status." by admin";
+
+                            $email_config = get_email_configuration();
+                            $this->email->initialize($email_config);
+
+                            // email send to seller
+                            $this->email->clear();
+                            $this->email->from($admin_email, $site_title);
+                            $this->email->to($email);
+                            $this->email->subject($site_title . ' - ' . 'Account approval');
+                            $this->email->message($message);
+                            $this->email->send();
+                        }
                         $this->response['error'] = false;
                         $this->response['csrfName'] = $this->security->get_csrf_token_name();
                         $this->response['csrfHash'] = $this->security->get_csrf_hash();

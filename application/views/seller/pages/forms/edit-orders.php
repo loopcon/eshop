@@ -169,7 +169,7 @@
                                                     <?php if (isset($item['updated_by'])) { ?>
                                                         <div><span class="text-bold">Updated By : </span><?= $item['updated_by'] ?> </div>
                                                     <?php } ?>
-                                                    <div class="row mb-1 mt-1 order_item_status">
+                                                    <?php /* <div class="row mb-1 mt-1 order_item_status">
                                                         <div class="col-md-7 text-center"><select class="form-control-sm w-100">
                                                                 <option value="processed" <?= (strtolower($item['active_status']) == 'processed') ? 'selected' : '' ?>>Processed</option>
                                                                 <option value="shipped" <?= (strtolower($item['active_status']) == 'shipped') ? 'selected' : '' ?>>Shipped</option>
@@ -188,8 +188,8 @@
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                         </div>
-                                                    </div>
-                                                    <?php if (get_seller_permission($seller_id, 'assign_delivery_boy') == true) { ?>
+                                                    </div> */ ?>
+                                                    <?php /* if (get_seller_permission($seller_id, 'assign_delivery_boy') == true) { ?>
                                                         <div class="row mb-1 mt-1 delivery_boy">
                                                             <div class="col-md-7 text-center">
                                                                 <select name='single_deliver_by' class='form-control-sm w-100' required>
@@ -210,7 +210,7 @@
                                                                 <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 " title="Order Tracking" data-order_id=' <?= $order_detls[0]['id']; ?>' data-order_item_id=' <?= $item['id'] ?> ' data-courier_agency=' <?= $item['courier_agency'] ?> ' data-tracking_id=' <?= $item['tracking_id'] ?> ' data-url=' <?= $item['url'] ?> ' data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>
                                                             </div>
                                                         </div>
-                                                    <?php } ?>
+                                                    <?php } */ ?>
                                                 </div>
                                             <?php } ?>
                                             <div>

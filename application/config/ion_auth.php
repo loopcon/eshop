@@ -216,6 +216,38 @@ $config['email_forgot_password'] = 'forgot_password.tpl.php';
 
 /*
  | -------------------------------------------------------------------------
+ | Welcome Email Template
+ | -------------------------------------------------------------------------
+ | Default: welcome.tpl.php
+ */
+$config['email_welcome'] = 'welcome.tpl.php';
+
+/*
+ | -------------------------------------------------------------------------
+ | New User Registration Email Template
+ | -------------------------------------------------------------------------
+ | Default: admin_new_user.tpl.php
+ */
+$config['email_admin_new_user'] = 'admin_new_user.tpl.php';
+
+/*
+ | -------------------------------------------------------------------------
+ | New Seller Registration Email Template
+ | -------------------------------------------------------------------------
+ | Default: admin_new_seller.tpl.php
+ */
+$config['email_admin_new_seller'] = 'admin_new_seller.tpl.php';
+
+/*
+ | -------------------------------------------------------------------------
+ | Seller Profile Updated Email Template
+ | -------------------------------------------------------------------------
+ | Default: seller_profile_updated.tpl.php
+ */
+$config['email_admin_seller_profile_updated'] = 'seller_profile_updated.tpl.php';
+
+/*
+ | -------------------------------------------------------------------------
  | Message Delimiters.
  | -------------------------------------------------------------------------
  */

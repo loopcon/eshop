@@ -40,7 +40,12 @@
                 <button type="button" class="btn btn-primary " autofocus="autofocus" id='list_view'><i class="fas fa-list"></i> List View</button>              
                 <button type="button" class="btn btn-primary" id='tree_view'><i class="fas fa-stream"></i> Tree View</button>
               </div>
-            </div>           
+            </div>
+            <div class="card-header border-0">
+              <div class="card-tools">
+                <a href="<?= base_url() . 'seller/category/create-category' ?>" class="btn btn-block  btn-outline-primary btn-sm">Add Category</a>
+              </div>
+            </div>
             
             <div class="card-innr" id="list_view_html">
               <div class="card-head">
@@ -58,6 +63,7 @@
                     <th data-field="image" data-sortable="true">Image</th>
                     <th data-field="banner" data-sortable="true" >Banner</th>                    
                     <th data-field="status" data-sortable="true">Status</th>
+                    <th data-field="operate" data-sortable="true">Action</th>
                   </tr>
                 </thead>
               </table>

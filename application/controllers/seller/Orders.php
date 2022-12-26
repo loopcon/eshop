@@ -97,6 +97,7 @@ class Orders extends CI_Controller
                     $temp['product_variants'] = get_variants_values_by_id($row['product_variant_id']);
                     array_push($items, $temp);
                 }
+                $this->data['order_id'] = $_GET['edit_id'];
                 $this->data['order_detls'] = $res;
                 $this->data['bank_transfer'] = $bank_transfer;
                 $this->data['items'] = $items;
@@ -270,6 +271,8 @@ class Orders extends CI_Controller
                 return false;
             }
 
+            print_r($_POST);
+            exit;
             if (!empty($order_items)) {
                 require_once('goshippo-client/lib/Shippo.php');
                 Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
@@ -380,6 +383,16 @@ class Orders extends CI_Controller
                     // );
                     // print_r($shipment);
                 }
+
+                /* $transaction_array = array(
+                    "rate_object_id" => $_POST['rate_object_id'],
+                    "label_file_type" => "PDF",
+                );
+                $transaction = create_goshippo_transction($transaction_array);
+                $goshippo_response_array['goshippo_transaction_object_id'] = $transaction->object_id;
+                $goshippo_response_array['goshippo_tracking_number'] = $transaction->tracking_number;
+                $goshippo_response_array['goshippo_tracking_url_provider'] = $transaction->tracking_url_provider;
+                $goshippo_response_array['goshippo_label_url'] = $transaction->label_url; */
                 // exit;
                 $settings = get_settings('system_settings', true);
                 $app_name = isset($settings['app_name']) && !empty($settings['app_name']) ? $settings['app_name'] : '';

@@ -274,7 +274,7 @@ class My_account extends CI_Controller
             $this->data['title'] = 'Address | ' . $this->data['web_settings']['site_title'];
             $this->data['keywords'] = 'Address, ' . $this->data['web_settings']['meta_keywords'];
             $this->data['description'] = 'Address | ' . $this->data['web_settings']['meta_description'];
-            $this->data['countries'] = fetch_details('countries', NULL);
+            $this->data['countries'] = fetch_details('countries', "flag=1");
             // $this->data['cities'] = get_cities();
             $this->data['areas'] = fetch_details('areas', NULL);
             $this->data['login_type'] = $this->session->userdata('login_type');
@@ -328,8 +328,8 @@ class My_account extends CI_Controller
             $this->form_validation->set_rules('country_id', 'Country', 'trim|xss_clean|required');
             $this->form_validation->set_rules('state_id', 'State', 'trim|xss_clean|required');
             $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
-            // $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
+            // $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');
             $this->form_validation->set_rules('longitude', 'Longitude', 'trim|xss_clean');
 
@@ -344,6 +344,26 @@ class My_account extends CI_Controller
             $arr = $this->input->post(null, true);
             $arr['user_id'] = $this->data['user']->id;
             $this->address_model->set_address($arr);
+            $insert_id = $this->db->insert_id();
+
+            // Call shippo api for create address in shipping plateform
+            $state = fetch_details('states', ['id'=>$arr['state_id']], 'state_code');
+            $country = fetch_details('countries', ['id'=>$arr['country_id']], 'iso2, phonecode');
+            $address = array(
+                "name" => $arr['name'],
+                "company" => "Shippo",
+                "street1" => $arr['address'],
+                "city" => $arr['city_id'], // field name is city_id but in post it is varchar/text value
+                "state" => $state[0]['state_code'],
+                "zip" => $arr['pincode'],
+                "country" => $country[0]['iso2'],
+                "phone" => "+".$country[0]['phonecode']." ".$arr['mobile'],
+                "email" => $this->data['user']->email 
+            );
+            $address = create_goshippo_address($address);
+            $goshippo_address_object_id = $address->object_id;
+            update_details(array('goshippo_address_object_id'=>$goshippo_address_object_id), array('id'=>$insert_id), 'addresses');
+
             $res = $this->address_model->get_address($this->data['user']->id, false, true);
             $this->response['error'] = false;
             $this->response['message'] = 'Address Added Successfully';

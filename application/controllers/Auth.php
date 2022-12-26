@@ -415,7 +415,7 @@ class Auth extends CI_Controller
         if ($activation) {
             // redirect them to the auth page
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-            redirect("admin/auth", 'refresh');
+            redirect("seller/login", 'refresh');
         } else {
             // redirect them to the forgot password page
             $this->session->set_flashdata('message', $this->ion_auth->errors());
@@ -921,6 +921,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');
         $this->form_validation->set_rules('longitude', 'Longitude', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
 
         $this->response['csrfName'] = $this->security->get_csrf_token_name();
         $this->response['csrfHash'] = $this->security->get_csrf_hash();

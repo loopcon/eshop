@@ -1,34 +1,34 @@
 <?php $web_settings = get_settings('web_settings', true); ?>
 <!-- footer start -->
 <section class="footer-section footer-saperator pt-5">
-    <div class="container container-fluid">
+    <div class=" container-fluid">
         <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-sm-4 col-md-3 ">
                 <div class="d-flex justify-content-center ">
                     <?php $logo = get_settings('web_logo'); ?>
                     <img src="<?= base_url($logo) ?>" class="img-fluid footerlogo">
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-12 col-sm-6 col-md-9">
                 <div class="row footermain">
-                    <div class="col-3">
+                    <div class="col-12 col-sm-6 col-md-3 p-2 ">
                         <h5>GET TO KNOW US</h5>
                         <li><a href="<?= base_url('home/contact-us') ?>"><?= !empty($this->lang->line('contact_us')) ? $this->lang->line('contact_us') : 'Contact Us' ?></a></li>
                         <li><a href="<?= base_url('home/about-us') ?>"><?= !empty($this->lang->line('about_us')) ? $this->lang->line('about_us') : 'About Us' ?></a></li>
                     </div>
-                    <div class="col-3">
+                    <div class="col-12 col-sm-6 col-md-3 p-2">
                         <h5>POLICY</h5>
                         <li><a href="<?= base_url('home/return-policy') ?>"><?= !empty($this->lang->line('return_policy')) ? $this->lang->line('return_policy') : 'Return Policy' ?></a></li>
                         <li><a href="<?= base_url('home/terms-and-conditions') ?>"><?= !empty($this->lang->line('terms_and_condition')) ? $this->lang->line('terms_and_condition') : 'Terms of Use' ?></a></li>
                         <li><a href="<?= base_url('home/privacy-policy') ?>"><?= !empty($this->lang->line('privacy_policy')) ? $this->lang->line('privacy_policy') : 'Privacy Policy' ?></a></li>
                         <?php /* <li><a href="">Sitemap</a></li> */ ?>
                     </div>
-                    <div class="col-2">
+                    <div class=" col-12 col-sm-6 col-md-2 p-2">
                         <h5>HELP</h5>
                         <li><a href="<?= base_url('home/shipping-policy') ?>"><?= !empty($this->lang->line('shipping_policy')) ? $this->lang->line('shipping_policy') : 'Shipping' ?></a></li>
                         <?php /* <li><a href=""><?= !empty($this->lang->line('faq')) ? $this->lang->line('faq') : 'FAQ' ?></a></li> */ ?>
                     </div>
-                    <div class="col-4">
+                    <div class="col-12 col-sm-6  col-md-4 p-2">
                         <li><img src="<?= THEME_ASSETS_URL.'images/fastdelivery.png';?>"> <a>Fast Delivery & Shipping</a></li>
                         <li><img src="<?= THEME_ASSETS_URL.'images/topoffer.png';?>"> <a>Top Offers</a></li>
                         <li><img src="<?= THEME_ASSETS_URL.'images/moneycash.png';?>"> <a>Money Cashback</a></li>
@@ -36,17 +36,17 @@
                     </div>
                 </div>
                 <div>
-                    <div class="row">
-                        <div class="col-2">
+                    <div class="row footerpayicon">
+                        <div class="col-6 col-sm-6 col-md-2">
                             <img class="img-fluid " src="<?= THEME_ASSETS_URL.'images/paypal.png';?>">
                         </div>
-                        <div class="col-2">
+                        <div class="col-6 col-sm-6 col-md-2">
                             <img class="img-fluid " src="<?= THEME_ASSETS_URL.'images/mastercard.png';?>">
                         </div>
-                        <div class="col-2">
+                        <div class="col-6 col-sm-6 col-md-2">
                             <img class="img-fluid paymenticon" src="<?= THEME_ASSETS_URL.'images/visa.png';?>">
                         </div>
-                        <div class="col-2">
+                        <div class="col-6 col-sm-6 col-md-2">
                             <img class="img-fluid paymenticon" src="<?= THEME_ASSETS_URL.'images/skrill.png';?>">
                         </div>
                     </div>
@@ -232,10 +232,10 @@
                         <input type="email" class='form-control' placeholder="Email" id="email" name="email">
                     </div>
                     <div class="input-group">
-                        <input type="password" class='form-control' placeholder="Password" id="password" name="password">
+                        <input type="password" class='form-control' placeholder="Password" id="password" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters">
                     </div>
                     <div class="input-group">
-                        <input type="password" class='form-control' placeholder="Confirm Password" id="confirm password" name="confirm password">
+                        <input type="password" class='form-control' placeholder="Confirm Password" id="confirm_password" name="confirm_password">
                     </div>
                     <div class="col-12 d-flex justify-content-center pb-4">
                         <div id='registration-error' class='text-center p-3 text-danger'></div>

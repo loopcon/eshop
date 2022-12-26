@@ -434,12 +434,12 @@
                                     <p>Payment Methods</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="<?= base_url('admin/time-slots') ?>" class="nav-link">
+                            <?php /* <li class="nav-item">
+                                <a href="<?= base_url('admin/time-slots') ? >" class="nav-link">
                                     <i class="fas fa-calendar-alt nav-icon "></i>
                                     <p>Time Slots</p>
                                 </a>
-                            </li>
+                            </li> */ ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('admin/notification-settings') ?>" class="nav-link">
                                     <i class="fa fa-bell nav-icon "></i>

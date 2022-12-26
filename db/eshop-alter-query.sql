@@ -46,5 +46,16 @@ ALTER TABLE `cities` ADD `country_id` int(11) NOT NULL AFTER `id`, ADD `state_id
 -- 15-12-2022
 ALTER TABLE `cart` ADD `goshippo_parcel_object_id` VARCHAR(255) NULL AFTER `is_guest`;
 
+-- 17-12-2022
+ALTER TABLE `orders` ADD `goshippo_rate_object_id` VARCHAR(255) NULL AFTER `goshippo_order_object_id`;
+ALTER TABLE `orders` ADD `goshippo_transaction_object_id` VARCHAR(255) NULL AFTER `goshippo_rate_object_id`, ADD `goshippo_tracking_number` VARCHAR(255) NULL AFTER `goshippo_transaction_object_id`, ADD `goshippo_tracking_url_provider` TEXT NULL AFTER `goshippo_tracking_number`, ADD `goshippo_label_url` TEXT NULL AFTER `goshippo_tracking_url_provider`;
+
+-- 20-12-2022
+ALTER TABLE `categories` ADD `added_id` INT(11) NULL AFTER `clicks`, ADD `added_by` ENUM('Seller','Admin') NULL AFTER `added_id`;
+
+-- 21-12-2022
+ALTER TABLE `addresses` ADD `goshippo_address_object_id` VARCHAR(255) NULL AFTER `longitude`;
+ALTER TABLE `addresses` ADD `city` VARCHAR(255) NULL AFTER `city_id`;
+
 
 

@@ -25,6 +25,12 @@
                         <p>Profile</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="<?= base_url('seller/category/') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-bullseye text-success"></i>
+                        <p>Categories</p>
+                    </a>
+                </li>
                 <?php if($seller_data[0]['status']==1) { ?>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
@@ -45,12 +51,6 @@
                                 </a>
                             </li> */ ?>
                         </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="<?= base_url('seller/category/') ?>" class="nav-link">
-                            <i class="nav-icon fas fa-bullseye text-success"></i>
-                            <p>Categories</p>
-                        </a>
                     </li>
                     <li class="nav-item has-treeview ">
                         <a href="#" class="nav-link menu-open">
