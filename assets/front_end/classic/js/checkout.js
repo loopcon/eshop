@@ -95,6 +95,7 @@ $(document).ready(function () {
         };
 
         var card = elements.create("card", {
+            hidePostalCode: true,
             style: style
         });
         card.mount("#stripe-card-element");
@@ -803,6 +804,7 @@ $(document).ready(function () {
                 csrfHash = result.csrfHash;
                 $('.delivery-charge').html(result.delivery_charge);
                 $("input#delivery_charge").val(result.delivery_charge);
+                $("input#rate_object_id").val(result.rate_object_id);
                 var delivery_charge = result.delivery_charge.toString().replace(',', '');
                 var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
                 $("#amount").val(final_total);
@@ -1087,7 +1089,6 @@ $(document).on('click', '#check-availability', function() {
         formdata.append('email', email);
         formdata.append('mobile', mobile);
         formdata.append('address_line_1', address_line_1);
-        formdata.append('address_line_2', address_line_2);
         formdata.append('country', country);
         formdata.append('state', state);
         formdata.append('city', city);

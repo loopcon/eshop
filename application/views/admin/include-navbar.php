@@ -6,7 +6,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <?php /* <li class="nav-item my-auto">
-            <span class="badge badge-success">v <?= (isset($current_version) && !empty($current_version)) ? $current_version : '1.0' ?></span>
+            <span class="badge badge-success">v <?= (isset($current_version) && !empty($current_version)) ? $current_version : '1.0' ? ></span>
         </li> */ ?>
         <?php
         if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {

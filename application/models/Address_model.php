@@ -47,6 +47,10 @@ class Address_model extends CI_Model
             $address_data['city_id'] = $data['city_id'];
         }
 
+        if (isset($data['city'])) {
+            $address_data['city'] = $data['city'];
+        }
+
         if (isset($data['pincode'])) {
             $address_data['pincode'] = $data['pincode'];
         }
@@ -99,10 +103,8 @@ class Address_model extends CI_Model
             if ($id != false) {
                 $where['addr.id'] = $id;
             }
-            $this->db->select('addr.*,a.name as area,a.minimum_free_delivery_order_amount,a.delivery_charges,c.name as city')
+            $this->db->select('addr.*')
                 ->where($where)
-                ->join('cities c', 'addr.city_id=c.id', 'inner')
-                ->join('areas a', 'addr.area_id=a.id', 'inner')
                 ->group_by('addr.id')->order_by('addr.id', 'DESC');
             if ($fetch_latest == true) {
                 $this->db->limit('1');
@@ -172,7 +174,7 @@ class Address_model extends CI_Model
             $total = $row['total'];
         }
 
-        $search_res = $this->db->select('addr.*, countries.name as country, states.name as state, addr.country as country_id, addr.state as state_id, a.name as area, c.name as city')->join('cities c', 'addr.city_id=c.id', 'left')->join('areas a', 'addr.area_id=a.id', 'left')->join('countries', 'countries.id=addr.country', 'left')->join('states', 'states.id=addr.state', 'left');
+        $search_res = $this->db->select('addr.*, countries.name as country, states.name as state, addr.country as country_id, addr.state as state_id')->join('countries', 'countries.id=addr.country', 'left')->join('states', 'states.id=addr.state', 'left');
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->group_start();
@@ -200,10 +202,10 @@ class Address_model extends CI_Model
             $tempRow['name'] = $row['name'];
             $tempRow['type'] = $row['type'];
             $tempRow['mobile'] = (ALLOW_MODIFICATION == 0 && !defined(ALLOW_MODIFICATION)) ? str_repeat("X", strlen($row['mobile']) - 3) . substr($row['mobile'], -3) : $row['mobile'];
-            $tempRow['alternate_mobile'] = $row['alternate_mobile'];
+            // $tempRow['alternate_mobile'] = $row['alternate_mobile'];
             $tempRow['address'] = $row['address'];
-            $tempRow['landmark'] = $row['landmark'];
-            $tempRow['area'] = $row['area'];
+            // $tempRow['landmark'] = $row['landmark'];
+            // $tempRow['area'] = $row['area'];
             $tempRow['area_id'] = $row['area_id'];
             $tempRow['city'] = $row['city'];
             $tempRow['city_id'] = $row['city_id'];

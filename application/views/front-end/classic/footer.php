@@ -232,10 +232,10 @@
                         <input type="email" class='form-control' placeholder="Email" id="email" name="email">
                     </div>
                     <div class="input-group">
-                        <input type="password" class='form-control' placeholder="Password" id="password" name="password">
+                        <input type="password" class='form-control' placeholder="Password" id="password" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters">
                     </div>
                     <div class="input-group">
-                        <input type="password" class='form-control' placeholder="Confirm Password" id="confirm password" name="confirm password">
+                        <input type="password" class='form-control' placeholder="Confirm Password" id="confirm_password" name="confirm_password">
                     </div>
                     <div class="col-12 d-flex justify-content-center pb-4">
                         <div id='registration-error' class='text-center p-3 text-danger'></div>

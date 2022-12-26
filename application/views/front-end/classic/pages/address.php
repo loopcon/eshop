@@ -66,18 +66,18 @@
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                                 <label for="city" class="control-label"><?= !empty($this->lang->line('city')) ? $this->lang->line('city') : 'City' ?></label>
-                                <select name="city_id" id="u-city" class="form-control">
+                                <?php /* <select name="city_id" id="u-city" class="form-control">
                                     <option value=""><?= !empty($this->lang->line('select_city')) ? $this->lang->line('select_city') : 'Select City' ?></option>
-                                </select>
+                                </select> */ ?>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="City" />
                             </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                            <?php /* <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                                 <label for="area" class="control-label"><?= !empty($this->lang->line('area')) ? $this->lang->line('area') : 'Area' ?></label>
                                 <select name="area_id" id="area" class="form-control">
                                     <option value=""><?= !empty($this->lang->line('select_area')) ? $this->lang->line('select_area') : '--Select Area--' ?></option>
                                 </select>
-                            </div>
-
-                            <div class="col-md-4 col-sm-12 col-xs-12 form-group">
+                            </div> */ ?>
+                            <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                                 <label for="Zipcode" class="control-label"><?= !empty($this->lang->line('pincode')) ? $this->lang->line('pincode') : 'Zipcode' ?></label>
                                 <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Zipcode" />
                             </div>
@@ -114,10 +114,10 @@
                                     <th data-field="name" data-sortable="false"><?= !empty($this->lang->line('name')) ? $this->lang->line('name') : 'Name' ?></th>
                                     <th data-field="type" data-sortable="false" class="col-md-5"><?= !empty($this->lang->line('type')) ? $this->lang->line('type') : 'Type' ?></th>
                                     <th data-field="mobile" data-sortable="false"><?= !empty($this->lang->line('mobile_number')) ? $this->lang->line('mobile_number') : 'Mobile' ?></th>
-                                    <th data-field="alternate_mobile" data-sortable="false"><?= !empty($this->lang->line('alternate_mobile')) ? $this->lang->line('alternate_mobile') : 'Alternate Mobile' ?></th>
+                                    <?php /* <th data-field="alternate_mobile" data-sortable="false"><?= !empty($this->lang->line('alternate_mobile')) ? $this->lang->line('alternate_mobile') : 'Alternate Mobile' ?></th> */ ?>
                                     <th data-field="address" data-sortable="false"><?= !empty($this->lang->line('address')) ? $this->lang->line('address') : 'Address' ?></th>
-                                    <th data-field="landmark" data-sortable="false"><?= !empty($this->lang->line('landmark')) ? $this->lang->line('landmark') : 'Landmark' ?></th>
-                                    <th data-field="area" data-sortable="false"><?= !empty($this->lang->line('are')) ? $this->lang->line('area') : 'Area' ?></th>
+                                    <?php /* <th data-field="landmark" data-sortable="false"><?= !empty($this->lang->line('landmark')) ? $this->lang->line('landmark') : 'Landmark' ?></th>
+                                    <th data-field="area" data-sortable="false"><?= !empty($this->lang->line('are')) ? $this->lang->line('area') : 'Area' ?></th> */ ?>
                                     <th data-field="city" data-sortable="false"><?= !empty($this->lang->line('city')) ? $this->lang->line('city') : 'City' ?></th>
                                     <th data-field="state" data-sortable="false"><?= !empty($this->lang->line('state')) ? $this->lang->line('state') : 'State' ?></th>
                                     <th data-field="pincode" data-sortable="false"><?= !empty($this->lang->line('pincode')) ? $this->lang->line('pincode') : 'Pincode' ?></th>

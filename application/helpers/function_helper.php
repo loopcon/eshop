@@ -2095,27 +2095,45 @@ function get_system_update_info()
 
 function send_mail($to, $subject, $message)
 {
-    $t = &get_instance();
-    $settings = get_settings('system_settings', true);
-    $t->load->library('email');
-    $config = $t->config->item('email_config');
-    $t->email->initialize($config);
-    $t->email->set_newline("\r\n");
+    // $t = &get_instance();
+    // $settings = get_settings('system_settings', true);
+    // $t->load->library('email');
+    // $config = $t->config->item('email_config');
+    // $t->email->initialize($config);
+    // $t->email->set_newline("\r\n");
 
-    $t->email->from($config['smtp_user'], $settings['app_name']);
+    // $t->email->from($config['smtp_user'], $settings['app_name']);
+    // $t->email->to($to);
+    // $t->email->subject($subject);
+    // $t->email->message($message);
+    // if ($t->email->send()) {
+    //     $response['error'] = false;
+    //     $response['config'] = $config;
+    //     $response['message'] = 'Email Sent';
+    // } else {
+    //     $response['error'] = true;
+    //     $response['config'] = $config;
+    //     $response['message'] = $t->email->print_debugger();
+    // }
+
+    $t = &get_instance();
+    $admin_email = $t->config->item('admin_email', 'ion_auth');
+    $site_title = $t->config->item('site_title', 'ion_auth');
+    $t->load->library('email');
+    $email_config = get_email_configuration();
+    $t->email->initialize($email_config);
+
+    $t->email->from($admin_email, $site_title);
     $t->email->to($to);
     $t->email->subject($subject);
     $t->email->message($message);
     if ($t->email->send()) {
         $response['error'] = false;
-        $response['config'] = $config;
         $response['message'] = 'Email Sent';
     } else {
         $response['error'] = true;
-        $response['config'] = $config;
         $response['message'] = $t->email->print_debugger();
     }
-
     return $response;
 }
 
@@ -4447,6 +4465,21 @@ function search_product($search)
     return $result;
 }
 
+function get_email_configuration()
+{
+    $email_config = array(
+        'protocol' => SMTP_PROTOCOL,
+        'smtp_host' => SMTP_HOST, 
+        'smtp_port' => SMTP_PORT,
+        'smtp_user' => SMTP_USER,
+        'smtp_pass' => SMTP_PASS,
+        'smtp_crypto' => SMTP_CRYPTO,
+        'mailtype' => MAILTYPE,
+        'newline' => NEWLINE,
+    );
+    return $email_config;
+}
+
 function calculate_shipping_charge($cart_product, $user_id)
 {
     $t = &get_instance();
@@ -4568,6 +4601,8 @@ function create_goshippo_parcel($cart_item)
 
 function create_goshippo_shipment($fromAddress, $toAddress, $parcel)
 {
+    require_once('goshippo-client/lib/Shippo.php');
+    Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
     $shipment = Shippo_Shipment::create(
         array(
             "address_from" => $fromAddress,
@@ -4577,4 +4612,18 @@ function create_goshippo_shipment($fromAddress, $toAddress, $parcel)
         )
     );
     return $shipment;
+}
+
+function create_goshippo_transction($transaction)
+{
+    require_once('goshippo-client/lib/Shippo.php');
+    Shippo::setApiKey(GOSHIPPO_TEST_API_KEY);
+    $transaction = Shippo_Transaction::create(
+        array( 
+            "rate" => $transaction['rate_object_id'],
+            "label_file_type" => $transaction['label_file_type'],
+            "async" => false
+        )
+    );
+    return $transaction;
 }

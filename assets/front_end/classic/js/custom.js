@@ -1242,12 +1242,17 @@ $(document).on('click', '.num-block .num-in span', function (e) {
             $input.val(count);
         } else {
             $input.val(min);
-            Toast.fire({
-                icon: 'error',
-                title: 'Minimum allowed quantity is ' + min
-            });
+            var price = $input.data('price');
+            var final_total = $("#final_total").html();
+            // Toast.fire({
+            //     icon: 'error',
+            //     title: 'Minimum allowed quantity is ' + min
+            // });
+            $(this).closest('tr').find('.product-removal i').click();
+            final_total = final_total - price;
+            final_total = final_total.toFixed(2);
+            $("#final_total").html(final_total);
         }
-
     } else {
         var step = $(this).data('step');
         var max = $(this).data('max');
@@ -1258,7 +1263,6 @@ $(document).on('click', '.num-block .num-in span', function (e) {
                 if (count > 1) {
                     $(this).parents('.num-block').find(('.minus')).removeClass('dis');
                 }
-
             } else {
                 $input.val(max);
                 Toast.fire({
@@ -1269,9 +1273,10 @@ $(document).on('click', '.num-block .num-in span', function (e) {
         } else {
             $input.val(count);
         }
-
     }
-    $input.change();
+    if(count > 0) {
+        $input.change();
+    }
     return false;
 });
 
@@ -4022,6 +4027,11 @@ $(document).on('submit', '#register-form', function (e) {
             csrfHash = result.csrfHash;
             $('#register_submit_btn').html('Submit').attr('disabled', false);
             $("#registration-error").html(result.message).show();
+            if(!result.error) {
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
         }
     });
 });
@@ -4219,7 +4229,7 @@ $(document).on('change', '#add-address-form #state', function() {
     })
 });
 
-$(document).on('change', '#add-address-form #u-city', function() {
+/* $(document).on('change', '#add-address-form #u-city', function() {
     var formdata = new FormData();
     formdata.append(csrfName, csrfHash);
     var country_id = $('#add-address-form #country').val();
@@ -4245,7 +4255,7 @@ $(document).on('change', '#add-address-form #u-city', function() {
             $('#add-address-form #area').html(html);
         }
     })
-});
+}); */
 
 $(document).on('change', '#address-modal #edit_country', function() {
     var formdata = new FormData();
@@ -4321,7 +4331,7 @@ $(document).on('submit', '#register-as-seller-form', function (e) {
             $("#seller-registration-error").html(result.message).show();
             setTimeout(function () {
                 window.location.reload();
-            }, 2000)
+            }, 2000);
         }
     });
 });

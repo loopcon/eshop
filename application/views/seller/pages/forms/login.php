@@ -95,12 +95,12 @@
                     </div>
                 </div>
             </form>
-            <div class="mb-3">
-                <a href="<?= base_url('seller/auth/forgot_password') ?>" class="text text-primary font-weight-bold mb-3">Forgot Password ?</a>
+            <?php /* <div class="mb-3">
+                <a href="<?= base_url('seller/auth/forgot_password') ? >" class="text text-primary font-weight-bold mb-3">Forgot Password ?</a>
             </div>
             <div>
-                <a href="<?= base_url('seller/auth/sign_up') ?>" class="text text-primary font-weight-bold">Register as a new vendor</a>
-            </div>
+                <a href="<?= base_url('seller/auth/sign_up') ? >" class="text text-primary font-weight-bold">Register as a new vendor</a>
+            </div> */ ?>
         </div>
         <!-- /.login-card-body -->
     </div>

@@ -94,8 +94,12 @@ class Cart_model extends CI_Model
             $q = $this->db->join('product_variants pv', 'pv.id=c.product_variant_id')
                 ->join('products p', 'p.id=pv.product_id')
                 ->join('`taxes` tax', 'tax.id = p.tax', 'LEFT')
-                ->join('`seller_data` sd', 'sd.user_id = p.seller_id')
-                ->where(['c.guest_user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+                ->join('`seller_data` sd', 'sd.user_id = p.seller_id');
+            if($user_id=='') {
+                $q->where(['c.guest_user_id' => 0, 'c.user_id' => 0, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+            } else {
+                $q->where(['c.guest_user_id' => $user_id, 'p.status' => '1', 'pv.status' => 1, 'sd.status' => 1, 'qty !=' => '0', 'is_saved_for_later' => $is_saved_for_later]);
+            }
         }
         if (!empty($product_variant_id)) {
             $q->where('c.product_variant_id', $product_variant_id);

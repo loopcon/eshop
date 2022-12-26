@@ -8,7 +8,7 @@ class Cart extends CI_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(['cart', 'razorpay', 'stripe', 'paystack', 'flutterwave']);
+        $this->load->library(['cart', 'razorpay', 'stripe', 'paystack', 'flutterwave', 'email']);
         $this->paystack->__construct('test');
         $this->load->model(['cart_model', 'address_model', 'order_model', 'Order_model', 'transaction_model']);
         $this->data['is_logged_in'] = ($this->ion_auth->logged_in()) ? 1 : 0;
@@ -795,11 +795,12 @@ class Cart extends CI_Controller
                     }
                 }
 
+                // Goshippo order place for shipping
                 if($_POST['is_logged_in']==1) {
                     $address_data = fetch_details("addresses", "id='".$_POST['address_id']."'");
-                    $city_data = fetch_details("cities", "id='".$address[0]['city_id']."'");
-                    $country_data = fetch_details("countries", "id='".$address[0]['country']."'");
-                    $state_data = fetch_details("states", "id='".$address[0]['state']."'");
+                    $city_data = fetch_details("cities", "id='".$address_data[0]['city_id']."'");
+                    $country_data = fetch_details("countries", "id='".$address_data[0]['country']."'");
+                    $state_data = fetch_details("states", "id='".$address_data[0]['state']."'");
 
                     $city = $city_data[0]['name'];
                     $country = $country_data[0]['iso2'];
@@ -867,7 +868,9 @@ class Cart extends CI_Controller
                 curl_close($curl);
                 $curl_res = json_decode($result);
                 $goshippo_order_object_id = $curl_res->object_id;
-                update_details(array("goshippo_order_object_id" => $goshippo_order_object_id), array("id"=>$res['order_id']), "orders");
+                $goshippo_response_array['goshippo_order_object_id'] = $goshippo_order_object_id;
+                $goshippo_response_array['goshippo_rate_object_id'] = $_POST['rate_object_id'];
+                update_details($goshippo_response_array, array("id"=>$res['order_id']), "orders");
 
                 $this->response['error'] = false;
                 $this->response['message'] = "Order Placed Successfully.";
@@ -1177,28 +1180,50 @@ class Cart extends CI_Controller
             }
         }
 
-        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'goshippo_address_object_id');
-        $address_from = $seller_detail[0]['goshippo_address_object_id'];
+        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'username, email, mobile, address, city, state, country, pincode, goshippo_address_object_id');
+        if(empty($seller_detail[0]['goshippo_address_object_id'])) {
+            $state = fetch_details('states', ['id'=>$seller_detail[0]['state']], 'state_code');
+            $country = fetch_details('countries', ['id'=>$seller_detail[0]['country']], 'iso2, phonecode');
+            $address = array(
+                "name" => $seller_detail[0]['username'],
+                "company" => "Shippo",
+                "street1" => $seller_detail[0]['address'],
+                "city" => $seller_detail[0]['city'],
+                "state" => $state[0]['state_code'],
+                "zip" => $seller_detail[0]['pincode'],
+                "country" => $country[0]['iso2'],
+                "phone" => "+".$country[0]['phonecode']." ".$seller_detail[0]['mobile'],
+                "email" => $seller_detail[0]['email']
+            );
+            $fromAddress = create_goshippo_address($address);
+            $address_from = $fromAddress->object_id;
+        } else {
+            $address_from = $seller_detail[0]['goshippo_address_object_id'];
+        }
 
-        $user_detail = fetch_details('addresses', ['id'=>$_POST['address_id']], 'mobile, address, city_id, state, country, pincode');
-        $city = fetch_details('cities', ['id'=>$user_detail[0]['city_id']]);
-        $state = fetch_details('states', ['id'=>$user_detail[0]['state']], 'state_code');
-        $country = fetch_details('countries', ['id'=>$user_detail[0]['country']], 'iso2, phonecode');
-        $address = array(
-            "name" => $this->data['user']->username,
-            "company" => "Shippo",
-            "street1" => $user_detail[0]['address'],
-            "city" => $city[0]['name'],
-            "state" => $state[0]['state_code'],
-            "zip" => $user_detail[0]['pincode'],
-            "country" => $country[0]['iso2'],
-            "phone" => "+".$country[0]['phonecode']." ".$user_detail[0]['mobile'],
-            "email" => $this->data['user']->email 
-        );
-        $toAddress = create_goshippo_address($address);
-        $address_to = $toAddress->object_id;
+        $user_detail = fetch_details('addresses', ['id'=>$_POST['address_id']], 'mobile, address, city, state, country, pincode, goshippo_address_object_id');
+        if(empty($user_detail[0]['goshippo_address_object_id'])) {
+            $state = fetch_details('states', ['id'=>$user_detail[0]['state']], 'state_code');
+            $country = fetch_details('countries', ['id'=>$user_detail[0]['country']], 'iso2, phonecode');
+            $address = array(
+                "name" => $this->data['user']->username,
+                "company" => "Shippo",
+                "street1" => $user_detail[0]['address'],
+                "city" => $user_detail[0]['name'],
+                "state" => $state[0]['state_code'],
+                "zip" => $user_detail[0]['pincode'],
+                "country" => $country[0]['iso2'],
+                "phone" => "+".$country[0]['phonecode']." ".$user_detail[0]['mobile'],
+                "email" => $this->data['user']->email 
+            );
+            $toAddress = create_goshippo_address($address);
+            $address_to = $toAddress->object_id;
+        } else {
+            $address_to = $user_detail[0]['goshippo_address_object_id'];
+        }
         $shipment = create_goshippo_shipment($address_from, $address_to, $parcels);
         $delivery_charge = number_format($shipment->rates[0]->amount, 2);
+        $this->response['rate_object_id'] = $shipment->rates[0]->object_id;
         $this->response['delivery_charge'] = $delivery_charge;
         print_r(json_encode($this->response));
         exit;
@@ -1217,8 +1242,26 @@ class Cart extends CI_Controller
             }
         }
 
-        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'goshippo_address_object_id');
-        $address_from = $seller_detail[0]['goshippo_address_object_id'];
+        $seller_detail = fetch_details('users', ['id'=>$seller_id], 'username, email, mobile, address, city, state, country, pincode, goshippo_address_object_id');
+        if(empty($seller_detail[0]['goshippo_address_object_id'])) {
+            $state = fetch_details('states', ['id'=>$seller_detail[0]['state']], 'state_code');
+            $country = fetch_details('countries', ['id'=>$seller_detail[0]['country']], 'iso2, phonecode');
+            $address = array(
+                "name" => $seller_detail[0]['username'],
+                "company" => "Shippo",
+                "street1" => $seller_detail[0]['address'],
+                "city" => $seller_detail[0]['city'],
+                "state" => $state[0]['state_code'],
+                "zip" => $seller_detail[0]['pincode'],
+                "country" => $country[0]['iso2'],
+                "phone" => "+".$country[0]['phonecode']." ".$seller_detail[0]['mobile'],
+                "email" => $seller_detail[0]['email']
+            );
+            $fromAddress = create_goshippo_address($address);
+            $address_from = $fromAddress->object_id;
+        } else {
+            $address_from = $seller_detail[0]['goshippo_address_object_id'];
+        }
         $state = fetch_details('states', ['id'=>$_POST['state']], 'state_code');
         $country = fetch_details('countries', ['id'=>$_POST['country']], 'iso2, phonecode');
         $address = array(
@@ -1235,7 +1278,9 @@ class Cart extends CI_Controller
         $toAddress = create_goshippo_address($address);
         $address_to = $toAddress->object_id;
         $shipment = create_goshippo_shipment($address_from, $address_to, $parcels);
-        $this->response['delivery_charge'] = $shipment->rates[0]->amount;
+        $delivery_charge = number_format($shipment->rates[0]->amount, 2);
+        $this->response['rate_object_id'] = $shipment->rates[0]->object_id;
+        $this->response['delivery_charge'] = $delivery_charge;
         print_r(json_encode($this->response));
         exit;
     }

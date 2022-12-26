@@ -98,39 +98,42 @@
                                     <th class="w-10px">Items</th>
                                     <td>
                                         <form id="update_form">
-                                            <div class="row mb-5">
-                                                <div class="col-md-12 mb-2">
-                                                    <lable class="badge badge-info">Select status and square box of order item which you want to update</lable>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <select name="status" class="form-control status">
-                                                        <option value=''>Select Status</option>
-                                                        <option value="received">Received</option>
-                                                        <option value="processed">Processed</option>
-                                                        <option value="shipped">Shipped</option>
-                                                        <?php if (get_seller_permission($seller_id, 'view_order_otp') == true) { ?>
-                                                            <option value="delivered">Delivered</option>
-                                                        <?php } ?>
-                                                        <option value="cancelled">Cancel</option>
-                                                        <option value="returned">Returned</option>
-                                                    </select>
-                                                </div>
-                                                <?php /* if (get_seller_permission($seller_id, 'assign_delivery_boy')) { ?>
+                                            <input type="hidden" name="order_id" id="order_id" value="<?= $order_id; ?>">
+                                            <?php if($order_detls[0]['seller_id']==$seller_id) { ?>
+                                                <div class="row mb-5">
+                                                    <div class="col-md-12 mb-2">
+                                                        <lable class="badge badge-info">Select status and square box of order item which you want to update</lable>
+                                                    </div>
                                                     <div class="col-md-4">
-                                                        <select id='deliver_by' name='deliver_by' class='form-control'>
-                                                            <option value=''>Select Delivery Boy</option>
-                                                            <?php foreach ($delivery_res as $row) { ?>
-                                                                <option value="<?= $row['user_id'] ?>"><?= $row['username'] ?></option>
-                                                            <?php  } ?>
+                                                        <select name="status" class="form-control status">
+                                                            <option value=''>Select Status</option>
+                                                            <?php /* <option value="received">Received</option> */ ?>
+                                                            <option value="processed">Processed</option>
+                                                            <option value="shipped">Shipped</option>
+                                                            <?php // if (get_seller_permission($seller_id, 'view_order_otp') == true) { ?>
+                                                                <option value="delivered">Delivered</option>
+                                                            <?php // } ?>
+                                                            <option value="cancelled">Cancel</option>
+                                                            <option value="returned">Returned</option>
                                                         </select>
                                                     </div>
-                                                <?php } */ ?>
-                                                <div class="col-md-4">
-                                                    <a href="javascript:void(0);" title="Bulk Update" class="btn btn-primary col-sm-12 col-md-12 update_status_admin_bulk mr-1">
-                                                        Bulk Update
-                                                    </a>
+                                                    <?php /* if (get_seller_permission($seller_id, 'assign_delivery_boy')) { ? >
+                                                        <div class="col-md-4">
+                                                            <select id='deliver_by' name='deliver_by' class='form-control'>
+                                                                <option value=''>Select Delivery Boy</option>
+                                                                <?php foreach ($delivery_res as $row) { ? >
+                                                                    <option value="<?= $row['user_id'] ? >"><?= $row['username'] ? ></option>
+                                                                <?php  } ? >
+                                                            </select>
+                                                        </div>
+                                                    <?php } */ ?>
+                                                    <div class="col-md-4">
+                                                        <a href="javascript:void(0);" title="Bulk Update" class="btn btn-primary col-sm-12 col-md-12 update_status_admin_bulk mr-1">
+                                                            Bulk Update
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            <?php } ?>
                                             <?php
                                                 $total = 0;
                                                 $tax_amount = 0;
@@ -143,9 +146,11 @@
                                                     $total += $subtotal = $tax_amount;
                                             ?>
                                                 <div class="  card col-md-4 col-sm-12 p-3 mb-2 bg-white rounded grow">
-                                                    <div class="mb-2">
-                                                        <input type="checkbox" name="order_item_id[]" value=' <?= $item['id'] ?> '>
-                                                    </div>
+                                                    <?php if($order_detls[0]['seller_id']==$seller_id) { ?>
+                                                        <div class="mb-2">
+                                                            <input type="checkbox" name="order_item_id[]" value=' <?= $item['id'] ?> '>
+                                                        </div>
+                                                    <?php } ?>
                                                     <div class="order-product-image">
                                                         <a href='<?= base_url() . $item['product_image'] ?>' data-toggle='lightbox' data-gallery='order-images'> <img src='<?= base_url() . $item['product_image'] ?>' class='h-75'></a>
                                                     </div>
@@ -169,27 +174,30 @@
                                                     <?php if (isset($item['updated_by'])) { ?>
                                                         <div><span class="text-bold">Updated By : </span><?= $item['updated_by'] ?> </div>
                                                     <?php } ?>
-                                                    <div class="row mb-1 mt-1 order_item_status">
-                                                        <div class="col-md-7 text-center"><select class="form-control-sm w-100">
-                                                                <option value="processed" <?= (strtolower($item['active_status']) == 'processed') ? 'selected' : '' ?>>Processed</option>
-                                                                <option value="shipped" <?= (strtolower($item['active_status']) == 'shipped') ? 'selected' : '' ?>>Shipped</option>
-                                                                <?php if (get_seller_permission($seller_id, 'view_order_otp') == true) { ?>
-                                                                    <option value="delivered" <?= (strtolower($item['active_status']) == 'delivered') ? 'selected' : '' ?>>Delivered</option>
-                                                                <?php } ?>
-                                                                <option value="returned" <?= (strtolower($item['active_status']) == 'returned') ? 'selected' : '' ?>>Return</option>
-                                                                <option value="cancelled" <?= (strtolower($item['active_status']) == 'cancelled') ? 'selected' : '' ?>>Cancel</option>
-                                                            </select>
+                                                    <?php if($order_detls[0]['seller_id']==$seller_id) { ?>
+                                                        <div class="row mb-1 mt-1 order_item_status">
+                                                            <div class="col-md-7 text-center">
+                                                                <select class="form-control-sm w-100">
+                                                                    <option value="processed" <?= (strtolower($item['active_status']) == 'processed') ? 'selected' : '' ?>>Processed</option>
+                                                                    <option value="shipped" <?= (strtolower($item['active_status']) == 'shipped') ? 'selected' : '' ?>>Shipped</option>
+                                                                    <?php // if (get_seller_permission($seller_id, 'view_order_otp') == true) { ?>
+                                                                        <option value="delivered" <?= (strtolower($item['active_status']) == 'delivered') ? 'selected' : '' ?>>Delivered</option>
+                                                                    <?php // } ?>
+                                                                    <option value="returned" <?= (strtolower($item['active_status']) == 'returned') ? 'selected' : '' ?>>Return</option>
+                                                                    <option value="cancelled" <?= (strtolower($item['active_status']) == 'cancelled') ? 'selected' : '' ?>>Cancel</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-5 d-flex align-items-center">
+                                                                <a href="javascript:void(0);" title="Update status" data-id=' <?= $item['id'] ?> ' class="btn btn-primary btn-xs update_status_admin mr-1">
+                                                                    <i class="far fa-arrow-alt-circle-up"></i>
+                                                                </a>
+                                                                <a href=" <?= BASE_URL('seller/product/view-product?edit_id=' . $item['product_id'] . '') ?> " title="View Product" class="btn btn-primary btn-xs">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-5 d-flex align-items-center">
-                                                            <a href="javascript:void(0);" title="Update status" data-id=' <?= $item['id'] ?> ' class="btn btn-primary btn-xs update_status_admin mr-1">
-                                                                <i class="far fa-arrow-alt-circle-up"></i>
-                                                            </a>
-                                                            <a href=" <?= BASE_URL('seller/product/view-product?edit_id=' . $item['product_id'] . '') ?> " title="View Product" class="btn btn-primary btn-xs">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <?php if (get_seller_permission($seller_id, 'assign_delivery_boy') == true) { ?>
+                                                    <?php } ?>
+                                                    <?php /* if (get_seller_permission($seller_id, 'assign_delivery_boy') == true) { ? >
                                                         <div class="row mb-1 mt-1 delivery_boy">
                                                             <div class="col-md-7 text-center">
                                                                 <select name='single_deliver_by' class='form-control-sm w-100' required>
@@ -198,19 +206,19 @@
                                                                     $delivery_boy_id = fetch_details('order_items', ['id' => $item['id']], 'delivery_boy_id');
                                                                     foreach ($delivery_res as $row) {
                                                                         $selected = (isset($delivery_boy_id) && !empty($delivery_boy_id) && $delivery_boy_id[0]['delivery_boy_id'] == $row['user_id']) ? 'selected' : '';
-                                                                    ?>
-                                                                        <option value="<?= $row['user_id'] ?>" <?= $selected ?>><?= $row['username'] ?></option>
-                                                                    <?php  } ?>
+                                                                    ? >
+                                                                        <option value="<?= $row['user_id'] ? >" <?= $selected ? >><?= $row['username'] ? ></option>
+                                                                    <?php  } ? >
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-5 d-flex align-items-center">
-                                                                <a href="javascript:void(0);" title="Update Delivery Boy" data-id=' <?= $item['id'] ?> ' class="btn btn-primary btn-xs update_delivery_boy_admin mr-1">
+                                                                <a href="javascript:void(0);" title="Update Delivery Boy" data-id=' <?= $item['id'] ? > ' class="btn btn-primary btn-xs update_delivery_boy_admin mr-1">
                                                                     <i class="far fa-arrow-alt-circle-up"></i>
                                                                 </a>
-                                                                <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 " title="Order Tracking" data-order_id=' <?= $order_detls[0]['id']; ?>' data-order_item_id=' <?= $item['id'] ?> ' data-courier_agency=' <?= $item['courier_agency'] ?> ' data-tracking_id=' <?= $item['tracking_id'] ?> ' data-url=' <?= $item['url'] ?> ' data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>
+                                                                <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 " title="Order Tracking" data-order_id=' <?= $order_detls[0]['id']; ? >' data-order_item_id=' <?= $item['id'] ? > ' data-courier_agency=' <?= $item['courier_agency'] ? > ' data-tracking_id=' <?= $item['tracking_id'] ? > ' data-url=' <?= $item['url'] ? > ' data-target="#transaction_modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>
                                                             </div>
                                                         </div>
-                                                    <?php } ?>
+                                                    <?php } */ ?>
                                                 </div>
                                             <?php } ?>
                                             <div>

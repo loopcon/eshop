@@ -8,7 +8,7 @@ class Login extends CI_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(['ion_auth', 'form_validation']);
+        $this->load->library(['ion_auth', 'form_validation', 'email']);
         $this->load->helper(['url', 'language']);
         $this->load->model('Seller_model');
         $this->lang->load('auth');
@@ -92,7 +92,7 @@ class Login extends CI_Controller
             $this->form_validation->set_rules('pincode', 'Zipcode', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_name', 'Store Name', 'trim|required|xss_clean');
             // $this->form_validation->set_rules('tax_name', 'Tax Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('tax_number', 'Tax Number', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('tax_number', 'TIN Number', 'trim|required|xss_clean');
             // $this->form_validation->set_rules('status', 'Status', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_url', 'Store URL', 'trim|required|xss_clean');
             $this->form_validation->set_rules('store_description', 'Store Description', 'trim|required|xss_clean');
@@ -307,6 +307,8 @@ class Login extends CI_Controller
 
 
                 if (isset($_POST['edit_seller'])) {
+                    $user_detail = fetch_details("users", ['id' => $_POST['edit_seller']], "username, email, mobile, active, address, country, state, city, pincode");
+                    $seler_data_detail = fetch_details("seller_data", ['user_id' => $_POST['edit_seller']], "status");
                     
                     $seller_data = array(
                         'user_id' => $this->input->post('edit_seller', true),
@@ -354,6 +356,41 @@ class Login extends CI_Controller
                     );
 
                     if ($this->Seller_model->add_seller($seller_data, $seller_profile)) {
+                        if($seller_profile['address']!=$user_detail[0]['address'] || $seller_profile['country']!=$user_detail[0]['country'] || $seller_profile['state']!=$user_detail[0]['state'] || $seller_profile['city']!=$user_detail[0]['city'] || $seller_profile['pincode']!=$user_detail[0]['pincode']) {
+                            $state = fetch_details('states', ['id'=>$user_detail[0]['state']], 'state_code');
+                            $country = fetch_details('countries', ['id'=>$user_detail[0]['country']], 'iso2, phonecode');
+                            $address = array(
+                                "name" => $user_detail[0]['username'],
+                                "company" => "Shippo",
+                                "street1" => $user_detail[0]['address'],
+                                "city" => $user_detail[0]['city'],
+                                "state" => $state[0]['state_code'],
+                                "zip" => $user_detail[0]['pincode'],
+                                "country" => $country[0]['iso2'],
+                                "phone" => "+".$country[0]['phonecode']." ".$user_detail[0]['mobile'],
+                                "email" => $user_detail[0]['email'] 
+                            );
+                            $address_obj = create_goshippo_address($address);
+                            $address_object_id = $address_obj->object_id;
+                            update_details(array('goshippo_address_object_id'=>$address_object_id), array('id'=>$_POST['edit_seller']), 'users');
+                        }
+                        if($user_detail[0]['active']!=1 || $seler_data_detail[0]['status']!=1) {
+                            $site_title = $this->config->item('site_title', 'ion_auth');
+                            $admin_email = $this->config->item('admin_email', 'ion_auth');
+
+                            $email_config = get_email_configuration();
+                            $this->email->initialize($email_config);
+
+                            // email send to admin
+                            $admin_message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                            $this->email->clear();
+                            $this->email->from($admin_email, $site_title);
+                            $this->email->to($admin_email);
+                            $this->email->subject($site_title . ' - ' . $this->lang->line('email_admin_seller_update_subject'));
+                            $this->email->message($admin_message);
+                            $this->email->send();
+                        }
+
                         $this->response['error'] = false;
                         $this->response['csrfName'] = $this->security->get_csrf_token_name();
                         $this->response['csrfHash'] = $this->security->get_csrf_hash();

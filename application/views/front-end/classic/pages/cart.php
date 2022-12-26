@@ -55,7 +55,7 @@
                                                     <br><?= str_replace(',', ' | ', $row['product_variants'][0]['variant_values']) ?>
                                                 <?php } ?>
                                             </h2>
-                                            <button class="btn save-for-later remove-product button button-primary button-sm" data-id="<?= $row['id']; ?>"><?= !empty($this->lang->line('save_for_later')) ? $this->lang->line('save_for_later') : 'Save For Later' ?></button>
+                                            <?php /* <button class="btn save-for-later remove-product button button-primary button-sm" data-id="<?= $row['id']; ? >"><?= !empty($this->lang->line('save_for_later')) ? $this->lang->line('save_for_later') : 'Save For Later' ? ></button> */ ?>
                                         </td>
                                         <td class="text-muted p-0"><?= $settings['currency'] . '' . number_format($price, 2) ?></td>
                                         <td class="text-muted text-center p-0"><?= isset($row['tax_percentage']) && !empty($row['tax_percentage']) ? $row['tax_percentage'] : '-' ?></td>

@@ -73,3 +73,23 @@ $lang['email_forgot_password_heading']       = 'Reset Password for %s';
 $lang['email_forgot_password_subheading']    = 'Please click this link to %s.';
 $lang['email_forgot_password_link']          = 'Reset Your Password';
 
+// Welcome Email
+$lang['email_welcome_subject']               = 'Welcome';
+$lang['email_welcome_heading']               = 'Welcome to %s';
+$lang['email_welcome_content']               = 'We are glad to welcome you and enjoy your shopping.';
+
+// Admin New User Email
+$lang['email_admin_new_user_subject']        = 'New User Registered';
+$lang['email_admin_new_user_heading']        = 'New User has registered';
+$lang['email_admin_new_user_content']        = '%s has registered as customer.';
+
+// Admin New Seller Email
+$lang['email_admin_new_seller_subject']      = 'New Seller Registered';
+$lang['email_admin_new_seller_heading']      = 'New Seller has registered';
+$lang['email_admin_new_seller_content']      = '%s has registered as seller.';
+
+// Admin Update Seller Email
+$lang['email_admin_seller_update_subject']   = 'Seller updated profile';
+$lang['email_admin_seller_update_heading']   = 'Seller has updated profile';
+$lang['email_admin_seller_update_content']   = 'Seller has profile updated and added category.';
+

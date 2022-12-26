@@ -125,7 +125,7 @@ class Category_model extends CI_Model
     }
 
 
-    public function get_category_list($seller_id = NULL)
+    public function get_category_list($seller_id = NULL, $added_by = NULL)
     {
         $offset = 0;
         $limit = 10;
@@ -155,11 +155,12 @@ class Category_model extends CI_Model
             $multipleWhere = ['`id`' => $search, '`name`' => $search];
         }
         if (isset($seller_id) && $seller_id != "") {
-            $this->db->select('category_ids');
-            $where1 = 'user_id = ' . $seller_id;
-            $this->db->where($where1);
-            $result = $this->db->get('seller_data')->result_array();
-            $cat_ids = explode(',', $result[0]['category_ids']);
+            // $this->db->select('category_ids');
+            // $where1 = 'user_id = ' . $seller_id;
+            // $this->db->where($where1);
+            // $result = $this->db->get('seller_data')->result_array();
+            // $cat_ids = explode(',', $result[0]['category_ids']);
+            $multipleWhere = ['added_id'=>$seller_id, 'added_by'=>'Seller'];
         }
 
         $count_res = $this->db->select(' COUNT(id) as `total` ');
@@ -168,9 +169,9 @@ class Category_model extends CI_Model
             $count_res->or_like($multipleWhere);
         }
 
-        if (isset($seller_id) && $seller_id != "") {
-            $count_res->where_in('id', $cat_ids);
-        }
+        // if (isset($seller_id) && $seller_id != "") {
+        //     $count_res->where_in('id', $cat_ids);
+        // }
 
         $cat_count = $count_res->get('categories')->result_array();
         foreach ($cat_count as $row) {
@@ -185,9 +186,9 @@ class Category_model extends CI_Model
             $search_res->where($where);
         }
 
-        if (isset($seller_id) && $seller_id != "") {
-            $count_res->where_in('id', $cat_ids);
-        }
+        // if (isset($seller_id) && $seller_id != "") {
+        //     $count_res->where_in('id', $cat_ids);
+        // }
 
         $cat_search_res = $search_res->order_by($sort, "asc")->limit($limit, $offset)->get('categories')->result_array();
         $bulkData = array();
@@ -198,19 +199,22 @@ class Category_model extends CI_Model
         foreach ($cat_search_res as $row) {
 
             if (!$this->ion_auth->is_seller()) {
-                $operate = '<a href="' . base_url('admin/category/create_category' . '?edit_id=' . $row['id']) . '" class=" btn btn-success btn-xs mr-1 mb-1" title="Edit" data-id="' . $row['id'] . '" data-url="admin/category/create_category"><i class="fa fa-pen"></i></a>';
-                $operate .= '<a class="delete-categoty btn btn-danger btn-xs mr-1 mb-1" title="Delete" href="javascript:void(0)" data-id="' . $row['id'] . '" ><i class="fa fa-trash"></i></a>';
+                $edit_url = base_url('admin/category/create_category' . '?edit_id=' . $row['id']);
+            } else {
+                $edit_url = base_url('seller/category/create_category' . '?edit_id=' . $row['id']);
             }
+            $operate = '<a href="' . $edit_url . '" class=" btn btn-success btn-xs mr-1" title="Edit" data-id="' . $row['id'] . '" data-url="admin/category/create_category"><i class="fa fa-pen"></i></a>';
+            $operate .= '<a class="delete-categoty btn btn-danger btn-xs mr-1" title="Delete" href="javascript:void(0)" data-id="' . $row['id'] . '" ><i class="fa fa-trash"></i></a>';
             if ($row['status'] == '1') {
                 $tempRow['status'] = '<a class="badge badge-success text-white" >Active</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-warning btn-xs update_active_status mr-1" data-table="categories" title="Deactivate" href="javascript:void(0)" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye-slash"></i></a>';
-                }
+                // }
             } else {
                 $tempRow['status'] = '<a class="badge badge-danger text-white" >Inactive</a>';
-                if (!$this->ion_auth->is_seller()) {
+                // if (!$this->ion_auth->is_seller()) {
                     $operate .= '<a class="btn btn-primary mr-1 btn-xs update_active_status" data-table="categories" href="javascript:void(0)" title="Active" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '" ><i class="fa fa-eye"></i></a>';
-                }
+                // }
             }
 
             $tempRow['id'] = $row['id'];
@@ -234,9 +238,9 @@ class Category_model extends CI_Model
             }
             $tempRow['banner'] = "<a href='" . $row['banner_main'] . "' data-toggle='lightbox' data-gallery='gallery'> <img src='" . $row['banner'] . "' class='img-fluid w-50'></a>";
 
-            if (!$this->ion_auth->is_seller()) {
+            // if (!$this->ion_auth->is_seller()) {
                 $tempRow['operate'] = $operate;
-            }
+            // }
             $rows[] = $tempRow;
         }
         $bulkData['rows'] = $rows;
@@ -252,6 +256,8 @@ class Category_model extends CI_Model
             'parent_id' => ($data['category_parent'] == NULL && isset($data['category_parent'])) ? '0' : $data['category_parent'],
             'slug' => create_unique_slug($data['category_input_name'], 'categories'),
             'status' => '1',
+            'added_id' => isset($data['added_id']) ? $data['added_id'] : 1,
+            'added_by' => isset($data['added_by']) ? $data['added_by'] : 'Admin'
         ];
 
         if (isset($data['edit_category'])) {

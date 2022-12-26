@@ -116,7 +116,7 @@
                                     <label for="country" class="col-sm-2 col-form-label">Country <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
                                         <?php $countries = fetch_details("countries", NULL, 'id, name, iso3, iso2'); ?>
-                                        <select class='form-input select_multiple' name="country" id="country">
+                                        <select class='form-control select_multiple' name="country" id="country">
                                             <option value="">Select country</option>
                                             <?php foreach($countries as $country) { ?>
                                                 <option value="<?php echo $country['id']; ?>" <?php echo @$fetched_data[0]['country']==$country['id'] ? "selected" : "" ?>><?php echo $country['name']; ?></option>
@@ -125,7 +125,7 @@
                                     </div>
                                     <label for="state" class="col-sm-2 col-form-label">State <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
-                                        <select class='form-input select_multiple' name="state" id="state">
+                                        <select class='form-control select_multiple' name="state" id="state">
                                             <option value="">Select state</option>
                                             <?php if(@$fetched_data[0]['state'] > 0) { ?>
                                                 <?php $states = fetch_details("states", "country_id='".$fetched_data[0]['country']."'", 'id, name'); ?>
@@ -139,7 +139,7 @@
                                 <div class="form-group row">
                                     <label for="city" class="col-sm-2 col-form-label">City <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
-                                        <select class='form-input select_multiple' name="city" id="s-city">
+                                        <?php /* <select class='form-input select_multiple' name="city" id="s-city">
                                             <option value="">Select city</option>
                                             <?php if(@$fetched_data[0]['city'] > 0) { ?>
                                                 <?php $cities = fetch_details("cities", "country_id='".$fetched_data[0]['country']."' AND state_id='".$fetched_data[0]['state']."'", 'id, name'); ?>
@@ -147,9 +147,10 @@
                                                     <option value="<?php echo $city['id']; ?>" <?php echo @$fetched_data[0]['city']==$city['id'] ? "selected" : "" ?>><?php echo $city['name']; ?></option>
                                                 <?php } ?>
                                             <?php } ?>
-                                        </select>
+                                        </select> */ ?>
+                                        <input type="text" class="form-control" id="city" placeholder="City" name="city" value="<?=@$fetched_data[0]['city']?>" />
                                     </div>
-                                    <label for="area" class="col-sm-2 col-form-label">Area <span class='text-danger text-sm'>*</span></label>
+                                    <?php /* <label for="area" class="col-sm-2 col-form-label">Area <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-4">
                                         <select class='form-input select_multiple' name="area" id="area">
                                             <option value="">Select area</option>
@@ -160,6 +161,10 @@
                                                 <?php } ?>
                                             <?php } ?>
                                         </select>
+                                    </div> */ ?>
+                                    <label for="pincode" class="col-sm-2 col-form-label">Zipcode <span class='text-danger text-sm'>*</span></label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="pincode" placeholder="Enter Zipcode" name="pincode" value="<?= @$fetched_data[0]['pincode'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -176,12 +181,12 @@
                                         <div class="mx-auto product-image"><a href="<?= base_url($fetched_data[0]['address_proof']); ?>" data-toggle="lightbox" data-gallery="gallery_seller"><img src="<?= base_url($fetched_data[0]['address_proof']); ?>" class="img-fluid rounded"></a></div>
                                     </div>
                                 <?php } ?>
-                                <div class="form-group row">
+                                <?php /* <div class="form-group row">
                                     <label for="commission" class="col-sm-2 col-form-label">Commission(%) <small>(Commission(%) to be given to the Super Admin on order item globally.)</small> </label>
                                     <div class="col-sm-10">
                                         <input type="number" class="form-control" id="global_commission" placeholder="Enter Commission(%) to be given to the Super Admin on order item." name="global_commission" value="<?= @$fetched_data[0]['commission'] ?>">
                                     </div>
-                                </div>
+                                </div> */ ?>
                                 <div class="form-group row">
                                     <?php
                                     $category_html =  get_categories_option_html($categories);
@@ -207,7 +212,7 @@
                                 <div class="form-group row">
                                     <label for="store_url" class="col-sm-2 col-form-label">URL </label>
                                     <div class="col-sm-10">
-                                        <input type="url" class="form-control" id="store_url" placeholder="Store URL" name="store_url" value="<?= @$fetched_data[0]['store_url'] ?>">
+                                        <input type="text" class="form-control" id="store_url" placeholder="Store URL" name="store_url" value="<?= @$fetched_data[0]['store_url'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -289,28 +294,28 @@
                                         <div class="mx-auto product-image"><a href="<?= base_url($fetched_data[0]['national_identity_card']); ?>" data-toggle="lightbox" data-gallery="gallery_seller"><img src="<?= base_url($fetched_data[0]['national_identity_card']); ?>" class="img-fluid rounded"></a></div>
                                     </div>
                                 <?php } ?>
-                                <div class="form-group row">
+                                <?php /* <div class="form-group row">
                                     <label for="tax_name" class="col-sm-2 col-form-label">Tax Name <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="tax_name" placeholder="Tax Name" maxlength="40" name="tax_name" value="<?= @$fetched_data[0]['tax_name'] ?>">
                                     </div>
-                                </div>
+                                </div> */ ?>
                                 <div class="form-group row">
-                                    <label for="tax_number" class="col-sm-2 col-form-label">Tax Number <span class='text-danger text-sm'>*</span></label>
+                                    <label for="tax_number" class="col-sm-2 col-form-label">TIN Number <span class='text-danger text-sm'>*</span></label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="tax_number" placeholder="Tax Number" name="tax_number" maxlength="50" value="<?= @$fetched_data[0]['tax_number'] ?>">
+                                        <input type="text" class="form-control" id="tax_number" placeholder="TIN Number" name="tax_number" maxlength="50" value="<?= @$fetched_data[0]['tax_number'] ?>">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <?php /* <div class="form-group row">
                                     <label for="pan_number" class="col-sm-2 col-form-label">Pan Number </label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="pan_number" placeholder="Pan Number" maxlength="30" name="pan_number" value="<?= @$fetched_data[0]['pan_number'] ?>">
                                     </div>
-                                </div>
-                                <div class="form-group row">
+                                </div> */ ?>
+                                <?php /* <div class="form-group row">
                                     <label for="latitude" class="col-sm-2 col-form-label">Latitude </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="latitude" placeholder="Latitude" name="latitude" maxlength="50"> value="<?= @$fetched_data[0]['latitude'] ?>">
+                                        <input type="text" class="form-control" id="latitude" placeholder="Latitude" name="latitude" maxlength="50" value="<?= @$fetched_data[0]['latitude'] ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -318,8 +323,8 @@
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="longitude" placeholder="Longitude" name="longitude" maxlength="50" value="<?= @$fetched_data[0]['longitude'] ?>">
                                     </div>
-                                </div>
-                                <h4>Permissions </h4>
+                                </div> */ ?>
+                                <?php /* <h4>Permissions </h4>
                                 <hr>
                                 <?php if (isset($fetched_data[0]['permissions']) && !empty($fetched_data[0]['permissions'])) {
                                     $permit = json_decode($fetched_data[0]['permissions'], true);
@@ -341,7 +346,7 @@
                                     <div class="col-sm-1">
                                         <input type="checkbox" name="assign_delivery_boy" <?= (isset($permit['assign_delivery_boy']) && $permit['assign_delivery_boy'] == '1') ? 'Checked' : '' ?> data-bootstrap-switch data-off-color="danger" data-on-color="success">
                                     </div>
-                                </div>
+                                </div>*/ ?>
 
                                 <div class="form-group">
                                     <button type="reset" class="btn btn-warning">Reset</button>

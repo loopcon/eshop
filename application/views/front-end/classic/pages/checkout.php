@@ -38,9 +38,6 @@
                                 <div class="col-12 input-group pb-3">
                                     <input type="text" class="form-control" name="address_line_1" id="address_line_1" placeholder="Address Line 1" value="" required>
                                 </div>
-                                <div class="col-12 input-group pb-3">
-                                    <input type="text" class="form-control" name="address_line_2" id="address_line_2" placeholder="Address Line 2" value="">
-                                </div>
                                 <div class="col-6 input-group pb-3">
                                     <select class='form-input w-100' name="country" id="country" required>
                                         <option value="">Select country</option>
@@ -71,7 +68,7 @@
                             </div>
                             <div class="shipped-details mt-3">
                                 <p class="text-muted" id="address-name-type"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['name'] . ' - ' . ucfirst($default_address[0]['type']) : '' ?></p>
-                                <p class="text-muted" id="address-full"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['area'] . ' , ' . $default_address[0]['city'] : '' ?></p>
+                                <p class="text-muted" id="address-full"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['city'] : '' ?></p>
                                 <p class="text-muted" id="address-country"><?= isset($default_address) && !empty($default_address) ? $default_address_state[0]['name'] . ' , ' . $default_address_country[0]['name'] . ' - ' . $default_address[0]['pincode'] : '' ?></p>
                                 <p class="text-muted" id="address-mobile"><?= isset($default_address) && !empty($default_address) ? $default_address[0]['mobile'] : '' ?></p>
                             </div>
@@ -81,7 +78,7 @@
                         <div id="deliverable_status">
                             <?php
                                 $product_not_delivarable = array();
-                                if (isset($default_address) && !empty($default_address)) {
+                                /* if (isset($default_address) && !empty($default_address)) {
                                     $product_delivarable = check_cart_products_delivarable($default_address[0]['area_id'], $cart[0]['user_id']);
                                     if (!empty($product_delivarable)) {
                                         $product_not_delivarable = array_filter($product_delivarable, function ($var) {
@@ -95,11 +92,11 @@
                                                 continue;
                                             }
                                         }
-                            ?>
-                                <b class="text-danger"><?= $deliverable_error_msg ?></b>
+                            ? >
+                                <b class="text-danger"><?= $deliverable_error_msg ? ></b>
                             <?php
                                     }
-                                }
+                                } */
                             ?>
                         </div>
                         <?php if($is_logged_in==1) { ?>
@@ -140,16 +137,16 @@
                     <?php } ?>
                     <hr>
                     <input type="hidden" name="delivery_date" id="delivery_date" class="form-control float-right">
-                    <div class="align-item-center ship-title-details justify-content-between d-flex">
-                        <h5><?= !empty($this->lang->line('wallet_balance')) ? $this->lang->line('wallet_balance') : 'Use wallet balance' ?></h5>
+                    <?php /* <div class="align-item-center ship-title-details justify-content-between d-flex">
+                        <h5><?= !empty($this->lang->line('wallet_balance')) ? $this->lang->line('wallet_balance') : 'Use wallet balance' ? ></h5>
                     </div>
-                    <?php $disabled = $wallet_balance[0]['balance'] == 0 ? 'disabled' : '' ?>
+                    <?php $disabled = $wallet_balance[0]['balance'] == 0 ? 'disabled' : '' ? >
                     <div class="form-check d-flex">
-                        <input class="form-check-input" type="checkbox" value="" id="wallet_balance" <?= $disabled ?>>
+                        <input class="form-check-input" type="checkbox" value="" id="wallet_balance" <?= $disabled ? >>
                         <label class="form-check-label d-flex" for="flexCheckDefault">
-                            <?= !empty($this->lang->line('available_balance')) ? $this->lang->line('available_balance') : 'Available balance' ?> : <?= $currency . '<span id="available_balance">' . number_format($wallet_balance[0]['balance'], 2) . '</span>' ?>
+                            <?= !empty($this->lang->line('available_balance')) ? $this->lang->line('available_balance') : 'Available balance' ? > : <?= $currency . '<span id="available_balance">' . number_format($wallet_balance[0]['balance'], 2) . '</span>' ? >
                         </label>
-                    </div>
+                    </div> */ ?>
 
                     <div class="ship-details-wrapper mt-3 payment-methods">
                         <div class="align-item-center ship-title-details justify-content-between d-flex">
@@ -356,6 +353,7 @@
                     <input type="hidden" name="logo" id="logo" value="<?= base_url(get_settings('web_logo')) ?>" />
                     <input type="hidden" name="order_amount" id="amount" value="" />
                     <input type="hidden" name="delivery_charge" id="delivery_charge" value="" />
+                    <input type="hidden" name="rate_object_id" id="rate_object_id" value="" />
                     <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" value="" />
                     <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" value="" />
                     <input type="hidden" name="razorpay_signature" id="razorpay_signature" value="" />
@@ -386,7 +384,7 @@
                                     <div class="product-checkout mt-4">
                                         <?php
                                             if (isset($cart) && !empty($cart)) {
-                                                $product_not_delivarable = array_column($product_not_delivarable, "product_id");
+                                                // $product_not_delivarable = array_column($product_not_delivarable, "product_id");
                                                 foreach ($cart as $row) {
                                                     if (isset($row['qty']) && $row['qty'] != 0) {
                                                         $price = $row['special_price'] != '' && $row['special_price'] != null && $row['special_price'] > 0 && $row['special_price'] < $row['price'] ? $row['special_price'] : $row['price'];
@@ -448,11 +446,10 @@
                                                 <td class="text-muted"><?= !empty($this->lang->line('delivery_charge')) ? $this->lang->line('delivery_charge') : 'Delivery Charge' ?></td>
                                                 <td class="text-muted"><?= $settings['currency'] . ' ' ?><span class="delivery-charge"><?= $cart['delivery_charge'] ?></span></td>
                                             </tr>
-                                            <tr>
-                                                <td class="text-muted"><?= !empty($this->lang->line('wallet')) ? $this->lang->line('wallet') : 'Wallet' ?></td>
-                                                <td class="text-muted"><?= $settings['currency'] ?> <span class="wallet_used">0.00<span></td>
-
-                                            </tr>
+                                            <?php /* <tr>
+                                                <td class="text-muted"><?= !empty($this->lang->line('wallet')) ? $this->lang->line('wallet') : 'Wallet' ? ></td>
+                                                <td class="text-muted"><?= $settings['currency'] ? > <span class="wallet_used">0.00<span></td>
+                                            </tr> */ ?>
                                             <tr id="promocode_div" class="d-none">
                                                 <td class="text-muted"><?= !empty($this->lang->line('promocode')) ? $this->lang->line('promocode') : 'Promocode' ?> <span id="promocode"></span></td>
                                                 <td class="text-muted"> <i><?= $settings['currency'] ?></i> <span id="promocode_amount"></span></td>
@@ -461,7 +458,7 @@
                                         <tfoot>
                                             <tr class="total-price">
                                                 <td><?= !empty($this->lang->line('total')) ? $this->lang->line('total') : 'Total' ?></td>
-                                                <td><?= $settings['currency'] ?> <span id="final_total"></span></td>
+                                                <td><?= $settings['currency'] ?> <span id="final_total"><?php echo number_format($cart['sub_total'], 2); ?></span></td>
                                             </tr>
                                         </tfoot>
                                     </table>

@@ -429,28 +429,28 @@ class Order_model extends CI_Model
             $fcm_admin_msg = (!empty($custom_notification)) ? $message : 'New order received for  ' . $system_settings['app_name'] . ' please process it.';
 
             if (trim(strtolower($data['payment_method'])) != 'paypal' || trim(strtolower($data['payment_method'])) != 'stripe') {
-                $overall_order_data = array(
-                    'cart_data' => $cart_data,
-                    'order_data' => $overall_total,
-                    'subject' => $fcm_admin_subject,
-                    'user_data' => $user[0],
-                    'system_settings' => $system_settings,
-                    'user_msg' => $fcm_admin_msg,
-                    'otp_msg' => 'Here is your OTP. Please, give it to delivery boy only while getting your order.',
-                );
-                $system_settings = get_settings('system_settings', true);
-                if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 1) {
-                    if (isset($system_settings['support_email']) && !empty($system_settings['support_email'])) {
-                        send_mail($system_settings['support_email'], $fcm_admin_subject, $fcm_admin_msg);
-                    }
-                    for ($i = 0; $i < count($seller_ids); $i++) {
-                        $seller_email = fetch_details('users', ['id' => $seller_ids[$i]], 'email');
-                        $seller_store_name = fetch_details('seller_data', ['user_id' => $seller_ids[$i]], 'store_name');
-                        send_mail($seller_email[0]['email'], $fcm_admin_subject, $fcm_admin_msg);
-                    }
-                }
-                $user_fcm = fetch_details('users', ['id' => $data['user_id']], 'fcm_id');
-                $user_fcm_id[0][] = $user_fcm[0]['fcm_id'];
+                // $overall_order_data = array(
+                //     'cart_data' => $cart_data,
+                //     'order_data' => $overall_total,
+                //     'subject' => $fcm_admin_subject,
+                //     'user_data' => $user[0],
+                //     'system_settings' => $system_settings,
+                //     'user_msg' => $fcm_admin_msg,
+                //     'otp_msg' => 'Here is your OTP. Please, give it to delivery boy only while getting your order.',
+                // );
+                // $system_settings = get_settings('system_settings', true);
+                // if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 1) {
+                //     if (isset($system_settings['support_email']) && !empty($system_settings['support_email'])) {
+                //         send_mail($system_settings['support_email'], $fcm_admin_subject, $fcm_admin_msg);
+                //     }
+                //     for ($i = 0; $i < count($seller_ids); $i++) {
+                //         $seller_email = fetch_details('users', ['id' => $seller_ids[$i]], 'email');
+                //         $seller_store_name = fetch_details('seller_data', ['user_id' => $seller_ids[$i]], 'store_name');
+                //         send_mail($seller_email[0]['email'], $fcm_admin_subject, $fcm_admin_msg);
+                //     }
+                // }
+                // $user_fcm = fetch_details('users', ['id' => $data['user_id']], 'fcm_id');
+                // $user_fcm_id[0][] = $user_fcm[0]['fcm_id'];
                 // if (!empty($user_fcm_id)) {
                 //     $fcmMsg = array(
                 //         'title' => $fcm_admin_subject,
@@ -467,7 +467,57 @@ class Order_model extends CI_Model
                     'type_id' => $last_order_id
                 );
                 insert_details($admin_notifi, 'system_notification');
-                send_mail($user[0]['email'], 'Order received successfully', $this->load->view('admin/pages/view/email-template.php', $overall_order_data, TRUE));
+                // send_mail($user[0]['email'], 'Order received successfully', $this->load->view('admin/pages/view/email-template.php', $overall_order_data, TRUE));
+            }
+
+            if($this->data['is_logged_in']) {
+                $site_title = $this->config->item('site_title', 'ion_auth');
+                $product = fetch_details("products", ['id' => $_POST['product_variant_id']], 'seller_id');
+                $seller = fetch_details("users", ['id' => $product[0]['seller_id']], 'email, username');
+                $seller_username = $seller[0]['username'];
+                $user_name = $this->data['user']->username;
+
+                // email send to user
+                $user_email = $this->data['user']->email;
+                $user_subject = $site_title . ' - Order placed';
+                $user_message = "Your order has been placed successfully.";//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($user_email, $user_subject, $user_message);
+
+                // email send to seller
+                $seller_email = $seller[0]['email'];
+                $seller_subject = $site_title . ' - Order placed by '.$user_name;
+                $seller_message = "Your products has ordered by ".$user_name.".";//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($seller_email, $seller_subject, $seller_message);
+
+                // email send to admin
+                $admin_email = $this->config->item('admin_email', 'ion_auth');
+                $admin_subject = $site_title . ' - New order placed';
+                $admin_message = "New order placed by ".$user_name." for the product of seller ".$seller_username;//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail("loopcon111@gmail.com", $admin_subject, $admin_message);
+            } else {
+                $site_title = $this->config->item('site_title', 'ion_auth');
+                $product = fetch_details("products", ['id' => $_POST['product_variant_id']], 'seller_id');
+                $seller = fetch_details("users", ['id' => $product[0]['seller_id']], 'email, username');
+                $seller_username = $seller[0]['username'];
+                $user_name = $_POST['firstname']." ".$_POST['lastname'];
+
+                // email send to user
+                $user_email = $_POST['email'];
+                $user_subject = $site_title . ' - Order placed';
+                $user_message = "Your order has been placed successfully.";//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($user_email, $user_subject, $user_message);
+
+                // email send to seller
+                $seller_email = $seller[0]['email'];
+                $seller_subject = $site_title . ' - Order placed by '.$user_name;
+                $seller_message = "Your products has ordered by ".$user_name.".";//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail($seller_email, $seller_subject, $seller_message);
+
+                // email send to admin
+                $admin_email = $this->config->item('admin_email', 'ion_auth');
+                $admin_subject = $site_title . ' - New order placed';
+                $admin_message = "New order placed by ".$user_name." for the product of seller ".$seller_username;//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
+                send_mail("loopcon111@gmail.com", $admin_subject, $admin_message);
             }
 
             $this->cart_model->remove_from_cart($data);

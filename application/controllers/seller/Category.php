@@ -16,7 +16,7 @@ class Category extends CI_Controller
 
     public function index()
     {
-        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             $this->data['main_page'] = TABLES . 'manage-category';
             $settings = get_settings('system_settings', true);
             $this->data['title'] = 'Category Management | ' . $settings['app_name'];
@@ -55,11 +55,85 @@ class Category extends CI_Controller
 
     public function category_list()
     {
-        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0)) {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             $user_id = $this->session->userdata('user_id');
-            return $this->category_model->get_category_list($user_id);
+            $added_by = 'Seller';
+            return $this->category_model->get_category_list($user_id, $added_by);
         } else {
             redirect('seller/login', 'refresh');
+        }
+    }
+
+    public function create_category()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
+            $this->data['main_page'] = FORMS . 'category';
+            $settings = get_settings('system_settings', true);
+            $this->data['title'] = (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) ? 'Edit Category | ' . $settings['app_name'] : 'Add Category | ' . $settings['app_name'];
+            $this->data['meta_description'] = 'Add Category , Create Category | ' . $settings['app_name'];
+            if (isset($_GET['edit_id']) && !empty($_GET['edit_id'])) {
+                $this->data['fetched_data'] = fetch_details('categories', ['id' => $_GET['edit_id']]);
+            }
+
+            $this->data['categories'] = $this->category_model->get_categories();
+
+            $this->load->view('seller/template', $this->data);
+        } else {
+            redirect('seller/login', 'refresh');
+        }
+    }
+
+    public function add_category()
+    {
+        if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller()) {
+
+            /*if (isset($_POST['edit_category'])) {
+                if (print_msg(!has_permissions('update', 'categories'), PERMISSION_ERROR_MSG, 'categories')) {
+                    return false;
+                }
+            } else {
+                if (print_msg(!has_permissions('create', 'categories'), PERMISSION_ERROR_MSG, 'categories')) {
+                    return false;
+                }
+            }*/
+
+            $this->form_validation->set_rules('category_input_name', 'Category Name', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('banner', 'Banner', 'trim|xss_clean');
+
+            /*if (isset($_POST['edit_category'])) {
+                $this->form_validation->set_rules('category_input_image', 'Image', 'trim|xss_clean');
+            } else {
+                $this->form_validation->set_rules('category_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Category image is required.'));
+            }*/
+
+
+            if (!$this->form_validation->run()) {
+
+                $this->response['error'] = true;
+                $this->response['csrfName'] = $this->security->get_csrf_token_name();
+                $this->response['csrfHash'] = $this->security->get_csrf_hash();
+                $this->response['message'] = validation_errors();
+                print_r(json_encode($this->response));
+            } else {
+                $_POST['added_id'] = $this->session->userdata('user_id');
+                $_POST['added_by'] = 'Seller';
+                $this->category_model->add_category($_POST);
+                $seller_category = fetch_details('categories', ['added_id'=>$this->session->userdata('user_id'), 'added_by'=>'Seller']);
+                $categories = array();
+                foreach($seller_category as $category) {
+                    $categories[] = $category['id'];
+                }
+                $categories = implode(",", $categories);
+                update_details(array('category_ids'=>$categories), array('user_id'=>$this->session->userdata('user_id')), 'seller_data');
+                $this->response['error'] = false;
+                $this->response['csrfName'] = $this->security->get_csrf_token_name();
+                $this->response['csrfHash'] = $this->security->get_csrf_hash();
+                $message = (isset($_POST['edit_category'])) ? 'Category Updated Successfully!' : 'Category Added Successfully!';
+                $this->response['message'] = $message;
+                print_r(json_encode($this->response));
+            }
+        } else {
+            redirect('admin/login', 'refresh');
         }
     }
 }
