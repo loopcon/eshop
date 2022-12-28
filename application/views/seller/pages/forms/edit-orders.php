@@ -82,12 +82,16 @@
                                     <td><?php echo $order_detls[0]['id']; ?></td>
                                 </tr>
                                 <tr>
+                                    <th class="w-10px">Invoice Number</th>
+                                    <td><?php echo $order_detls[0]['invoice_number']; ?></td>
+                                </tr>
+                                <tr>
                                     <th class="w-10px">Name</th>
                                     <td><?php echo $order_detls[0]['uname']; ?></td>
                                 </tr>
                                 <tr>
                                     <th class="w-10px">Email</th>
-                                    <td><?= ((!defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) || ($this->ion_auth->is_seller() && get_seller_permission($seller_id, 'customer_privacy') == false)) ? str_repeat("X", strlen($order_detls[0]['email']) - 3) . substr($order_detls[0]['email'], -3) : $order_detls[0]['email']; ?></td>
+                                    <td><?= $order_detls[0]['email']; ?></td>
                                 </tr>
                                 <tr>
                                     <th class="w-10px">Contact</th>

@@ -60,7 +60,7 @@
                                 <div class="col-sm-2 invoice-col">
                                     <br> <b>Retail Invoice</b>
                                     <br> <b>No : </b>#
-                                    <?= $order_detls[0]['id'] ?>
+                                    <?= $order_detls[0]['invoice_number'] ?>
                                     <br> <b>Date: </b>
                                     <?= $order_detls[0]['date_added'] ?>
                                     <br>

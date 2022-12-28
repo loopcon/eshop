@@ -400,7 +400,7 @@ class Orders extends CI_Controller
                     // $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->where('find_in_set(' . $zipcode_id[0]['zipcode_id'] . ', u.serviceable_zipcodes)!=', 0)->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
                 }
             } else {
-                $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
+                // $this->data['delivery_res'] = $this->db->where(['ug.group_id' => '3', 'u.active' => 1])->join('users_groups ug', 'ug.user_id = u.id')->get('users u')->result_array();
             }
             if ($res[0]['payment_method'] == "bank_transfer") {
                 $bank_transfer = fetch_details('order_bank_transfer', ['order_id' => $res[0]['order_id']]);
@@ -1019,6 +1019,33 @@ class Orders extends CI_Controller
             }
         } else {
             redirect('admin/login', 'refresh');
+        }
+    }
+
+    function get_order_status_transaction()
+    {
+        if($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) {
+            $order_id = $_POST['order_id'];
+            $order_item_id = $_POST['order_item_id'];
+            $status_transaction = $this->Order_model->get_order_status_transaction($order_id, $order_item_id);
+            if(count($status_transaction) > 0) {
+                $this->response['error'] = false;
+                $this->response['csrfName'] = $this->security->get_csrf_token_name();
+                $this->response['csrfHash'] = $this->security->get_csrf_hash();
+                $this->response['message'] = "";
+                $this->response['data'] = $status_transaction;
+                print_r(json_encode($this->response));
+                exit; 
+            }
+            $this->response['error'] = true;
+            $this->response['csrfName'] = $this->security->get_csrf_token_name();
+            $this->response['csrfHash'] = $this->security->get_csrf_hash();
+            $this->response['message'] = "Order item status not found";
+            $this->response['data'] = '';
+            print_r(json_encode($this->response));
+            exit;
+        } else {
+            redirect('seller/login', 'refresh');
         }
     }
 }

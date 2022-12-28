@@ -40,6 +40,7 @@
                                 <div class="row justify-content-between">
                                     <div class="col">
                                         <p class="text-muted"> <?= !empty($this->lang->line('order_id')) ? $this->lang->line('order_id') : 'Order ID' ?> <span class="font-weight-bold text-dark"> : <?= $row['id'] ?></span></p>
+                                        <p class="text-muted"> <?= !empty($this->lang->line('invoice_number')) ? $this->lang->line('invoice_number') : 'Invoice Number' ?> <span class="font-weight-bold text-dark"> : <?= $row['invoice_number'] ?></span></p>
                                         <p class="text-muted"> <?= !empty($this->lang->line('place_on')) ? $this->lang->line('place_on') : 'Place On' ?> <span class="font-weight-bold text-dark"> : <?= $row['date_added'] ?></span> </p>
                                         <?php /* if ($row['otp'] != 0) { ?>
                                             <p class="text-muted"> <?= !empty($this->lang->line('otp')) ? $this->lang->line('otp') : 'OTP' ?> <span class="font-weight-bold text-dark"> : <?= $row['otp'] ?></span> </p>

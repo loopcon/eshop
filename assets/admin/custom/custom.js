@@ -6498,7 +6498,7 @@ $(document).on("click", ".edit_order_status_transaction", function() {
             var html = "";
             if(response.error==false) {
                 $.each(rows, function(i) {
-                    html += "<tr><td>"+rows[i].id+"</td><td>"+rows[i].order_id+"</td><td>"+rows[i].order_item_id+"</td><td>"+rows[i].order_item_status+"</td><td>"+rows[i].added_date+"</td></tr>";
+                    html += "<tr><td>"+rows[i].id+"</td><td>"+rows[i].order_id+"</td><td>"+rows[i].order_item_id+"</td><td>"+rows[i].invoice_number+"</td><td>"+rows[i].order_item_status+"</td><td>"+rows[i].added_date+"</td></tr>";
                 });
             } else {
                 html += "<tr class='no-records-found'><td colspan='5'>No matching records found</td></tr>";

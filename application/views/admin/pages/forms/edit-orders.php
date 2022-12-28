@@ -80,6 +80,11 @@
                                     <td><?php echo $order_detls[0]['id']; ?></td>
                                 </tr>
                                 <tr>
+                                    <input type="hidden" name="hidden" id="invoice_number" value="<?php echo $order_detls[0]['invoice_number']; ?>">
+                                    <th class="w-10px">Invoice Number</th>
+                                    <td><?php echo $order_detls[0]['invoice_number']; ?></td>
+                                </tr>
+                                <tr>
                                     <th class="w-10px">Name</th>
                                     <td><?php echo "Account Holder Person : " . $order_detls[0]['uname'] . " | Order Recipient Person :  " . $order_detls[0]['user_name']; ?></td>
                                 </tr>
@@ -302,10 +307,10 @@
                                     <th class="w-10px">Address</th>
                                     <td><?php echo $order_detls[0]['address']; ?></td>
                                 </tr>
-                                <tr>
+                                <?php /* <tr>
                                     <th class="w-10px">Delivery Date & Time</th>
-                                    <td><?php echo date('d-M-Y', strtotime($order_detls[0]['delivery_date'])); ?> - <?= $order_detls[0]['delivery_time'] ?></td>
-                                </tr>
+                                    <td><?php echo date('d-M-Y', strtotime($order_detls[0]['delivery_date'])); ? > - <?= $order_detls[0]['delivery_time'] ? ></td>
+                                </tr> */ ?>
                                 <tr>
                                     <th class="w-10px">Order Date</th>
                                     <td><?php echo date('d-M-Y', strtotime($order_detls[0]['date_added'])); ?></td>

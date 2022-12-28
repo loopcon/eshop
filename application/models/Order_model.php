@@ -358,6 +358,18 @@ class Order_model extends CI_Model
             $this->db->insert('orders', $order_data);
             $last_order_id = $this->db->insert_id();
 
+            if($last_order_id < 10) {
+                $order_id_string = '0000'.$last_order_id;
+            } elseif($last_order_id >=10 && $last_order_id < 100) {
+                $order_id_string = '000'.$last_order_id;
+            } elseif($last_order_id >=100 && $last_order_id < 1000) {
+                $order_id_string = '00'.$last_order_id;
+            } elseif($last_order_id >= 1000 && $last_order_id < 10000) {
+                $order_id_string = '0'.$last_order_id;
+            }
+            $invoice_number = 'VNDR-'.date('dmy').$order_id_string;
+            update_details(['invoice_number'=>$invoice_number], ['id'=>$last_order_id], 'orders');
+
             for ($i = 0; $i < count($product_variant); $i++) {
                 $otp = mt_rand(100000, 999999);
                 $product_variant_data[$i] = [
@@ -493,7 +505,7 @@ class Order_model extends CI_Model
                 $admin_email = $this->config->item('admin_email', 'ion_auth');
                 $admin_subject = $site_title . ' - New order placed';
                 $admin_message = "New order placed by ".$user_name." for the product of seller ".$seller_username;//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
-                send_mail("loopcon111@gmail.com", $admin_subject, $admin_message);
+                send_mail($admin_email, $admin_subject, $admin_message);
             } else {
                 $site_title = $this->config->item('site_title', 'ion_auth');
                 $product = fetch_details("products", ['id' => $_POST['product_variant_id']], 'seller_id');
@@ -517,7 +529,7 @@ class Order_model extends CI_Model
                 $admin_email = $this->config->item('admin_email', 'ion_auth');
                 $admin_subject = $site_title . ' - New order placed';
                 $admin_message = "New order placed by ".$user_name." for the product of seller ".$seller_username;//$this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
-                send_mail("loopcon111@gmail.com", $admin_subject, $admin_message);
+                send_mail($admin_email, $admin_subject, $admin_message);
             }
 
             $this->cart_model->remove_from_cart($data);
@@ -527,6 +539,7 @@ class Order_model extends CI_Model
             $response['message'] = 'Order Placed Successfully';
             $response['order_id'] = $last_order_id;
             $response['order_item_data'] = $product_variant_data;
+            $response['invoice_number'] = $invoice_number;
             $response['balance'] = $user_balance;
             return $response;
         } else {
@@ -541,7 +554,7 @@ class Order_model extends CI_Model
 
     public function get_order_details($where = NULL, $status = false, $seller_id = NULL)
     {
-        $res = $this->db->select('oi.*,ot.courier_agency,ot.tracking_id,ot.url,oi.otp as item_otp,a.name as user_name,oi.id as order_item_id,p.*,v.product_id,o.*,o.id as order_id,o.total as order_total,o.wallet_balance,oi.active_status as oi_active_status,u.email,u.username as uname,oi.status as order_status,p.name as pname,p.type,p.image as product_image,p.is_prices_inclusive_tax,(SELECT username FROM users db where db.id=oi.delivery_boy_id ) as delivery_boy ')
+        $res = $this->db->select('oi.*,ot.courier_agency,ot.tracking_id,ot.url,oi.otp as item_otp,a.name as user_name,oi.id as order_item_id,p.*,v.product_id,o.*,o.id as order_id,o.total as order_total,o.wallet_balance,oi.active_status as oi_active_status,IF(o.is_guest=0,u.email,o.email) as email,IF(o.is_guest=0,u.username,CONCAT(o.firstname," ",o.lastname)) as uname,oi.status as order_status,p.name as pname,p.type,p.image as product_image,p.is_prices_inclusive_tax,(SELECT username FROM users db where db.id=oi.delivery_boy_id ) as delivery_boy ')
             ->join('product_variants v ', ' oi.product_variant_id = v.id', 'left')
             ->join('products p ', ' p.id = v.product_id ', 'left')
             ->join('users u ', ' u.id = oi.user_id', 'left')
@@ -602,6 +615,7 @@ class Order_model extends CI_Model
                 'o.delivery_time' => $search,
                 'o.status' => $search,
                 'o.active_status' => $search,
+                'o.invoice_number' => $search,
                 'date_added' => $search
             ];
         }
@@ -712,6 +726,7 @@ class Order_model extends CI_Model
                 $discount_in_rupees = $row['total'] - $final_total;
                 $discount_in_rupees = floor($discount_in_rupees);
                 $tempRow['id'] = $row['id'];
+                $tempRow['invoice_number'] = $row['invoice_number'];
                 $tempRow['user_id'] = $row['user_id'];
                 $tempRow['name'] = ($row['items'][0]['uname']) ? $row['items'][0]['uname'] : $row['firstname']." ".$row['lastname'];
                 if (defined('ALLOW_MODIFICATION') && ALLOW_MODIFICATION == 0) {
@@ -747,7 +762,7 @@ class Order_model extends CI_Model
                     $operate = '<a href=' . base_url('admin/orders/edit_orders') . '?edit_id=' . $row['id'] . ' class="btn btn-primary btn-xs mr-1 mb-1" title="View" ><i class="fa fa-eye"></i></a>';
                     $operate .= '<a href="javascript:void(0)" class="delete-orders btn btn-danger btn-xs mr-1 mb-1" data-id=' . $row['id'] . ' title="Delete" ><i class="fa fa-trash"></i></a>';
                     $operate .= '<a href="' . base_url() . 'admin/invoice?edit_id=' . $row['id'] . '" class="btn btn-info btn-xs mr-1 mb-1" title="Invoice" ><i class="fa fa-file"></i></a>';
-                    $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['id'] . '"  data-target="#order-tracking-modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
+                    // $operate .= ' <a href="javascript:void(0)" class="edit_order_tracking btn btn-success btn-xs mr-1 mb-1" title="Order Tracking" data-order_id="' . $row['id'] . '"  data-target="#order-tracking-modal" data-toggle="modal"><i class="fa fa-map-marker-alt"></i></a>';
                 } else {
                     $operate = '<a href=' . base_url('delivery_boy/orders/edit_orders') . '?edit_id=' . $row['id'] . ' class="btn btn-primary btn-xs mr-1 mb-1" title="View"><i class="fa fa-eye"></i></a>';
                 }
@@ -757,6 +772,7 @@ class Order_model extends CI_Model
         }
         if (!empty($user_details)) {
             $tempRow['id'] = '-';
+            $tempRow['invoice_number'] = '-';
             $tempRow['user_id'] = '-';
             $tempRow['name'] = '-';
             $tempRow['mobile'] = '-';
@@ -839,7 +855,7 @@ class Order_model extends CI_Model
 
         if (isset($seller_id) && $seller_id != "") {
             $count_res->where("oi.seller_id", $seller_id);
-            $count_res->where("oi.active_status != 'awaiting'");
+            // $count_res->where("oi.active_status != 'awaiting'");
         }
 
         if (isset($_GET['user_id']) && $_GET['user_id'] != null) {
@@ -887,7 +903,7 @@ class Order_model extends CI_Model
 
         if (isset($seller_id) && $seller_id != "") {
             $search_res->where("oi.seller_id", $seller_id);
-            $search_res->where("oi.active_status != 'awaiting'");
+            // $search_res->where("oi.active_status != 'awaiting'");
         }
 
         if (isset($_GET['seller_id']) && !empty($_GET['seller_id'])) {
@@ -946,10 +962,11 @@ class Order_model extends CI_Model
             $tempRow['id'] = $count;
             $tempRow['order_id'] = $row['order_id'];
             $tempRow['order_item_id'] = $row['order_item_id'];
+            $tempRow['invoice_number'] = $row['invoice_number'];
             $tempRow['user_id'] = $row['user_id'];
             $tempRow['seller_id'] = $row['seller_id'];
             $tempRow['notes'] = (isset($row['notes']) && !empty($row['notes'])) ? $row['notes'] : "";
-            $tempRow['username'] = $row['username'];
+            $tempRow['username'] = ($row['is_guest']==0) ? $row['username'] : $row['firstname'].' '.$row['lastname'];
             $tempRow['seller_name'] = $row['seller_name'];
             $tempRow['is_credited'] = ($row['is_credited']) ? '<label class="badge badge-success">Credited</label>' : '<label class="badge badge-danger">Not Credited</label>';
             $tempRow['product_name'] = $row['product_name'];
@@ -998,9 +1015,10 @@ class Order_model extends CI_Model
             $count++;
         }
         if (!empty($user_details)) {
-            $tempRow['id'] = 1;
+            $tempRow['id'] = '-';
             $tempRow['order_id'] = '-';
             $tempRow['order_item_id'] = '-';
+            $tempRow['invoice_number'] = '-';
             $tempRow['user_id'] = '-';
             $tempRow['seller_id'] = '-';
             $tempRow['username'] = '-';
@@ -1114,7 +1132,7 @@ class Order_model extends CI_Model
             $tempRow['id'] = $row['id'];
             $tempRow['order_id'] = $row['order_id'];
             $tempRow['order_item_id'] = $row['order_item_id'];
-            $tempRow['courier_agency'] = $row['courier_agency'];
+            // $tempRow['courier_agency'] = $row['courier_agency'];
             $tempRow['tracking_id'] = $row['tracking_id'];
             $tempRow['url'] = $row['url'];
             $tempRow['date'] = $row['date_created'];
@@ -1287,11 +1305,12 @@ class Order_model extends CI_Model
 
     public function get_order_status_transaction($order_id, $order_item_id)
     {
-        $this->db->select('*');
-        $this->db->where('order_id', $order_id);
-        $this->db->where('order_item_id', $order_item_id);
-        $this->db->order_by('added_date', 'DESC');
-        $res = $this->db->get('order_status')->result_array();
+        $this->db->select('os.*, o.invoice_number');
+        $this->db->join('orders AS o', 'o.id=os.order_id', 'left');
+        $this->db->where('os.order_id', $order_id);
+        $this->db->where('os.order_item_id', $order_item_id);
+        $this->db->order_by('os.added_date', 'DESC');
+        $res = $this->db->get('order_status AS os')->result_array();
         return $res;
     }
 }

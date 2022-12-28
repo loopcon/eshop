@@ -57,5 +57,8 @@ ALTER TABLE `categories` ADD `added_id` INT(11) NULL AFTER `clicks`, ADD `added_
 ALTER TABLE `addresses` ADD `goshippo_address_object_id` VARCHAR(255) NULL AFTER `longitude`;
 ALTER TABLE `addresses` ADD `city` VARCHAR(255) NULL AFTER `city_id`;
 
+-- 26-12-2022
+ALTER TABLE `orders` ADD `invoice_number` VARCHAR(255) NOT NULL AFTER `id`;
+
 
 

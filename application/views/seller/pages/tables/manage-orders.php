@@ -131,6 +131,7 @@
                                         <th data-field="id" data-sortable='true' data-footer-formatter="totalFormatter">ID</th>
                                         <th data-field="order_item_id" data-sortable='true'>Order Item ID</th>
                                         <th data-field="order_id" data-sortable='true'>Order ID</th>
+                                        <th data-field="invoice_number" data-sortable='true'>Invoice Number</th>
                                         <th data-field="user_id" data-sortable='true' data-visible="false">User ID</th>
                                         <th data-field="seller_id" data-sortable='true' data-visible="false">Seller ID</th>
                                         <th data-field="is_credited" data-sortable='true' data-visible="false">Commission</th>
@@ -176,6 +177,7 @@
                                                 <th data-field="id" data-sortable="true">ID</th>
                                                 <th data-field="order_id" data-sortable="true">Order ID</th>
                                                 <th data-field="order_item_id" data-sortable="false">Order Item ID</th>
+                                                <th data-field="invoice_number" data-sortable="false">Invoice Number</th>
                                                 <th data-field="status" data-sortable="false">Status</th>
                                                 <th data-field="date" data-sortable="false">Date</th>
                                             </tr>
