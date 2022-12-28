@@ -207,34 +207,37 @@ $web_settings = get_settings('web_settings', true);
                     <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
                     <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <!-- <span class="navbar-toggler-icon"></span> -->
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                    <?php if($this->router->fetch_class()!="home") { ?>
-                        <div class="search-box-header">
-                            <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
-                                <div>
-                                    <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
-                                    <button type="submit"><i class="fa-solid fa-magnifying-glass  searchiconheader "></i></button>
-                                </div>
-                                <div id="search-list" class="d-none"></div>
-                            </form>
-                        </div>
-                    <?php } ?>
-                    <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <div class="nav-item dropdown ms-auto marketplace-menu shopmenu">
-                                <a class="nav-link nava marketplace " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                <div class="dropdown-menu category-menu">
-                                    <div class="row">
+                    <!-- <div class="menutoggle"> -->
+                        <!-- <div> -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <!-- <span class="navbar-toggler-icon"></span> -->
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        
+                        <?php if($this->router->fetch_class()!="home") { ?>
+                            <div class="search-box-header">
+                                <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
+                                    <div>
+                                        <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
+                                        <button type="submit"><i class="fa-solid fa-magnifying-glass  searchiconheader "></i></button>
+                                    </div>
+                                    <div id="search-list" class="d-none"></div>
+                                </form>
+                            </div>
+                        <?php } ?>
+                        <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <div class="nav-item dropdown  marketplace-menu shopmenu">
+                                    <a class="nav-link nava marketplace " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                    <div class="dropdown-menu category-menu">
+                                        <div class="row">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php } ?>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <?php } ?>
+                        <!-- </div> -->
+                    <div class="" id="">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 user-login-menu">
                             <?php if ($this->ion_auth->logged_in()) { ?>
                                 <li class="nav-item dropdown active">
@@ -302,7 +305,11 @@ $web_settings = get_settings('web_settings', true);
                             <?php } ?>
                         </ul>
                     </div>
+                    <!-- </div> -->
                 </div>
+
+
+                
             </nav>
 
             <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
@@ -326,7 +333,7 @@ $web_settings = get_settings('web_settings', true);
         var level2 = '';
         var level3 = '';
         var html = '<div class="col-12 row">';
-        level1 += '<div class="col-4 mb-2 mb-lg-0 cat-level-1">';
+        level1 += '<div class="col-12 col-md-4 mb-2 mb-lg-0 cat-level-1">';
         level1 += '<ul>';
         $.each(categories, function(i) {
             level1 += '<li data-cat1slug="'+categories[i].slug+'" class="l1-menu"><a class="dropdown-item" href="'+base_url+'products/category/'+categories[i].slug+'">'+categories[i].name+' <i class="fa fa-angle-right arrow-level-1"></i></a></li>';
@@ -577,7 +584,7 @@ $web_settings = get_settings('web_settings', true);
 
 <!-- mobile screen navbar start  -->
 
-
+                                            
                                             
 
 

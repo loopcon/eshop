@@ -39,7 +39,7 @@
 
  @media screen and (min-width:991px) and (max-width:1100px) {
     .form-field{
-        width: 200px;   
+        width: 350px;   
     }
  }
  @media (max-width: 991px) { 
@@ -61,28 +61,32 @@
     }
 
     .nav-item .category-menu {
-        position: absolute;
-        top:0px;
-        z-index: 2;
+        /* position: absolute; */
+        /* top:0px; */
+        /* z-index: 2; */
     }
-    .collapse.show{
+    /* .collapse.show{
         position: absolute;
         top:100px;
         background-color: white;
         width: 90%;
-        /* z-index: 2; */
-    }
+        z-index: 2;
+    } */
     .shopmenu{
-        position: relative;
-        z-index: 4;
-        margin-top: -35px;
+     margin-right: 0px;
     }
     .form-field{
         width: auto;
     }
-    .user-login-menu { position: relative; z-index: 1; background: white; top:27px; }
+    .user-login-menu { display: flex;     }
     .info-wrapper { height: 220px;    }
     .btn-6-1{ margin-top: 5px !important;}
+    /* .userloginmenu{ display: flex; } */
+    .navbar-nav {  flex-direction: row;}
+    /* .menutoggle{  flex-direction: row-reverse; } */
+    
+    /* .navbar .dropdown{  transform: translate(-8px , 66px);  } */
+    /* .collapse.show{ margin-top: -38px;} */
  }
 
  @media (max-width: 767px) { 
@@ -112,14 +116,14 @@
         position: relative;
         z-index: 1;
     }
-    .dropdown-item{
+    /* .dropdown-item{
         font-size: 0.7rem;
         word-break: break-all;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         text-decoration-line: 2;
-    }
+    } */
     
 }
 
@@ -196,5 +200,17 @@
     .btn-6-6 { margin-top: 5px !important; }
     .btn-6-1{ margin-top: 5px !important;}
     .subscription-section h1 { font-size: 1.5rem; }
+    .navbar-nav {    display: flex !important; flex-wrap: nowrap !important;} 
+    .category-list-section .category-main-sub .makeupmain h3 {  font-size: 1rem;   }
+    
+}
 
+
+/* 
+@media only screen and(min-width:575px)  and (max-width: 350px){ 
+    .navbar-nav {  flex-direction: row;}
+} */
+
+@media only screen   and (max-width: 350px){ 
+    .navbar-nav {    display: flex !important; flex-wrap: wrap !important;}
 }

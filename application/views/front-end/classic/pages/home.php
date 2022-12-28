@@ -299,13 +299,27 @@
     <div class="">
         <h2 class="mhead"> Top brands</h2>
     </div>
-    <div class="top-brands">
-        <div class="row container-fluid rowcontent">
-            <?php foreach($brands as $brand) { ?>
+
+    <div class="swiper1 mySwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide1"> 
+        <?php foreach($brands as $brand) { ?>
                 <div class="col-6 col-md-2">
                     <img src="<?= base_url($brand['image']); ?>" class="img-fluid topbrandicon">
                 </div>
             <?php } ?>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="top-brands">
+        <div class="row container-fluid rowcontent">
+            <?php /* foreach($brands as $brand) { ?>
+                <div class="col-6 col-md-2">
+                    <img src="<?= base_url($brand['image']); ?>" class="img-fluid topbrandicon">
+                </div>
+            <?php } */ ?>
         </div>
     </div>
 </div>

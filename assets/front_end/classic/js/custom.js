@@ -4496,3 +4496,15 @@ $(document).on("keyup", "form.search input.search-input", function() {
         $("#search-list").html('');
     }
 });
+
+
+
+var swiper1 = new Swiper(".mySwiper", {
+    slidesPerView: 4,
+    spaceBetween: 30,
+    centeredSlides: true,
+    autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+  });
