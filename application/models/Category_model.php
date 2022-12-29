@@ -160,13 +160,16 @@ class Category_model extends CI_Model
             // $this->db->where($where1);
             // $result = $this->db->get('seller_data')->result_array();
             // $cat_ids = explode(',', $result[0]['category_ids']);
-            $multipleWhere = ['added_id'=>$seller_id, 'added_by'=>'Seller'];
+            $where = ['added_id'=>$seller_id, 'added_by'=>'Seller'];
         }
 
         $count_res = $this->db->select(' COUNT(id) as `total` ');
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->or_like($multipleWhere);
+        }
+        if (isset($where) && !empty($where)) {
+            $count_res->where($where);
         }
 
         // if (isset($seller_id) && $seller_id != "") {

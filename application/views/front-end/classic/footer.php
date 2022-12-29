@@ -270,24 +270,24 @@
         <section class="hide" id="register_as_seller_div">
             <form id='register-as-seller-form' class='register-seller-form' action='<?= base_url('auth/register-seller') ?>' method="POST">
                 <div class="row seller-signup">
-                    <div class="col-12 d-flex justify-content-center">
-                        <input type="text" class='form-input' maxlength="40" placeholder="Business Name" id="store_name" name="store_name">
+                    <div class="col-12 input-group">
+                        <input type="text" class='form-control' maxlength="40" placeholder="Business Name" id="store_name" name="store_name">
                         <?php echo form_error('store_name', '<div class="error">', '</div>'); ?>
                     </div>
-                    <div class="col-6 d-flex justify-content-center">
-                        <input type="text" class='form-input' maxlength="40" placeholder="First Name" id="first_name" name="first_name">
+                    <div class="col-6 input-group">
+                        <input type="text" class='form-control' maxlength="40" placeholder="First Name" id="first_name" name="first_name">
                     </div>
-                    <div class="col-6 d-flex justify-content-center">
-                        <input type="text" class='form-input' maxlength="40" placeholder="Last Name" id="last_name" name="last_name">
+                    <div class="col-6 input-group">
+                        <input type="text" class='form-control' maxlength="40" placeholder="Last Name" id="last_name" name="last_name">
                     </div>
-                    <div class="col-6 d-flex justify-content-center">
-                        <input type="email" class='form-input' placeholder="Email" id="seller_email" name="email">
+                    <div class="col-6 input-group">
+                        <input type="email" class='form-control' placeholder="Email" id="seller_email" name="email">
                     </div>
-                    <div class="col-6 d-flex justify-content-center">
-                        <input type="text" class='form-input' placeholder="Mobile" id="seller_mobile" maxlength="12"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="mobile">
+                    <div class="col-6 input-group">
+                        <input type="text" class='form-control' placeholder="Mobile" id="seller_mobile" maxlength="12"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="mobile">
                     </div>
-                    <div class="col-12 d-flex justify-content-center">
-                        <input type="text" class='form-input' placeholder="Address Line" id="address" name="address">
+                    <div class="col-12 input-group">
+                        <input type="text" class='form-control' placeholder="Address Line" id="address" name="address">
                     </div>
                     <div class="col-6 justify-content-center">
                         <?php $countries = fetch_details("countries", "flag=1", 'id, name, iso3, iso2'); ?>
@@ -303,25 +303,25 @@
                             <option value="">Select state</option>
                         </select>
                     </div>
-                    <div class="col-6 d-flex justify-content-center">
+                    <div class="col-6 input-group">
                         <?php /* <select class='form-input w-100' name="city" id="city">
                             <option value="">Select city</option>
                         </select> */ ?>
-                        <input type="text" class='form-input' placeholder="City" id="city" name="city">
+                        <input type="text" class='form-control' placeholder="City" id="city" name="city">
                     </div>
                     <?php /* <div class="col-6 d-flex justify-content-center">
                         <select class='form-input w-100' name="area" id="area">
                             <option value="">Select area</option>
                         </select>
                     </div> */ ?>
-                    <div class="col-6 d-flex justify-content-center">
-                        <input type="text" class='form-input' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
+                    <div class="col-6 input-group">
+                        <input type="text" class='form-control' placeholder="Postal / Zip code" id="zipcode" name="zipcode">
                     </div>
-                    <div class="col-12 d-flex justify-content-center">
-                        <input type="password" class='form-input' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters">
+                    <div class="col-12 input-group">
+                        <input type="password" class='form-control' placeholder="Password" id="seller_password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" name="password" title="Must contain at least one number, one uppercase letter, one lowercase letter, one special character, and at least 8 or more characters">
                     </div>
-                    <div class="col-12 d-flex justify-content-center">
-                        <input type="password" class='form-input' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
+                    <div class="col-12 input-group">
+                        <input type="password" class='form-control' placeholder="Retype password" id="seller_confirm_password" name="confirm_password">
                     </div>
                     <div class="col-12 d-flex justify-content-center">
                         <input type="checkbox" class="form-input" name="agree_terms" id="agree_terms">&nbsp;<span> I agree to the <a href="<?= base_url('home/terms-and-conditions') ?>">terms</a></span>

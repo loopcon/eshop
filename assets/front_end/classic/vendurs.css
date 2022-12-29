@@ -453,7 +453,7 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 #quick-view.product-page-content .product-title { font-size: 22px!important; line-height: 22px; }
 .product-page-content .product-image-swiper { width: 100%!important; }
 
-#register_as_seller_div select.form-input { margin-bottom: 26px; }
+#register_as_seller_div select.form-input { margin-bottom: 26px; padding: 15px!important; }
 
 /* .form-field{ width: 350px; } */
 
@@ -474,13 +474,11 @@ button.block {
     margin: auto;
 }
 
-
 .swiper1 {
     width: 100%;
     height: 100%;
-  }
-
-  .swiper-slide1 {
+}
+.swiper-slide1 {
     text-align: center;
     font-size: 18px;
     background: #fff;
@@ -498,15 +496,14 @@ button.block {
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
-  }
-
-  .swiper-slide1 img {
+}
+.swiper-slide1 img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
+}
+.mobile-view { display: none; }
 /* .menutoggle{  display: flex;   }  */
 
 /* .navbar-expand-lg .navbar-nav .dropdown-menu{

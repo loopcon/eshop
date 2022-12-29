@@ -204,40 +204,32 @@ $web_settings = get_settings('web_settings', true);
             <nav class="navbar navbar-expand-lg ">
                 <div class="container-fluid">
                     <div class="responsivelogo">
-                    <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
-                    <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
+                        <img src="<?= THEME_ASSETS_URL. 'img/vendurs 149-144.png' ?>" class="logo p-2">
+                        <a class="navbar-brand brandname" href="<?= base_url() ?>"> Vendurs </a>
                     </div>
-                    <!-- <div class="menutoggle"> -->
-                        <!-- <div> -->
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <!-- <span class="navbar-toggler-icon"></span> -->
-                            <i class="fa-solid fa-bars"></i>
-                        </button>
-                        
-                        <?php if($this->router->fetch_class()!="home") { ?>
-                            <div class="search-box-header">
-                                <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
-                                    <div>
-                                        <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
-                                        <button type="submit"><i class="fa-solid fa-magnifying-glass  searchiconheader "></i></button>
-                                    </div>
-                                    <div id="search-list" class="d-none"></div>
-                                </form>
-                            </div>
-                        <?php } ?>
-                        <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <div class="nav-item dropdown  marketplace-menu shopmenu">
-                                    <a class="nav-link nava marketplace " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
-                                    <div class="dropdown-menu category-menu">
-                                        <div class="row">
-                                        </div>
+                    <?php if($this->router->fetch_class()!="home") { ?>
+                        <div class="search-box-header">
+                            <form class="search" action="<?php echo base_url('products/search'); ?>" method="get">
+                                <div>
+                                    <input class="form-field search-input" type="text" name="q" placeholder="Search for product">
+                                    <button type="submit"><i class="fa-solid fa-magnifying-glass  searchiconheader "></i></button>
+                                </div>
+                                <div id="search-list" class="d-none"></div>
+                            </form>
+                        </div>
+                    <?php } ?>
+                    <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
+                        <div class="collapse navbar-collapse desktop-view" id="navbarSupportedContent">
+                            <div class="nav-item dropdown ms-auto marketplace-menu shopmenu">
+                                <a class="nav-link nava marketplace " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop the marketplace <i class="fa-solid fa-angle-down"></i></a>
+                                <div class="dropdown-menu category-menu">
+                                    <div class="row">
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
-                        <!-- </div> -->
-                    <div class="" id="">
+                        </div>
+                    <?php } ?>
+                    <div class="desktop-view" id="">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 user-login-menu">
                             <?php if ($this->ion_auth->logged_in()) { ?>
                                 <li class="nav-item dropdown active">
@@ -254,10 +246,10 @@ $web_settings = get_settings('web_settings', true);
                                 </li>
                             <?php } else { ?>
                                 <li class="nav-item">
-                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="user" href="javascript:void(0);"><?= !empty($this->lang->line('user')) ? $this->lang->line('user') : 'User' ?> <img src="<?= THEME_ASSETS_URL. 'img/user.png' ?>"></a>
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="user" href="javascript:void(0);"><span><?= !empty($this->lang->line('user')) ? $this->lang->line('user') : 'User' ?></span> <img src="<?= THEME_ASSETS_URL. 'img/user.png' ?>"></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="seller" href="javascript:void(0);"><?= !empty($this->lang->line('seller')) ? $this->lang->line('seller') : 'Seller' ?> <img src="<?= THEME_ASSETS_URL. 'img/seller.png' ?>"></a>
+                                    <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-user_type="seller" href="javascript:void(0);"><span><?= !empty($this->lang->line('seller')) ? $this->lang->line('seller') : 'Seller' ?></span> <img src="<?= THEME_ASSETS_URL. 'img/seller.png' ?>"></a>
                                 </li>
                                 <?php /* <li class="nav-item">
                                     <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="login" href="javascript:void(0);"> <?= !empty($this->lang->line('login')) ? $this->lang->line('login') : 'Login' ?> <img src="<?= THEME_ASSETS_URL. 'img/login.png' ?>"> </a>
@@ -270,16 +262,16 @@ $web_settings = get_settings('web_settings', true);
                                 </li> */ ?>
                             <?php } ?>
                             <li class="nav-item">
-                                <a href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>" class="m-2 "> </a>
+                                <a class="nav-link nava" href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>"> </a>
                             </li>
                             <li class="nav-item">
-                                <a href="<?= base_url('compare') ?>" onclick=display_compare() data-product-id="<?= (isset($row['id']) && $row['id']) != 0 ? $row['id'] : '' ?>"> <img src="<?= THEME_ASSETS_URL. 'img/ri_exchange-fill.png' ?>" class="m-2"> </a>
+                                <a class="nav-link nava" href="<?= base_url('compare') ?>" onclick=display_compare() data-product-id="<?= (isset($row['id']) && $row['id']) != 0 ? $row['id'] : '' ?>"> <img src="<?= THEME_ASSETS_URL. 'img/ri_exchange-fill.png' ?>"> </a>
                             </li>
                             <?php $page = $this->uri->segment(2) == 'checkout' ? 'checkout' : '' ?>
                             <?php if ($page == 'checkout') { ?>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('cart') ?>" class="">
-                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
+                                    <a href="<?= base_url('cart') ?>" class="nav-link nava">
+                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="">
                                         <span class="badge badge-danger badge-sm" id='cart-count'>
                                             <?php if($is_logged_in==1) { ?>
                                                 <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : '0'); ?>
@@ -291,8 +283,8 @@ $web_settings = get_settings('web_settings', true);
                                 </li>
                             <?php } else { ?>
                                 <li class="nav-item">
-                                    <a href="javascript:void(0);" class="" onclick=openCartSidebar()>
-                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="m-2">
+                                    <a href="javascript:void(0);" class="nav-link nava" onclick=openCartSidebar()>
+                                        <img src="<?= THEME_ASSETS_URL. 'img/bxs_cart-add.png' ?>" class="">
                                         <span class="badge badge-danger badge-sm" id='cart-count'>
                                             <?php if($is_logged_in==1) { ?>
                                                 <?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : '0'); ?>
@@ -305,11 +297,51 @@ $web_settings = get_settings('web_settings', true);
                             <?php } ?>
                         </ul>
                     </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <!-- <span class="navbar-toggler-icon"></span> -->
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <!-- </div> -->
                 </div>
-
-
-                
+                <div class="mobile-view m-category-menu" id="openCategoryMenu">
+                    <div class="level-1">
+                        <ul>
+                            <?php foreach($categories as $cat_level_1) { ?>
+                                <li>
+                                    <a class="dropdown-item" href="<?php echo base_url('products/category/'.$cat_level_1['slug'])?>"><?php echo $cat_level_1['name'];?></a>
+                                    <?php if(!empty($cat_level_1['children'])) { ?>
+                                        <i class="fa fa-angle-up updown-arrow-level-1"></i>
+                                    <?php } ?>
+                                    <div class="level-2">
+                                        <?php if(!empty($cat_level_1['children'])) { ?>
+                                            <ul>
+                                                <?php foreach($cat_level_1['children'] as $cat_level_2) { ?>
+                                                    <li>
+                                                        <a class="dropdown-item" href="<?php echo base_url('products/category/'.$cat_level_2['slug'])?>"><?php echo $cat_level_2['name'];?></a>
+                                                        <?php if(!empty($cat_level_2['children'])) { ?>
+                                                            <i class="fa fa-angle-up updown-arrow-level-2"></i>
+                                                        <?php } ?>
+                                                        <div class="level-3">
+                                                            <?php if(!empty($cat_level_2['children'])) { ?>
+                                                                <ul>
+                                                                    <?php foreach($cat_level_2['children'] as $cat_level_3) { ?>
+                                                                        <li>
+                                                                            <a class="dropdown-item" href="<?php echo base_url('products/category/'.$cat_level_3['slug'])?>"><?php echo $cat_level_3['name'];?></a>
+                                                                        </li>
+                                                                    <?php } ?>
+                                                                </ul>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
+                                        <?php } ?>
+                                    </div>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
             </nav>
 
             <?php if($this->router->fetch_class()=="home" && $this->router->fetch_method()=="index") { ?>
@@ -426,7 +458,6 @@ $web_settings = get_settings('web_settings', true);
             <a class="shopping-cart-sidebar-btn d-none" href="<?= base_url('cart') ?>">
                 <i class="fa-cart fa-cart-plus fas link-color"></i>
             </a>
-
         <?php } else { ?>
             <a class="shopping-cart-sidebar-btn d-none" href="#" onclick="openCartSidebar()">
                 <i class="fa-cart fa-cart-plus fas link-color"></i>
@@ -498,7 +529,6 @@ $web_settings = get_settings('web_settings', true);
                                 <span class="badge badge-danger badge-sm" id='cart-count'><?= (count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) != 0 ? count($this->cart_model->get_user_cart($this->session->userdata('user_id'))) : ''); ?></span>
                             </a>
                         </li>
-
                     <?php } else { ?>
                         <li class="nav-item active">
                             <a href="javascript:void(0);" class="p-2 header-icon" onclick=openCartSidebar()>
@@ -581,13 +611,5 @@ $web_settings = get_settings('web_settings', true);
 </header> */ ?>
 <!-- header ends -->
 
-
 <!-- mobile screen navbar start  -->
-
-                                            
-                                            
-
-
-
-
 <!-- mobile screen navbar end  -->

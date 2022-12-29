@@ -2379,6 +2379,7 @@ $('.auth_model').on('click', function (e) {
         $('#for-seller').hide();
         $('#login').addClass('active');
         $('#login_div').removeClass('hide');
+        $('#forgot_password_div').addClass('hide');
         $('#register').removeClass('active');
         $('#register_div').addClass('hide');
     } else if(user_type=="seller") {
@@ -4497,8 +4498,6 @@ $(document).on("keyup", "form.search input.search-input", function() {
     }
 });
 
-
-
 var swiper1 = new Swiper(".mySwiper", {
     slidesPerView: 4,
     spaceBetween: 30,
@@ -4507,4 +4506,24 @@ var swiper1 = new Swiper(".mySwiper", {
         delay: 2500,
         disableOnInteraction: false,
       },
-  });
+});
+
+$('.navbar-toggler').click(function() {
+    $('#openCategoryMenu').slideToggle('slow');
+});
+$('.level-1 ul li i.updown-arrow-level-1').click(function() {
+    $(this).closest('li').find('.level-2').toggle();
+    if($(this).closest('li').find('.level-2').is(":visible")) {
+        $(this).addClass('fa-angle-down').removeClass('fa-angle-up');
+    } else {
+        $(this).addClass('fa-angle-up').removeClass('fa-angle-down');
+    }
+});
+$('.level-1 .level-2 ul li i.updown-arrow-level-2').click(function() {
+    $(this).closest('li').find('.level-3').toggle();
+    if($(this).closest('li').find('.level-3').is(":visible")) {
+        $(this).addClass('fa-angle-down').removeClass('fa-angle-up');
+    } else {
+        $(this).addClass('fa-angle-up').removeClass('fa-angle-down');
+    }
+});

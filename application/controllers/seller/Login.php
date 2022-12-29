@@ -382,6 +382,7 @@ class Login extends CI_Controller
                             $this->email->initialize($email_config);
 
                             // email send to admin
+                            $data = array();
                             $admin_message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_admin_seller_profile_updated', 'ion_auth'), $data, true);
                             $this->email->clear();
                             $this->email->from($admin_email, $site_title);
