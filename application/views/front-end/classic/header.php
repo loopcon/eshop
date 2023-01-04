@@ -263,7 +263,7 @@ $web_settings = get_settings('web_settings', true);
                                 </li> */ ?>
                             <?php } ?>
                             <?php /* <li class="nav-item">
-                                <a class="nav-link nava" href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>"> </a>
+                                <a class="nav-link nava" href="<?= base_url('my-account/favorites') ? >"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ? >"> </a>
                             </li> */ ?>
                             <li class="nav-item">
                                 <a class="nav-link nava" href="<?= base_url('compare') ?>" onclick=display_compare() data-product-id="<?= (isset($row['id']) && $row['id']) != 0 ? $row['id'] : '' ?>"> <img src="<?= THEME_ASSETS_URL. 'img/ri_exchange-fill.png' ?>"> </a>
