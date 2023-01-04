@@ -126,7 +126,7 @@ class Category_model extends CI_Model
     }
 
 
-    public function get_category_list($seller_id = NULL, $added_by = NULL)
+    public function get_category_list($seller_id = NULL, $from = NULL)
     {
         $offset = 0;
         $limit = 10;
@@ -144,7 +144,7 @@ class Category_model extends CI_Model
 
         if (isset($_GET['sort']))
             if ($_GET['sort'] == 'id') {
-                $sort = "id";
+                $sort = "categories.id";
             } else {
                 $sort = $_GET['sort'];
             }
@@ -164,7 +164,12 @@ class Category_model extends CI_Model
             $where = ['added_id'=>$seller_id, 'added_by'=>'Seller'];
         }
 
-        $count_res = $this->db->select(' COUNT(id) as `total` ');
+        $count_res = $this->db->select(' COUNT(categories.id) as `total` ');
+
+        if($from=='Seller') {
+            $count_res->join('seller_categories', 'seller_categories.category_id=categories.id', 'left');
+            $where = ['seller_categories.seller_id'=>$seller_id];
+        }
 
         if (isset($multipleWhere) && !empty($multipleWhere)) {
             $count_res->or_like($multipleWhere);
@@ -193,6 +198,11 @@ class Category_model extends CI_Model
         // if (isset($seller_id) && $seller_id != "") {
         //     $count_res->where_in('id', $cat_ids);
         // }
+
+        if($from=='Seller') {
+            $search_res->join('seller_categories', 'seller_categories.category_id=categories.id', 'left');
+            $search_res->where('seller_categories.seller_id', $seller_id);
+        }
 
         $cat_search_res = $search_res->order_by($sort, "asc")->limit($limit, $offset)->get('categories')->result_array();
         $bulkData = array();

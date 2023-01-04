@@ -57,8 +57,8 @@ class Category extends CI_Controller
     {
         if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller() && ($this->ion_auth->seller_status() == 1 || $this->ion_auth->seller_status() == 0 || $this->ion_auth->seller_status() == 3)) {
             $user_id = $this->session->userdata('user_id');
-            $added_by = 'Seller';
-            return $this->category_model->get_category_list($user_id, $added_by);
+            $from = 'Seller';
+            return $this->category_model->get_category_list($user_id, $from);
         } else {
             redirect('seller/login', 'refresh');
         }

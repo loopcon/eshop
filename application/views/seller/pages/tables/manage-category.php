@@ -59,7 +59,7 @@
                                         <th data-field="image" data-sortable="true">Image</th>
                                         <th data-field="banner" data-sortable="true" >Banner</th>
                                         <th data-field="status" data-sortable="true">Status</th>
-                                        <th data-field="operate" data-sortable="true">Action</th>
+                                        <?php /* <th data-field="operate" data-sortable="true">Action</th> */ ?>
                                     </tr>
                                 </thead>
                             </table>
