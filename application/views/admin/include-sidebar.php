@@ -56,9 +56,9 @@
                                     </a>
                                 </li>
                             <?php } ?>
-                            <?php /* if (has_permissions('read', 'orders')) { ?>
+                            <?php /* if (has_permissions('read', 'orders')) { ? >
                                 <li class="nav-item">
-                                    <a href="<?= base_url('admin/orders/order-tracking') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin/orders/order-tracking') ? >" class="nav-link">
                                         <i class="fa fa-map-marker-alt nav-icon"></i>
                                         <p>Order Tracking</p>
                                     </a>
@@ -91,14 +91,14 @@
                                     </a>
                                 </li>
                             <?php } ?>
-                            <?php if (has_permissions('read', 'category_order')) { ?>
+                            <?php /* if (has_permissions('read', 'category_order')) { ? >
                                 <li class="nav-item">
-                                    <a href="<?= base_url('admin/category/category-order') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin/category/category-order') ? >" class="nav-link">
                                         <i class="fa fa-bars nav-icon"></i>
                                         <p>Category Order</p>
                                     </a>
                                 </li>
-                            <?php } ?>
+                            <?php } */ ?>
                         </ul>
                     </li>
                 <?php } ?>

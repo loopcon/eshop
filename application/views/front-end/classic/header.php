@@ -1,6 +1,6 @@
 <?php
 $this->load->model('category_model');
-$categories = $this->category_model->get_categories(null, 8);
+$categories = $this->category_model->get_categories(null, '', '', 'c1.name');
 $language = get_languages();
 $cookie_lang = $this->input->cookie('language', TRUE);
 $language_index = 0;
