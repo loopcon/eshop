@@ -2576,6 +2576,35 @@ $(document).on('click', '#tree_view', function () {
     });
 });
 
+if (window.location.href.indexOf("seller/category") > -1) {
+    var category_url = base_url + 'seller/category/get_categories';
+    $.ajax({
+        type: 'GET',
+        url: category_url,
+        dataType: 'json',
+        success: function (result) {
+            console.log(result);
+            $('#treeview_json').jstree({
+                'plugins': ["wholerow", "checkbox", "types"],
+                'core': {
+                    'data': result['data']
+                }
+            });
+        }
+    });
+
+    $(document).on("click", "#treeview_json li", function() {
+        var selected_categories = [];
+        $("#treeview_json li.jstree-node").each(function() {
+            if($(this).attr('aria-selected')=="true") {
+                selected_categories.push($(this).attr('id'));
+            }
+        });
+        selected_categories = selected_categories.join(",");
+        $("#selected_categories").val(selected_categories);
+    });
+}
+
 function update_status(update_id, status, table, user) {
     $.ajax({
         type: 'GET',
@@ -4982,7 +5011,15 @@ $(document).on('click', '#seller_model', function (e) {
                 csrfHash = result.csrfHash;
                 if (result.error == false) {
                     var option_html = $('#cat_html').html();
+                    var categories_html = '<div class="form-group row">';
                     $.each(result.data, function (i, e) {
+                        var is_selected = (e.category_id == cat_array[i] && e.seller_id == seller_id) ? "selected" : "";
+                        option_html += '<option value=' + e.category_id + ' ' + is_selected + '>' + e.name + '</option>';
+                        categories_html += '<div class="col-sm-6 mb-3"><select name="category_id" class="form-control select_multiple w-100" data-placeholder=" Select Category" disabled><option value="">Select Category</option>'+option_html+'</select></div>';
+                    });
+                    categories_html += '</div>';
+                    $('#category_section').append(categories_html);
+                    /*$.each(result.data, function (i, e) {
                         var is_selected = (e.category_id == cat_array[i] && e.seller_id == seller_id) ? "selected" : "";
                         if (is_selected === '') {
                             load_category_section(cat_html);
@@ -4990,7 +5027,7 @@ $(document).on('click', '#seller_model', function (e) {
                             option_html += '<option value=' + e.category_id + ' ' + is_selected + '>' + e.name + '</option>';
                             load_category_section("", true, option_html, e.commission);
                         }
-                    });
+                    });*/
                 } else {
                     iziToast.error({
                         message: '<span>' + result.message + '</span> ',
@@ -5004,9 +5041,7 @@ $(document).on('click', '#seller_model', function (e) {
             load_category_section(cat_html);
         }
         count_view = 1;
-
     }
-
 });
 $(document).on('click', '#add_category', function (e) {
     e.preventDefault();
@@ -5014,9 +5049,7 @@ $(document).on('click', '#add_category', function (e) {
 });
 
 function load_category_section(cat_html, is_edit = false, option_html = "", commission = 0) {
-
     if (is_edit == true) {
-
         var html = ' <div class="form-group  row">' +
             '<div class="col-sm-5">' +
             '<select name="category_id" class="form-control select_multiple w-100" data-placeholder=" Select Category">' +
@@ -5056,8 +5089,6 @@ function load_category_section(cat_html, is_edit = false, option_html = "", comm
             allowClear: Boolean($('.select_multiple').data('allow-clear')),
         });
     });
-
-
 }
 
 $(document).on('click', '.remove_category_section', function () {

@@ -43,10 +43,11 @@ class Category_model extends CI_Model
         $count_res = $this->db->count_all_results('categories c1');
         $i = 0;
         foreach ($categories as $p_cat) {
+            $seller_has = $this->check_seller_has_category($p_cat->id);
             $categories[$i]->children = $this->sub_categories($p_cat->id, $level);
             $categories[$i]->text = output_escaping($p_cat->name);
             $categories[$i]->name = output_escaping($categories[$i]->name);
-            $categories[$i]->state = ['opened' => true];
+            $categories[$i]->state = ['opened' => true, 'selected'=>$seller_has];
             $categories[$i]->icon = "jstree-folder";
             $categories[$i]->level = $level;
             $categories[$i]->image = get_image_url($categories[$i]->image, 'thumb', 'sm');
@@ -68,7 +69,7 @@ class Category_model extends CI_Model
         $result = $this->db->get('seller_data')->result_array();
         $count_res = $this->db->count_all_results('seller_data');
         $result = explode(",", (string) $result[0]['category_ids']);
-        $categories =  fetch_details('categories', "status = 1", '*', "", "", "", "", "id", $result);
+        $categories =  fetch_details('categories', "status = 1 AND parent_id=0", '*', "", "", "", "", "id", $result);
         $i = 0;
         foreach ($categories as $p_cat) {
             $categories[$i]['children'] = $this->sub_categories($p_cat['id'], $level);
@@ -97,10 +98,10 @@ class Category_model extends CI_Model
         $categories = $child->result();
         $i = 0;
         foreach ($categories as $p_cat) {
-
+            $seller_has = $this->check_seller_has_category($p_cat->id);
             $categories[$i]->children = $this->sub_categories($p_cat->id, $level);
             $categories[$i]->text = output_escaping($p_cat->name);
-            $categories[$i]->state = ['opened' => true];
+            $categories[$i]->state = ['opened' => true, 'selected'=>$seller_has];
             $categories[$i]->level = $level;
             $categories[$i]->image = get_image_url($categories[$i]->image, 'thumb', 'md');
             $categories[$i]->banner = get_image_url($categories[$i]->banner, 'thumb', 'md');
@@ -294,5 +295,16 @@ class Category_model extends CI_Model
         $data['rows'] = $query->result_array();
 
         print_r(json_encode($data));
+    }
+
+    public function check_seller_has_category($category_id) {
+        $this->db->select('category_id');
+        $this->db->where('category_id', $category_id);
+        $this->db->where('seller_id', $this->session->userdata('user_id'));
+        $has_category = $this->db->get('seller_categories')->row_array();
+        if(!empty($has_category)) {
+            return true;
+        }
+        return false;
     }
 }

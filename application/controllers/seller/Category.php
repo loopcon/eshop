@@ -75,7 +75,7 @@ class Category extends CI_Controller
                 $this->data['fetched_data'] = fetch_details('categories', ['id' => $_GET['edit_id']]);
             }
 
-            $this->data['categories'] = $this->category_model->get_categories();
+            $this->data['categories'] = $this->category_model->get_categories(NULL, '', '', 'row_order', 'ASC', 'true', '', '', $this->session->userdata('user_id'));
 
             $this->load->view('seller/template', $this->data);
         } else {
@@ -86,7 +86,6 @@ class Category extends CI_Controller
     public function add_category()
     {
         if ($this->ion_auth->logged_in() && $this->ion_auth->is_seller()) {
-
             /*if (isset($_POST['edit_category'])) {
                 if (print_msg(!has_permissions('update', 'categories'), PERMISSION_ERROR_MSG, 'categories')) {
                     return false;
@@ -97,8 +96,8 @@ class Category extends CI_Controller
                 }
             }*/
 
-            $this->form_validation->set_rules('category_input_name', 'Category Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('banner', 'Banner', 'trim|xss_clean');
+            $this->form_validation->set_rules('selected_categories', 'Category', 'trim|required|xss_clean');
+            // $this->form_validation->set_rules('banner', 'Banner', 'trim|xss_clean');
 
             /*if (isset($_POST['edit_category'])) {
                 $this->form_validation->set_rules('category_input_image', 'Image', 'trim|xss_clean');
@@ -106,25 +105,37 @@ class Category extends CI_Controller
                 $this->form_validation->set_rules('category_input_image', 'Image', 'trim|required|xss_clean', array('required' => 'Category image is required.'));
             }*/
 
-
             if (!$this->form_validation->run()) {
-
                 $this->response['error'] = true;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();
                 $this->response['message'] = validation_errors();
                 print_r(json_encode($this->response));
             } else {
-                $_POST['added_id'] = $this->session->userdata('user_id');
-                $_POST['added_by'] = 'Seller';
-                $this->category_model->add_category($_POST);
-                $seller_category = fetch_details('categories', ['added_id'=>$this->session->userdata('user_id'), 'added_by'=>'Seller']);
-                $categories = array();
-                foreach($seller_category as $category) {
-                    $categories[] = $category['id'];
+                $selected_categories = $_POST['selected_categories'];
+                $categories = explode(",", $selected_categories);
+                delete_details(array("seller_id"=>$this->session->userdata('user_id')), "seller_categories");
+                foreach($categories as $category) {
+                    $seller_categories_data = array(
+                        "seller_id" => $this->session->userdata('user_id'),
+                        "category_id" => $category
+                    );
+                    insert_details($seller_categories_data, "seller_categories");
+                    $seller_commission_data = array(
+                        'seller_id' => $this->session->userdata('user_id'),
+                        'category_id'=>$category, 'commission'=>0
+                    );
+                    insert_details($seller_commission_data, "seller_commission");
                 }
-                $categories = implode(",", $categories);
-                update_details(array('category_ids'=>$categories), array('user_id'=>$this->session->userdata('user_id')), 'seller_data');
+                // $_POST['added_id'] = $this->session->userdata('user_id');
+                // $_POST['added_by'] = 'Seller';
+                // $this->category_model->add_category($_POST);
+                // $seller_category = fetch_details('categories', ['added_id'=>$this->session->userdata('user_id'), 'added_by'=>'Seller']);
+                // $categories = array();
+                // foreach($seller_category as $category) {
+                //     $categories[] = $category['id'];
+                // }
+                update_details(array('category_ids'=>$selected_categories), array('user_id'=>$this->session->userdata('user_id')), 'seller_data');
                 $this->response['error'] = false;
                 $this->response['csrfName'] = $this->security->get_csrf_token_name();
                 $this->response['csrfHash'] = $this->security->get_csrf_hash();

@@ -143,9 +143,15 @@ class Sellers extends CI_Controller
             $seller_media = fetch_details('seller_data', ['user_id' => $id], 'id,logo,national_identity_card,address_proof');
 
             if (!empty($seller_media)) {
-                unlink(FCPATH . $seller_media[0]['logo']);
-                unlink(FCPATH . $seller_media[0]['national_identity_card']);
-                unlink(FCPATH . $seller_media[0]['address_proof']);
+                if(!empty($seller_media[0]['logo'])) {
+                    unlink(FCPATH . $seller_media[0]['logo']);
+                }
+                if(!empty($seller_media[0]['national_identity_card'])) {
+                    unlink(FCPATH . $seller_media[0]['national_identity_card']);
+                }
+                if(!empty($seller_media[0]['address_proof'])) {
+                    unlink(FCPATH . $seller_media[0]['address_proof']);
+                }
             }
 
             if (update_details(['seller_id' => 0], ['seller_id' => $id], 'media')) {
@@ -738,9 +744,9 @@ class Sellers extends CI_Controller
             if (isset($_POST['id']) && !empty($_POST['id'])) {
                 $id = $this->input->post('id', true);
                 $result = $this->Seller_model->get_seller_commission_data($id);
-                if (empty($result)) {
-                    $result = $this->category_model->get_categories();
-                }
+                // if (empty($result)) {
+                //     $result = $this->category_model->get_categories();
+                // }
             } else {
                 $result = fetch_details('categories', "",  'id,name');
             }
