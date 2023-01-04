@@ -234,12 +234,13 @@ $web_settings = get_settings('web_settings', true);
                             <?php if ($this->ion_auth->logged_in()) { ?>
                                 <li class="nav-item dropdown active">
                                     <a class="m-1" data-toggle="dropdown" href="#"><i class="fas fa-user fa-lg link-color"></i>
-                                        <span class="text-dark font-weight-bold"> <?= (isset($user->username) && !empty($user->username)) ? "Hello " . $user->username  : 'Login / Register' ?></span>
+                                        <span class="text-dark font-weight-bold"> <?= (isset($user->username) && !empty($user->username)) ? $user->username : 'Login / Register' ?></span>
                                         <i class="fas fa-angle-down link-color"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-lg after-login-menu">
                                         <a href="<?= base_url('my-account/wallet') ?>" class="dropdown-item"><i class="fas fa-wallet mr-2 text-primary link-color"></i> <?= $settings['currency'] . ' ' . number_format($user->balance, 2) ?></a>
                                         <a href="<?= base_url('my-account') ?>" class="dropdown-item"><i class="fas fa-user mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('profile')) ? $this->lang->line('profile') : 'Profile' ?> </a>
+                                        <a href="<?= base_url('my-account/favorites') ?>" class="dropdown-item"><i class="fas fa-heart mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('favorites')) ? $this->lang->line('favorites') : 'Favorites' ?> </a>
                                         <a href="<?= base_url('my-account/orders') ?>" class="dropdown-item"><i class="fas fa-history mr-2 text-primary link-color"></i> <?= !empty($this->lang->line('orders')) ? $this->lang->line('orders') : 'Orders' ?> </a>
                                         <a href="<?= base_url('login/logout') ?>" class="dropdown-item"><i class="fa fa-sign-out-alt mr-2 text-primary link-color"></i><?= !empty($this->lang->line('logout')) ? $this->lang->line('logout') : 'Logout' ?></a>
                                     </div>
@@ -261,9 +262,9 @@ $web_settings = get_settings('web_settings', true);
                                     <a class="nav-link nava auth_model" data-izimodal-open=".auth-modal" data-value="register-as-seller" href="javascript:void(0);"> <?= !empty($this->lang->line('register_as_seller')) ? $this->lang->line('register_as_seller') : 'Register as seller' ?> <img src="<?= THEME_ASSETS_URL. 'img/register.png' ?>"> </a>
                                 </li> */ ?>
                             <?php } ?>
-                            <li class="nav-item">
+                            <?php /* <li class="nav-item">
                                 <a class="nav-link nava" href="<?= base_url('my-account/favorites') ?>"> <img src="<?= THEME_ASSETS_URL. 'img/like.png' ?>"> </a>
-                            </li>
+                            </li> */ ?>
                             <li class="nav-item">
                                 <a class="nav-link nava" href="<?= base_url('compare') ?>" onclick=display_compare() data-product-id="<?= (isset($row['id']) && $row['id']) != 0 ? $row['id'] : '' ?>"> <img src="<?= THEME_ASSETS_URL. 'img/ri_exchange-fill.png' ?>"> </a>
                             </li>
