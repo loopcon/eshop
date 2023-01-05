@@ -941,6 +941,7 @@ class Cart extends CI_Controller
                     return false;
                 } else {
                     $overall_amount = $overall_amount - $validate['data'][0]['final_discount'];
+                    $overall_amount = number_format($overall_amount, 2);
                 }
             }
             if ($_POST['payment_method'] == "Razorpay") {

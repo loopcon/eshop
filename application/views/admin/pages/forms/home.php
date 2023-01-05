@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+                <?php /* <div class="col-xl-3 col-lg-6 col-md-6 col-12">
                     <div class="card pull-up">
                         <div class="card-content">
                             <div class="card-body">
@@ -47,13 +47,13 @@
                                     </div>
                                     <div class="media-body text-right">
                                         <h5 class="text-muted text-bold-500">Delivery Boys</h5>
-                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/delivery-boys/manage-delivery-boy') ?>"><?= $delivery_boy_counter ?></a></h3>
+                                        <h3 class="text-bold-600"><a href="<?= base_url('admin/delivery-boys/manage-delivery-boy') ? >"><?= $delivery_boy_counter ? ></a></h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */ ?>
                 <div class="col-xl-3 col-lg-6 col-md-6 col-12">
                     <div class="card pull-up">
                         <div class="card-content">

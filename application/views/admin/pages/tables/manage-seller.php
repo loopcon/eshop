@@ -21,19 +21,19 @@
             <div class="row">
                 <div class="col-md-12 main-content">
                     <div class="card content-area p-4">
-                        <div class="card-header border-0">
+                        <?php /* <div class="card-header border-0">
                             <div class="card-tools row ">
-                                <a href="<?= base_url() . 'admin/sellers/manage-seller' ?>" class="btn btn-block  btn-outline-primary btn-sm">Add Seller </a>
+                                <a href="<?= base_url() . 'admin/sellers/manage-seller' ? >" class="btn btn-block  btn-outline-primary btn-sm">Add Seller </a>
                                 <a href="#" id="create-slug" class="btn btn-block  btn-outline-primary btn-sm">Create Seller Slug </a>
                             </div>
 
-                        </div>
+                        </div> */ ?>
                         <div class="card-innr">
-                            <div class="row col-md-6">
+                            <?php /* <div class="row col-md-6">
                                 <div class="row col-md-4 pull-right">
                                     <a href="#" class="btn btn-success update-seller-commission" title="If you found seller commission not crediting using cron job you can update seller commission from here!">Update Seller Commission</a>
                                 </div>
-                            </div>
+                            </div> */ ?>
                             <div class="gaps-1-5x"></div>
                             <table class='table-striped' id='seller_table' data-toggle="table" data-url="<?= base_url('admin/sellers/view_sellers') ?>" data-click-to-select="true" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true" data-show-columns="true" data-show-refresh="true" data-trim-on-search="false" data-sort-name="sd.id" data-sort-order="DESC" data-mobile-responsive="true" data-toolbar="" data-show-export="true" data-maintain-selected="true" data-export-types='["txt","excel"]' data-query-params="queryParams">
                                 <thead>

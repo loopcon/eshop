@@ -449,7 +449,7 @@ body { padding: 0px; font-family: 'Typey McTypeface'!important }
 
 /* Product page - Start */
 .swiper-container { overflow: hidden; }
-.product-preview-image-section-md .product-view-image-container img { height: 280px; /*width: auto;*/ margin: 0px auto; }
+.product-preview-image-section-md .product-view-image-container img { height: auto; width: auto; margin: 0px auto; }
 #quick-view .product-preview-image-section-md .product-view-image-container img { height: auto; width: auto; margin: 0px auto; }
 .swiper-button-next, .swiper-button-prev { top: 14%!important; }
 .product-gallery-thumbs img { height: 100px!important; }
@@ -507,6 +507,11 @@ button.block {
     object-fit: cover;
 }
 .mobile-view { display: none; }
+
+/*.product-preview-image-section-md .product-view-image-container {
+    height: 280px;
+}*/
+
 /* .menutoggle{  display: flex;   }  */
 
 /* .navbar-expand-lg .navbar-nav .dropdown-menu{

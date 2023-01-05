@@ -151,37 +151,38 @@
                                                 <input type="text" class="col-md-12 form-control" name="guarantee_period" value="<?= (isset($product_details[0]['guarantee_period'])) ? $product_details[0]['guarantee_period'] : "" ?>" placeholder='Guarantee Period if any'>
                                             </div>
                                             <div class="row col">
-                                                <div class="col-md-6">
+                                                <input type="hidden" name="deliverable_type" value="<?=NONE ?>" id="deliverable_type">
+                                                <?php /* <div class="col-md-6">
                                                     <label for="zipcode" class="col-form-label">Deliverable Type</label>
                                                     <select class='form-control' name='deliverable_type' id="deliverable_type">
-                                                        <option value=<?= NONE ?> <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == NONE) ? 'selected' : ''; ?>>None</option>
-                                                        <?php if (!isset($product_details)) { ?>
-                                                            <option value=<?= ALL ?> selected>All</option>
-                                                        <?php } else { ?>
-                                                            <option value=<?= ALL ?> <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == ALL) ? 'selected' : ''; ?>>All</option>
-                                                        <?php } ?>
-                                                        <option value=<?= INCLUDED ?> <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == INCLUDED) ? 'selected' : ''; ?>>Included</option>
-                                                        <option value=<?= EXCLUDED ?> <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == EXCLUDED) ? 'selected' : ''; ?>>Excluded</option>
+                                                        <option value=<?= NONE ? > <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == NONE) ? 'selected' : ''; ? >>None</option>
+                                                        <?php if (!isset($product_details)) { ? >
+                                                            <option value=<?= ALL ? > selected>All</option>
+                                                        <?php } else { ? >
+                                                            <option value=<?= ALL ? > <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == ALL) ? 'selected' : ''; ? >>All</option>
+                                                        <?php } ? >
+                                                        <option value=<?= INCLUDED ? > <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == INCLUDED) ? 'selected' : ''; ? >>Included</option>
+                                                        <option value=<?= EXCLUDED ? > <?= (isset($product_details[0]['deliverable_type']) &&  $product_details[0]['deliverable_type'] == EXCLUDED) ? 'selected' : ''; ? >>Excluded</option>
                                                     </select>
                                                 </div>
-                                                <?php $zipcodes = (isset($product_details[0]['deliverable_zipcodes']) &&  $product_details[0]['deliverable_zipcodes'] != NULL) ? explode(",", $product_details[0]['deliverable_zipcodes']) : ""; ?>
+                                                <?php $zipcodes = (isset($product_details[0]['deliverable_zipcodes']) &&  $product_details[0]['deliverable_zipcodes'] != NULL) ? explode(",", $product_details[0]['deliverable_zipcodes']) : ""; ? >
                                                 <div class="col-md-6 col-sm-12">
                                                     <label for="zipcodes" class="col-form-label">Deliverable Zipcodes</label>
                                                     <div class="col-md-12">
-                                                        <select name="deliverable_zipcodes[]" class="search_zipcode w-100" multiple onload="multiselect()" id="deliverable_zipcodes" <?= (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED))  ? "" : "disabled" ?>>
+                                                        <select name="deliverable_zipcodes[]" class="search_zipcode w-100" multiple onload="multiselect()" id="deliverable_zipcodes" <?= (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED))  ? "" : "disabled" ? >>
                                                             <?php
                                                                 if (isset($product_details[0]['deliverable_type']) &&  ($product_details[0]['deliverable_type'] == INCLUDED || $product_details[0]['deliverable_type'] == EXCLUDED)) {
                                                                     $zipcodes_name =  fetch_details('zipcodes', "",  'zipcode,id', "", "", "", "", "id", $zipcodes);
                                                                     foreach ($zipcodes_name as $row) {
-                                                            ?>
-                                                                <option value=<?= $row['id'] ?> <?= (in_array($row['id'], $zipcodes)) ? 'selected' : ''; ?>> <?= $row['zipcode'] ?></option>
+                                                            ? >
+                                                                <option value=<?= $row['id'] ? > <?= (in_array($row['id'], $zipcodes)) ? 'selected' : ''; ? >> <?= $row['zipcode'] ? ></option>
                                                             <?php
                                                                     }
                                                                 }
-                                                            ?>
+                                                            ? >
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> */ ?>
                                             </div>
                                         </div>
                                         <div class="row col mt-3">

@@ -24,7 +24,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Categories & Commission(%)</h5>
+                                <h5 class="modal-title">Categories</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -34,18 +34,18 @@
 
                                     <div class="card-body row">
                                         <!-- dynamic section here -->
-                                        <label for="Categories" class="col-sm-2 col-form-label">Categories</label>
+                                        <!-- <label for="Categories" class="col-sm-2 col-form-label">Categories</label> -->
 
                                         <div id="category_section"> </div>
 
-                                        <div class="form-group col-md-12  text-center">
+                                        <?php /* <div class="form-group col-md-12  text-center">
                                             <button type="button" id="add_category" class="btn btn-primary"> <i class="far fa-plus"></i> Add More Category </button>
                                         </div>
                                         <br>
                                         <div class="form-group ">
                                             <button type="reset" class="btn btn-warning">Reset</button>
                                             <button type="submit" class="btn btn-success" id="save_btn">Save</button>
-                                        </div>
+                                        </div> */ ?>
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <div class="form-group" id="error_box">
@@ -191,14 +191,14 @@
                                     <?php
                                     $category_html =  get_categories_option_html($categories);
                                     ?>
-                                    <label for="commission" class="col-sm-8 col-form-label">Choose Categories & Commission(%) <small>(Commission(%) to be given to the Super Admin on order item by Category you select.If you do not set the commission beside category then it will get global commission other wise perticuler category commission will be consider.)</small> </label>
+                                    <label for="commission" class="col-sm-8 col-form-label">Categories <small><!-- (Commission(%) to be given to the Super Admin on order item by Category you select.If you do not set the commission beside category then it will get global commission other wise perticuler category commission will be consider.) --></small> </label>
                                     <div style="display:none" id="cat_html">
                                         <?= $category_html ?>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-3 offset-2">
-                                        <a href="javascript:void(0)" id="seller_model" data-seller_id="<?= (isset($fetched_data[0]['user_id']) && !empty($fetched_data[0]['user_id'])) ? $fetched_data[0]['user_id'] : ""; ?>" data-cat_ids="<?= (isset($fetched_data[0]['id']) &&  !empty($fetched_data[0]['id'])) ? $fetched_data[0]['category_ids'] : ""; ?>" class=" btn btn-block  btn-outline-primary btn-sm" title="Manage Categories & Commission" data-target="#set_commission_model" data-toggle="modal">Manage</a>
+                                        <a href="javascript:void(0)" id="seller_model" data-seller_id="<?= (isset($fetched_data[0]['user_id']) && !empty($fetched_data[0]['user_id'])) ? $fetched_data[0]['user_id'] : ""; ?>" data-cat_ids="<?= (isset($fetched_data[0]['id']) &&  !empty($fetched_data[0]['id'])) ? $fetched_data[0]['category_ids'] : ""; ?>" class=" btn btn-block  btn-outline-primary btn-sm" title="View Categories" data-target="#set_commission_model" data-toggle="modal">View Categories</a>
                                     </div>
                                 </div>
                                 <h4>Store Details</h4>

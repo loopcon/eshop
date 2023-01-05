@@ -103,7 +103,7 @@ class Address_model extends CI_Model
             if ($id != false) {
                 $where['addr.id'] = $id;
             }
-            $this->db->select('addr.*')
+            $this->db->select('addr.*, c.name as country_name, s.name as state_name')
                 ->where($where)
                 ->group_by('addr.id')->order_by('addr.id', 'DESC');
             if ($fetch_latest == true) {
@@ -112,6 +112,8 @@ class Address_model extends CI_Model
             if (!empty($is_default)) {
                 $this->db->where('is_default', 1);
             }
+            $this->db->join('countries as c', 'c.id=addr.country', 'left');
+            $this->db->join('states as s', 's.id=addr.state', 'left');
             $res = $this->db->get('addresses addr')->result_array();
             if (!empty($res)) {
                 for ($i = 0; $i < count($res); $i++) {

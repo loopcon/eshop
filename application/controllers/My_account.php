@@ -327,7 +327,7 @@ class My_account extends CI_Controller
             $this->form_validation->set_rules('landmark', 'Landmark', 'trim|xss_clean');
             $this->form_validation->set_rules('country_id', 'Country', 'trim|xss_clean|required');
             $this->form_validation->set_rules('state_id', 'State', 'trim|xss_clean|required');
-            $this->form_validation->set_rules('city_id', 'City', 'trim|xss_clean|required');
+            $this->form_validation->set_rules('city', 'City', 'trim|xss_clean|required');
             // $this->form_validation->set_rules('area_id', 'Area', 'trim|xss_clean|required');
             $this->form_validation->set_rules('pincode', 'Pincode', 'trim|xss_clean|required');
             $this->form_validation->set_rules('latitude', 'Latitude', 'trim|xss_clean');

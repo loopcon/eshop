@@ -576,7 +576,8 @@ $(document).ready(function () {
                                 '</div>' +
                                 '<div class="col-11 row p-0">' +
                                 '<div class="col-6 text-dark"><i class="fa fa-map-marker-alt"></i> ' + e.name + ' - ' + e.type + '</div>' +
-                                '<small class="col-12 text-muted">' + e.area + ' , ' + e.city + ' , ' + e.state + ' , ' + e.country + ' - ' + e.pincode + '</small>' +
+                                // '<small class="col-12 text-muted">' + e.area + ' , ' + e.city + ' , ' + e.state + ' , ' + e.country + ' - ' + e.pincode + '</small>' +
+                                '<small class="col-12 text-muted">' + e.address + ' , ' + e.city + ' , ' + e.state_name + ' , ' + e.country_name + ' - ' + e.pincode + '</small>' +
                                 '<small class="col-12 text-muted">' + e.mobile + '</small>' +
                                 '</div>' +
                                 '</li></label>';
@@ -641,8 +642,10 @@ $(document).ready(function () {
             promocode_amount = promocode_amount.replace(',', '');
         }
         $('#address-name-type').html(address.name + ' - ' + address.type);
-        $('#address-full').html(address.area + ' , ' + address.city);
-        $('#address-country').html(address.state + ' , ' + address.country + ' - ' + address.pincode);
+        // $('#address-full').html(address.area + ' , ' + address.city);
+        $('#address-full').html(address.address + ' , ' + address.city);
+        // $('#address-country').html(address.state + ' , ' + address.country + ' - ' + address.pincode);
+        $('#address-country').html(address.state_name + ' , ' + address.country_name + ' - ' + address.pincode);
         $('#address-mobile').html(address.mobile);
         $('#address_id').val(address.id);
         $('#mobile').val(address.mobile);
@@ -707,7 +710,8 @@ $(document).ready(function () {
                 });
             }
         });
-
+        var sub_total = $('#sub_total').val();
+        getshippingchargesforregistereduser(address.id, sub_total);
     });
 });
 
@@ -794,25 +798,9 @@ $(document).ready(function () {
     var is_loggedin = $('#is_loggedin').val();
     if(is_loggedin==1) {
         var address_id = $("#address_id").val();
-        $.ajax({
-            type: 'POST',
-            data: { address_id: address_id },
-            url: base_url + 'cart/get-shipping-charges-for-registereduser',
-            dataType: 'json',
-            success: function (result) {
-                csrfName = result.csrfName;
-                csrfHash = result.csrfHash;
-                $('.delivery-charge').html(result.delivery_charge);
-                $("input#delivery_charge").val(result.delivery_charge);
-                $("input#rate_object_id").val(result.rate_object_id);
-                var delivery_charge = result.delivery_charge.toString().replace(',', '');
-                var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
-                $("#amount").val(final_total);
-                final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
-                $('#final_total').html(final_total);
-                $("#place_order_btn").removeAttr("disabled");
-            }
-        });
+        if(address_id > 0) {
+            getshippingchargesforregistereduser(address_id, sub_total);
+        }
     }
 });
 $(document).on('click', '#wallet_balance', function () {
@@ -899,9 +887,29 @@ $(document).on('click', '#wallet_balance', function () {
         $('#stripe').prop('required', true);
         $('#paytm').prop('required', true);
         $('#bank_transfer').prop('required', true);
-
     }
 });
+function getshippingchargesforregistereduser(address_id, sub_total) {
+    $.ajax({
+        type: 'POST',
+        data: { address_id: address_id },
+        url: base_url + 'cart/get-shipping-charges-for-registereduser',
+        dataType: 'json',
+        success: function (result) {
+            csrfName = result.csrfName;
+            csrfHash = result.csrfHash;
+            $('.delivery-charge').html(result.delivery_charge);
+            $("input#delivery_charge").val(result.delivery_charge);
+            $("input#rate_object_id").val(result.rate_object_id);
+            var delivery_charge = result.delivery_charge.toString().replace(',', '');
+            var final_total = parseFloat(sub_total) + parseFloat(delivery_charge);
+            $("#amount").val(final_total);
+            final_total = final_total.toLocaleString(undefined, { maximumFractionDigits: 2 });
+            $('#final_total').html(final_total);
+            $("#place_order_btn").removeAttr("disabled");
+        }
+    });
+}
 function paytm_setup(txnToken, orderId, amount, app_name, logo, username, user_email, user_contact) {
     var config = {
         "root": "",

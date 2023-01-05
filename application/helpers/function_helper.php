@@ -4270,7 +4270,7 @@ function check_cart_products_delivarable($area_id, $user_id)
             $tmpRow['product_id'] = $cart[$i]['product_id'];
             $tmpRow['variant_id'] = $cart[$i]['id'];
             $tmpRow['name'] = $cart[$i]['name'];
-            $tmpRow['is_deliverable'] = (is_product_delivarable($type = 'area', $area_id, $cart[$i]['product_id'])) ? true : false;
+            $tmpRow['is_deliverable'] = true;//(is_product_delivarable($type = 'area', $area_id, $cart[$i]['product_id'])) ? true : false;
             $products[] = $tmpRow;
         }
         if (!empty($products)) {

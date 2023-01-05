@@ -185,12 +185,14 @@ class Seller_model extends CI_Model
             $tempRow['pan_number'] = $row['pan_number'];
 
             // seller status
-            if ($row['status'] == 2)
-                $tempRow['status'] = "<label class='badge badge-warning'>Not-Approved</label>";
+            if ($row['status'] == 3)
+                $tempRow['status'] = "<label class='badge badge-warning'>Pending</label>";
+            else if ($row['status'] == 2)
+                $tempRow['status'] = "<label class='badge badge-danger'>Not-Approved</label>";
             else if ($row['status'] == 1)
-                $tempRow['status'] = "<label class='badge badge-success'>Approved</label>";
+                $tempRow['status'] = "<label class='badge badge-primary'>Approved</label>";
             else if ($row['status'] == 0)
-                $tempRow['status'] = "<label class='badge badge-danger'>Deactive</label>";
+                $tempRow['status'] = "<label class='badge badge-light'>Deactive</label>";
             else if ($row['status'] == 7)
                 $tempRow['status'] = "<label class='badge badge-danger'>Removed</label>";
 
